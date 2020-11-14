@@ -2,6 +2,7 @@ import React, { useState} from 'react'
 import {Card, Button, Alert} from 'react-bootstrap'
 import { useAuth } from '../context/AuthContext'
 import { Link, useHistory } from "react-router-dom"
+import AddIcon from '@material-ui/icons/Add';
 
 export default function Dashboard() {
     const [error, setError] = useState("")
@@ -23,17 +24,22 @@ export default function Dashboard() {
 
     return (
         <>  
-            <Card>
-                <Card.Body>
-                    <h2 className="text-center mb-4">Profile</h2>
+            <Tooltip title="Add" aria-label="add">
+                <Fab color="secondary" className={classes.absolute}>
+                <AddIcon />
+                </Fab>
+            </Tooltip>
+            {/* <Card>
+                <Card.Body> */}
+                    {/* <h2 className="text-center mb-4">Profile</h2>
                     {error && <Alert variant="danger">{error}</Alert>}
                     <strong>Email: </strong>{currentUser.email}
-                   <Link className="btn btn-primary w-100 mt-3" to="/update-profile">Update profile</Link>
-                </Card.Body>
-            </Card>
-            <div className="w-100 text-center mt-2">
+                   <Link className="btn btn-primary w-100 mt-3" to="/update-profile">Update profile</Link> */}
+                {/* </Card.Body>
+            </Card> */}
+            {/* <div className="w-100 text-center mt-2">
                 <Button disabled={loading} variant="link" onClick={handleLogout}>Log out</Button>
-            </div>
+            </div> */}
         </>
     )
 }
