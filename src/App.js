@@ -5,6 +5,7 @@ import {BrowserRouter as Router, Switch, Route } from "react-router-dom"
 
 import Signup from './component/Singup'
 import Login from './component/Login'
+import Game from './component/Game'
 import ForgotPassword from './component/ForgotPassword'
 import Dashboard from './component/Dashboard'
 import PrivateRoute from './component/PrivateRoute'
@@ -39,6 +40,7 @@ function App() {
           <AuthProvider>
             <Switch>
               <PrivateRoute exact path="/" component={Dashboard}/>
+              <PrivateRoute exact path="/game/:id" component={Game}/>
               <Route path="/login" component={Login}/>
               <Route path="/signup" component={Signup}/>
               <Route path="/forgot" component={ForgotPassword}/>

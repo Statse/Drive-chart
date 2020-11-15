@@ -1,10 +1,15 @@
 import React, { useState} from 'react'
-import {Card, Button, Alert} from 'react-bootstrap'
+import { Alert} from 'react-bootstrap'
 import { useAuth } from '../context/AuthContext'
 import { Link, useHistory } from "react-router-dom"
+
+//UI
 import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
+import Button from '@material-ui/core/Button';
+
+
 import firebase from '../firebase'
 
 export default function Dashboard() {
@@ -32,23 +37,23 @@ export default function Dashboard() {
             away: "seattle"
         }
         try {
-            await firebase.firestore().collection('games').add(data);
+            const res = await firebase.firestore().collection('games').add(data);
+            console.log('Added document with ID: ', res.id);
+            history.push(`/game/${res.id}`)
         } catch(error) {
             console.log(error)
             setLoading(false)
-            return setError("Creating new game failed")
+            return setError(error)
         }
     }
 
     return (
         <>  
             {error && <Alert variant="danger">{error}</Alert>}
-            <Tooltip title="Add" aria-label="add" onClick={newGame}>
-                <Fab color="primary">
-                    <AddIcon />
-                </Fab>
-            </Tooltip>
-            New game
+            <Button onClick={newGame} variant="contained" color="secondary">
+                New game
+            </Button>
+          
 
             {/* <Card>
                 <Card.Body> */}
