@@ -1,6 +1,7 @@
 import React, {useRef, useState, useEffect} from 'react'
-
 import firebase from '../firebase'
+
+import DownList from './DownList'
 
 //ui
 import { makeStyles } from '@material-ui/core/styles';
@@ -30,12 +31,15 @@ const useStyles = makeStyles((theme) => ({
 }));
   
 
-export default function Game() {
+export default function Game(props) {
+    console.log(props)
     const classes = useStyles();
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
     const [home, setHome] = useState("")
+    const [homeScore, setHomeScore] = useState("")
     const [away, setAway] = useState("")
+    const [awayScore, setAwayScore] = useState("")
     const [ball, setBall] = useState("")
     const [downs, setDowns] = useState([])
     const [current, setCurrent] = useState({down: 1, distance: 10})
@@ -45,18 +49,19 @@ export default function Game() {
     const distanceRef = useRef()
     const personelRef = useRef()
     const coverageRef = useRef()
-    const resultRef = useRef()
     const playTypeRef = useRef()
 
     useEffect(async ()=>{
         setError("")
         setLoading(true)
         try {
-            const res = await firebase.firestore().collection('games').doc("mCqlw8eoCNQWlc4Rqa0w").get();
+            const res = await firebase.firestore().collection('games').doc(props.match.params.id).get();
             const data =  res.data()
             console.log("this is loaded ",data)
             setHome(data.home)
-            setAway(data.away)
+            setHomeScore(data.homeScore)
+            setHome(data.home)
+            setAwayScore(data.awayScore)
             setDowns(data.downs)
             setLoading(false)
         } catch {
@@ -74,13 +79,13 @@ export default function Game() {
         console.log(distanceRef.current.value)
         console.log(personelRef.current.value)
         console.log(coverageRef.current.value)
-        console.log(resultRef.current.value)
         try {
+            await firebase.firestore().collection('games').doc(props.match.params.id).update()
             setLoading(false)
         } catch(error) {
             console.log(error)
             setLoading(false)
-            return setError("Submit downFailed")
+            return setError("Submit failed")
         }
         setLoading(false)
     }
@@ -95,9 +100,7 @@ export default function Game() {
 
     return (
         <div>
-
-            {home.name} {home.score} vs {away.score} {away.name}
-
+            {home} {homeScore} vs {awayScore} {away}
             <form onSubmit={handleSubmit}>
                 <Grid container spacing={3}>
                     <Grid item xs={3}>
@@ -134,8 +137,10 @@ export default function Game() {
                             >
                             <MenuItem value={"pass"}>Pass</MenuItem>
                             <MenuItem value={"run"}>Run</MenuItem>
+                            <MenuItem value={"pat"}>PAT</MenuItem>
+                            <MenuItem value={"fg"}>FG</MenuItem>
+                            <MenuItem value={"ko"}>KO</MenuItem>
                             <MenuItem value={"punt"}>Punt</MenuItem>
-                            <MenuItem value={"fieldGoal"}>Field Goal</MenuItem>
                         </Select>
                     </Grid>
                     <Grid item xs={3}>
@@ -158,6 +163,9 @@ export default function Game() {
                     </Grid>
                 </Grid>
             </form>
+            {downs && (
+                <DownList downs={downs}></DownList>
+            )}
         </div>
     )
 }

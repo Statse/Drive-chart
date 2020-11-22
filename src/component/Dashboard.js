@@ -34,7 +34,10 @@ export default function Dashboard() {
         setError("")
         const data = {
             home: "pats",
-            away: "seattle"
+            homeScore: 0,
+            away: "seattle",
+            awayScore: 0,
+            downs: []
         }
         try {
             const res = await firebase.firestore().collection('games').add(data);
