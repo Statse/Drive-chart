@@ -38,13 +38,14 @@ export default function DownList(props) {
         <TableHead>
           <TableRow>
             <TableCell>Team</TableCell>
+            <TableCell align="right">Personel</TableCell>
             <TableCell align="right">QTR</TableCell>
             <TableCell align="right">Down</TableCell>
             <TableCell align="right">Distance</TableCell>
+            <TableCell align="right">Yard line</TableCell>
             <TableCell align="right">Play type</TableCell>
-            <TableCell align="right">Yard result</TableCell>
+            <TableCell align="right">Gain / Loss</TableCell>
             <TableCell align="right">Result</TableCell>
-            <TableCell align="right">Coverage</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -53,26 +54,23 @@ export default function DownList(props) {
                 Patriots
               </TableCell>
               <TableCell component="th" align="right">
+                21
+              </TableCell>
+              <TableCell component="th" align="right">
                 1
               </TableCell>
               <TableCell component="th" align="right">
                 10
               </TableCell>
               <TableCell align="right">5</TableCell>
+              <TableCell align="right">Patriots 45</TableCell>
               <TableCell align="right">Run</TableCell>
               <TableCell align="right">-3</TableCell>
               <TableCell align="right">Fumble</TableCell>
-              <TableCell align="right">???</TableCell>
             </TableRow>
           {downs.map((down) => (
             <TableRow key={down}>
-              <TableCell component="th" scope="">
-                {}
-              </TableCell>
-              <TableCell align="right">{}</TableCell>
-              <TableCell align="right">{}</TableCell>
-              <TableCell align="right">{}</TableCell>
-              <TableCell align="right">{}</TableCell>
+            <TableCell align="right"></TableCell>
             </TableRow>
           ))}
         </TableBody>

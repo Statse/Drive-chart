@@ -111,9 +111,27 @@ export default function Game(props) {
                                 className={classes.fullWidth + " " + classes.selectEmpty}
                                 onChange={handleChange}
                                 inputRef={possessionRef}
+                                label="Possession"
                                 >
                                 <MenuItem value={"home"}>Home</MenuItem>
                                 <MenuItem value={"away"}>Away</MenuItem>
+                            </Select>
+                    </Grid>
+                    <Grid item xs={3}>
+                            {/* <InputLabel id="demo-simple-select-label">Poksession</InputLabel> */}
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                className={classes.fullWidth + " " + classes.selectEmpty}
+                                onChange={handleChange}
+                                label="QTR"
+                                // inputRef={possessionRef}
+                                >
+                                <MenuItem value={1}>1</MenuItem>
+                                <MenuItem value={2}>2</MenuItem>
+                                <MenuItem value={3}>3</MenuItem>
+                                <MenuItem value={4}>4</MenuItem>
+                                <MenuItem value={5}>OT</MenuItem>
                             </Select>
                     </Grid>
                     <Grid item xs={3}>
@@ -138,12 +156,13 @@ export default function Game(props) {
                             <MenuItem value={"pass"}>Pass</MenuItem>
                             <MenuItem value={"run"}>Run</MenuItem>
                             <MenuItem value={"pat"}>PAT</MenuItem>
+                            <MenuItem value={"2-pt-conversion"}>2 pt conversion</MenuItem>
                             <MenuItem value={"fg"}>FG</MenuItem>
                             <MenuItem value={"ko"}>KO</MenuItem>
                             <MenuItem value={"punt"}>Punt</MenuItem>
                         </Select>
                     </Grid>
-                    <Grid item xs={3}>
+                    {/* <Grid item xs={3}>
                         <InputLabel id="demo-simple-select-label">Coverage</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
@@ -156,7 +175,7 @@ export default function Game(props) {
                             <MenuItem value={"zone"}>Zone</MenuItem>
                             <MenuItem value={"blitz"}>Blitz</MenuItem>
                         </Select>
-                    </Grid>
+                    </Grid> */}
                     <Grid item xs={12}>
                         <Button className={classes.button} disabled={loading} variant="contained" type="submit">Save down</Button>
                         <Button onClick={handleTurnover} className={classes.button} disabled={loading} variant="contained" type="button">Turnover</Button>
