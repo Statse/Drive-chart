@@ -9,6 +9,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 import Button from '@material-ui/core/Button';
 
+import GamesList from './GamesList'
+
 
 import firebase from '../firebase'
 
@@ -56,7 +58,8 @@ export default function Dashboard() {
             <Button onClick={newGame} variant="contained" color="secondary">
                 New game
             </Button>
-          
+            <GamesList/>
+
 
             {/* <Card>
                 <Card.Body> */}

@@ -9,7 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormControl from '@material-ui/core/FormControl';
+// import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Grid from '@material-ui/core/Grid';
 
@@ -54,22 +54,26 @@ export default function Game(props) {
     useEffect(async ()=>{
         setError("")
         setLoading(true)
-        try {
-            const res = await firebase.firestore().collection('games').doc(props.match.params.id).get();
-            const data =  res.data()
-            console.log("this is loaded ",data)
-            setHome(data.home)
-            setHomeScore(data.homeScore)
-            setHome(data.home)
-            setAwayScore(data.awayScore)
-            setDowns(data.downs)
-            setLoading(false)
-        } catch {
-            setLoading(false)
-            console.log(error)
-            setError(error)
+
+        const getGame = async () => {
+            try {
+                const res = await firebase.firestore().collection('games').doc(props.match.params.id).get();
+                const data =  res.data()
+                console.log("this is loaded ", data)
+                setHome(data.home)
+                setHomeScore(data.homeScore)
+                setHome(data.home)
+                setAwayScore(data.awayScore)
+                setDowns(data.downs)
+                setLoading(false)
+            } catch {
+                setLoading(false)
+                console.log(error)
+                setError(error)
+            }
         }
-    }, [error])
+        getGame()
+    }, [error, props.match.params.id])
 
     async function handleSubmit(e){
         e.preventDefault()
