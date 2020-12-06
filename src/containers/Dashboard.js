@@ -7,34 +7,19 @@ import { Link, useHistory } from "react-router-dom"
 import GamesList from '../component/GamesList'
 import NewGame from '../component/NewGame';
 
+//material ui
+import Grid from '@material-ui/core/Grid';
+
 import firebase from '../firebase'
 
 export default function Dashboard() {
-    const [error, setError] = useState("")
-    const [loading, setLoading] = useState(false)
-    const {currentUser, logout} = useAuth()
-    const history = useHistory()
-    const homeRef = useRef()
-    const awayRef = useRef()
-    const userId = firebase.auth().currentUser.uid;
-
-    async function handleLogout() {
-        setError("")
-        try {
-            await logout()
-            history.push("/login")
-        } catch(error) {
-            console.log(error)
-            setLoading(false)
-            return setError("Logout failed")
-        }
-    }
+    // const [error, setError] = useState("")
+    // const [loading, setLoading] = useState(false)
 
     return (
-        <>  
-            {error && <Alert variant="danger">{error}</Alert>}
+        <Grid container spacing={3}>
             <NewGame />
             <GamesList/>
-        </>
+        </Grid>
     )
 }

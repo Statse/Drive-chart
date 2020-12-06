@@ -22,6 +22,7 @@ const useStyles = makeStyles({
         width: "100%",
     },
     center: {
+        marginTop: "1rem",
         justifyContent: "center"
     }
   });
