@@ -1,25 +1,35 @@
 import React, { useState, useRef} from 'react'
-import { Alert} from 'react-bootstrap'
-import { useAuth } from '../context/AuthContext'
-import { Link, useHistory } from "react-router-dom"
 
 //components
 import GamesList from '../component/GamesList'
 import NewGame from '../component/NewGame';
 
 //material ui
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
-import firebase from '../firebase'
+const useStyles = makeStyles((theme) => ({
+    root: {
+      padding: "15px",
+      maxWidth: "1000px",
+      maxHeight: "1000px",
+      width: "100%",
+    },
+  }));
 
 export default function Dashboard() {
-    // const [error, setError] = useState("")
-    // const [loading, setLoading] = useState(false)
+    const classes = useStyles();
 
     return (
-        <Grid container spacing={3}>
-            <NewGame />
-            <GamesList/>
-        </Grid>
+        <div className={classes.root}>
+            <Grid container spacing={3}>
+                <Grid item xs={3}>
+                    <NewGame />
+                </Grid>
+                <Grid item xs={6}>
+                    <GamesList/>
+                </Grid>
+            </Grid>
+        </div>
     )
 }
