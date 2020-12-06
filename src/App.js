@@ -5,9 +5,9 @@ import {BrowserRouter as Router, Switch, Route } from "react-router-dom"
 
 import Signup from './component/Singup'
 import Login from './component/Login'
-import Game from './component/Game'
+import Game from './containers/Game'
 import ForgotPassword from './component/ForgotPassword'
-import Dashboard from './component/Dashboard'
+import Dashboard from './containers/Dashboard'
 import PrivateRoute from './component/PrivateRoute'
 import UpdateProfile from './component/UpdateProfile'
 
@@ -28,27 +28,27 @@ function App() {
 
   return (
     <>
-      <Navbar></Navbar>
-        <Grid
-        container
-        className={classes.appGrid}
-        direction="column"
-        justify="center"
-        alignItems="center"
-        >
-        <Router>
-          <AuthProvider>
-            <Switch>
-              <PrivateRoute exact path="/" component={Dashboard}/>
-              <PrivateRoute exact path="/game/:id" component={Game}/>
-              <Route path="/login" component={Login}/>
-              <Route path="/signup" component={Signup}/>
-              <Route path="/forgot" component={ForgotPassword}/>
-              <Route path="/update-profile" component={UpdateProfile}/>
-            </Switch>
-          </AuthProvider>
-        </Router>
-        </Grid>
+      <AuthProvider>
+        <Navbar></Navbar>
+          <Grid
+          container
+          className={classes.appGrid}
+          direction="column"
+          justify="center"
+          alignItems="center"
+          >
+          <Router>
+              <Switch>
+                <PrivateRoute exact path="/" component={Dashboard}/>
+                <PrivateRoute exact path="/game/:id" component={Game}/>
+                <Route path="/login" component={Login}/>
+                <Route path="/signup" component={Signup}/>
+                <Route path="/forgot" component={ForgotPassword}/>
+                <Route path="/update-profile" component={UpdateProfile}/>
+              </Switch>
+          </Router>
+          </Grid>
+        </AuthProvider>
       </>
   );
 }

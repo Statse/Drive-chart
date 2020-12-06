@@ -1,7 +1,7 @@
 import React, {useRef, useState, useEffect} from 'react'
 import firebase from '../firebase'
 
-import DownList from './DownList'
+import DownList from '../component/DownList'
 
 //ui
 import { makeStyles } from '@material-ui/core/styles';
@@ -62,7 +62,7 @@ export default function Game(props) {
                 console.log("this is loaded ", data)
                 setHome(data.home)
                 setHomeScore(data.homeScore)
-                setHome(data.home)
+                setAway(data.away)
                 setAwayScore(data.awayScore)
                 setDowns(data.downs)
                 setLoading(false)
@@ -108,7 +108,6 @@ export default function Game(props) {
             <form onSubmit={handleSubmit}>
                 <Grid container spacing={3}>
                     <Grid item xs={3}>
-                            {/* <InputLabel id="demo-simple-select-label">Poksession</InputLabel> */}
                             <Select
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
@@ -139,7 +138,7 @@ export default function Game(props) {
                             </Select>
                     </Grid>
                     <Grid item xs={3}>
-                        <TextField className={classes.fullWidth} id="standard-basic" type="numer" required inputRef={downRef} label="Down" />
+                        <TextField className={classes.fullWidth} id="standard-basic" type="number" required inputRef={downRef} label="Down" />
                     </Grid>
                     <Grid item xs={3}>
                         <TextField className={classes.fullWidth} id="standard-basic" type="number" required inputRef={distanceRef} label="Distance" />

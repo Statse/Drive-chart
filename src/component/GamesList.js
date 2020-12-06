@@ -5,6 +5,7 @@ export default function GamesList() {
     const [games, setGames] = useState([]);
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
+    const userId = firebase.auth().currentUser.uid;
 
     useEffect(()=>{
         setError("")
@@ -12,7 +13,7 @@ export default function GamesList() {
         setLoading(true)
         const getGames = async () => {
             try {
-                const res = await firebase.firestore().collection('games').get();
+                const res = await firebase.firestore().collection('games').where('owner', '==', userId).get();
                 const data =  res.docs.map(doc => doc.data());
                 // const data =  res.data()
                 console.log("this is loaded ", data)
