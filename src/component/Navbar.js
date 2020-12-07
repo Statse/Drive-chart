@@ -54,7 +54,7 @@ export default function Navbar() {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            News
+            Drive chart
           </Typography>
           {currentUser ? (
             <Button onClick={handleLogout} color="inherit">Logout</Button>

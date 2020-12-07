@@ -46,7 +46,7 @@ export default function GamesList() {
         <>
             {loading && (
                 <div>
-                    
+                    game
                 </div>
             )}
         </>

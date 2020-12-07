@@ -10,10 +10,10 @@ import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      padding: "15px",
-      maxWidth: "1000px",
-      maxHeight: "1000px",
-      width: "100%",
+    //   padding: "15px",
+    //   maxWidth: "1000px",
+    //   maxHeight: "1000px",
+    //   width: "100%",
     },
   }));
 
@@ -23,9 +23,9 @@ export default function Dashboard() {
     return (
         <div className={classes.root}>
             <Grid container spacing={3}>
-                <Grid item xs={3}>
+                {/* <Grid item xs={3}>
                     <NewGame />
-                </Grid>
+                </Grid> */}
                 <Grid item xs={6}>
                     <GamesList/>
                 </Grid>

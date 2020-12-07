@@ -12,6 +12,8 @@ import PrivateRoute from './component/PrivateRoute'
 import UpdateProfile from './component/UpdateProfile'
 
 import Navbar from './component/Navbar'
+import BottomNav from './containers/BottomNavigation'
+//ui
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -48,6 +50,7 @@ function App() {
               </Switch>
           </Router>
           </Grid>
+        <BottomNav className={classes.BottomNav}></BottomNav>
         </AuthProvider>
       </>
   );
