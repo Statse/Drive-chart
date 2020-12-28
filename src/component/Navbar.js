@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, useHistory } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 
 //ui
 import { makeStyles } from '@material-ui/core/styles';
@@ -59,7 +59,8 @@ export default function Navbar() {
           {currentUser ? (
             <Button onClick={handleLogout} color="inherit">Logout</Button>
           ) : (
-            <Button color="inherit">Login</Button>
+            null
+            // <Button color="inherit">Login</Button>
           )}
         </Toolbar>
       </AppBar>

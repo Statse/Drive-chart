@@ -1,5 +1,5 @@
 import React from 'react'
-import { AuthProvider } from './context/AuthContext';
+import { useAuth } from './context/AuthContext';
 import {BrowserRouter as Router, Switch, Route } from "react-router-dom"
 
 
@@ -27,10 +27,11 @@ const useStyles = makeStyles({
 
 function App() {
   const classes = useStyles(); 
+  const {currentUser} = useAuth()
 
   return (
     <>
-      <AuthProvider>
+      {/* <AuthProvider> */}
         <Navbar></Navbar>
           <Grid
           container
@@ -50,8 +51,10 @@ function App() {
               </Switch>
           </Router>
           </Grid>
-        <BottomNav className={classes.BottomNav}></BottomNav>
-        </AuthProvider>
+        {currentUser ? (
+          <BottomNav className={classes.BottomNav}></BottomNav>
+        ) : null}
+        {/* </AuthProvider> */}
       </>
   );
 }
