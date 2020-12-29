@@ -41,9 +41,7 @@ export default function BottomNav() {
   return (
     <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
       <BottomNavigationAction label="Games" value="games" icon={<SportsFootballIcon />} onClick={()=>handleLink("/")} />
-      <BottomNavigationAction label="Favorites" value="favorites" icon={<RestoreIcon />} />
-      <BottomNavigationAction label="Nearby" value="nearby" icon={<FolderIcon />} />
-      <BottomNavigationAction label="Settings" value="folder" icon={<SettingsIcon />} />
+      <BottomNavigationAction label="Settings" value="settings" icon={<SettingsIcon />} onClick={()=>handleLink("/settings")} />
       <Tooltip title="Add" aria-label="add" className={classes.addButton} onClick={()=>handleLink("/new-game")}>
           <Fab color="primary">
             <AddIcon />

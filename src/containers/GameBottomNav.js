@@ -25,7 +25,9 @@ const useStyles = makeStyles({
   }
 });
 
-export default function GameBottomNav() {
+export default function GameBottomNav(props) {
+  const gameId = props.gameId
+  const setView = props.setView
   const history = useHistory();
   const classes = useStyles();
   const [value, setValue] = React.useState('games');
@@ -40,10 +42,8 @@ export default function GameBottomNav() {
 
   return (
     <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
-      <BottomNavigationAction label="Games" value="games" icon={<SportsFootballIcon />} onClick={()=>handleLink("/")} />
-      <BottomNavigationAction label="Favorites" value="favorites" icon={<RestoreIcon />} />
-      <BottomNavigationAction label="Nearby" value="nearby" icon={<FolderIcon />} />
-      <BottomNavigationAction label="Settings" value="folder" icon={<SettingsIcon />} />
+      <BottomNavigationAction label="Games" value="games" icon={<SportsFootballIcon />} onClick={()=>setView(`game`)} />
+      <BottomNavigationAction label="Downs" value="downs" icon={<RestoreIcon />}  onClick={()=>setView(`downs`)}  />
       <Tooltip title="Add" aria-label="add" className={classes.addButton} onClick={()=>handleLink("/new-game")}>
           <Fab color="primary">
             <AddIcon />

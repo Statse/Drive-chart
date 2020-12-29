@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext'
 import { Link, useHistory } from "react-router-dom"
 
 
+import BottomNav from '../containers/BottomNavigation'
 //material
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -87,6 +88,7 @@ export default function UpdateProfile() {
     }
 
     return (
+    <>
         <Card className={classes.root}>
             <CardContent>
                 <Typography className={classes.title} gutterBottom>Update profile</Typography> 
@@ -103,5 +105,7 @@ export default function UpdateProfile() {
                 <Link to="/">Cancel</Link> 
             </CardActions>
         </Card>
+        <BottomNav/>
+    </>
     )
 }

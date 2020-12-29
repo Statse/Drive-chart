@@ -2,7 +2,7 @@ import React, { useState, useRef} from 'react'
 
 //components
 import GamesList from '../component/GamesList'
-import NewGame from '../component/NewGame';
+import BottomNav from '../containers/BottomNavigation'
 
 //material ui
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,15 +21,15 @@ export default function Dashboard() {
     const classes = useStyles();
 
     return (
+    <>
         <div className={classes.root}>
             <Grid container spacing={3}>
-                {/* <Grid item xs={3}>
-                    <NewGame />
-                </Grid> */}
                 <Grid item xs={6}>
                     <GamesList/>
                 </Grid>
             </Grid>
         </div>
+        <BottomNav/>
+    </>
     )
 }

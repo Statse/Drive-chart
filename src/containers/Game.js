@@ -1,7 +1,9 @@
 import React, {useRef, useState, useEffect} from 'react'
 import firebase from '../firebase'
 
-import DownList from '../component/DownList'
+// import DownList from '../component/DownList'
+import DownsList from '../component/Game/DownList'
+import GameBottomNav from './GameBottomNav'
 
 //ui
 import { makeStyles } from '@material-ui/core/styles';
@@ -47,12 +49,16 @@ export default function Game(props) {
     const [downs, setDowns] = useState([])
     const [current, setCurrent] = useState({down: 1, distance: 10})
     
+    const [view, setView] = useState("game")
+    
     const possessionRef = useRef()
+    const qtrRef = useRef()
     const downRef = useRef()
     const distanceRef = useRef()
     const personelRef = useRef()
     const coverageRef = useRef()
     const playTypeRef = useRef()
+    const resultRef = useRef()
 
     useEffect(async ()=>{
         setError("")
@@ -86,6 +92,8 @@ export default function Game(props) {
         console.log(distanceRef.current.value)
         console.log(personelRef.current.value)
         console.log(coverageRef.current.value)
+        console.log(resultRef.current.value)
+        console.log(qtrRef.current.value)
         try {
             await firebase.firestore().collection('games').doc(props.match.params.id).update()
             setLoading(false)
@@ -106,91 +114,120 @@ export default function Game(props) {
     }
 
     return (
-        <div class={classes.container}>
-            {home} {homeScore} vs {awayScore} {away}
-            <form onSubmit={handleSubmit}>
-                <Grid container spacing={3}>
-                    <Grid item xs={12} md={3} lg={2}>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            className={classes.fullWidth + " " + classes.selectEmpty}
-                            onChange={handleChange}
-                            inputRef={possessionRef}
-                            label="Possession"
-                            >
-                            <MenuItem value={"home"}>Home</MenuItem>
-                            <MenuItem value={"away"}>Away</MenuItem>
-                        </Select>
-                    </Grid>
-                    <Grid item xs={12} md={3} lg={2}>
-                            {/* <InputLabel id="demo-simple-select-label">Poksession</InputLabel> */}
+        <>
+            <div class={classes.container}>
+                <div style={{marginBottom: "15px"}}>{home} {homeScore} vs {awayScore} {away}</div>
+                {view === "game" ? (
+                <form onSubmit={handleSubmit}>
+                    <Grid container spacing={3}>
+                        <Grid item xs={12} md={3} lg={2}>
+                            <InputLabel id="possession-label">Possession</InputLabel>
                             <Select
-                                labelId="demo-simple-select-label"
+                                labelId="possession-label"
                                 id="demo-simple-select"
                                 className={classes.fullWidth + " " + classes.selectEmpty}
                                 onChange={handleChange}
-                                label="QTR"
-                                // inputRef={possessionRef}
+                                inputRef={possessionRef}
+                                label="Possession"
                                 >
-                                <MenuItem value={1}>1</MenuItem>
-                                <MenuItem value={2}>2</MenuItem>
-                                <MenuItem value={3}>3</MenuItem>
-                                <MenuItem value={4}>4</MenuItem>
-                                <MenuItem value={5}>OT</MenuItem>
+                                <MenuItem value={"home"}>Home</MenuItem>
+                                <MenuItem value={"away"}>Away</MenuItem>
                             </Select>
+                        </Grid>
+                        <Grid item xs={12} md={3} lg={2}>
+                                <InputLabel id="QTR-label">QTR</InputLabel>
+                                <Select
+                                    labelId="QTR-label"
+                                    id="demo-simple-select"
+                                    className={classes.fullWidth + " " + classes.selectEmpty}
+                                    onChange={handleChange}
+                                    label="QTR"
+                                    inputRef={qtrRef}
+                                    >
+                                    <MenuItem value={1}>1</MenuItem>
+                                    <MenuItem value={2}>2</MenuItem>
+                                    <MenuItem value={3}>3</MenuItem>
+                                    <MenuItem value={4}>4</MenuItem>
+                                    <MenuItem value={5}>OT</MenuItem>
+                                </Select>
+                        </Grid>
+                        <Grid item xs={12} md={3} lg={2}>
+                            <InputLabel id="down-label">Down</InputLabel>
+                            <TextField  labelId="down-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={downRef}/>
+                        </Grid>
+                        <Grid item xs={12} md={3} lg={2}>
+                            <InputLabel id="distance-label">Distance</InputLabel>
+                            <TextField labelId="distance-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={distanceRef} />
+                        </Grid>
+                        <Grid item xs={12} md={3} lg={2}>
+                            <InputLabel id="personel-label">Personel</InputLabel>
+                            <TextField labelId="personel-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={personelRef} />
+                        </Grid>
+                        
+                        <Grid item xs={12} md={3} lg={2}>
+                            <InputLabel id="playtype-label">Play type</InputLabel>
+                            <Select
+                                labelId="playtype-label"
+                                id="demo-simple-select"
+                                className={classes.fullWidth}
+                                onChange={handleChange}
+                                inputRef={playTypeRef}
+                                >
+                                <MenuItem value={"pass"}>Pass</MenuItem>
+                                <MenuItem value={"run"}>Run</MenuItem>
+                                <MenuItem value={"pat"}>PAT</MenuItem>
+                                <MenuItem value={"2-pt-conversion"}>2 pt conversion</MenuItem>
+                                <MenuItem value={"fg"}>FG</MenuItem>
+                                <MenuItem value={"ko"}>KO</MenuItem>
+                                <MenuItem value={"punt"}>Punt</MenuItem>
+                            </Select>
+                        </Grid>
+                        <Grid item xs={12} md={3} lg={2}>
+                            <InputLabel id="result-label">Play result</InputLabel>
+                            <Select
+                                labelId="result-label"
+                                id="demo-simple-select"
+                                className={classes.fullWidth}
+                                onChange={handleChange}
+                                inputRef={resultRef}
+                                >
+                                <MenuItem value={"pass"}>Touchdown</MenuItem>
+                                <MenuItem value={"run"}>PAT good</MenuItem>
+                                <MenuItem value={"pat"}>PAT no good</MenuItem>
+                                <MenuItem value={"2-pt-conversion"}>2 pt conversion good</MenuItem>
+                                <MenuItem value={"fg"}>Catch</MenuItem>
+                                <MenuItem value={"ko"}>Incomplete</MenuItem>
+                                <MenuItem value={"punt"}>Fumble</MenuItem>
+                            </Select>
+                        </Grid>
+                        {/* <Grid item xs={12} md={3} lg={2}>
+                            <InputLabel id="demo-simple-select-label">Coverage</InputLabel>
+                            <Select
+                                labelId="demo-simple-select-label"
+                                id="demo-simple-select"
+                                className={classes.fullWidth}
+                                onChange={handleChange}
+                                inputRef={coverageRef}
+                                >
+                                <MenuItem value={"man"}>Man</MenuItem>
+                                <MenuItem value={"zone"}>Zone</MenuItem>
+                                <MenuItem value={"blitz"}>Blitz</MenuItem>
+                            </Select>
+                        </Grid> */}
+                        <Grid item xs={12}>
+                            <Button className={classes.button} disabled={loading} variant="contained" type="submit">Save down</Button>
+                            <Button onClick={handleTurnover} className={classes.button} disabled={loading} variant="contained" type="button">Turnover</Button>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12} md={3} lg={2}>
-                        <TextField className={classes.fullWidth} id="standard-basic" type="number" required inputRef={downRef} label="Down" />
-                    </Grid>
-                    <Grid item xs={12} md={3} lg={2}>
-                        <TextField className={classes.fullWidth} id="standard-basic" type="number" required inputRef={distanceRef} label="Distance" />
-                    </Grid>
-                    <Grid item xs={12} md={3} lg={2}>
-                        <TextField className={classes.fullWidth} id="standard-basic" type="number" required inputRef={personelRef} label="Personel" />
-                    </Grid>
-                    
-                    <Grid item xs={12} md={3} lg={2}>
-                        <InputLabel id="demo-simple-select-label">Play type</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            className={classes.fullWidth}
-                            onChange={handleChange}
-                            inputRef={playTypeRef}
-                            >
-                            <MenuItem value={"pass"}>Pass</MenuItem>
-                            <MenuItem value={"run"}>Run</MenuItem>
-                            <MenuItem value={"pat"}>PAT</MenuItem>
-                            <MenuItem value={"2-pt-conversion"}>2 pt conversion</MenuItem>
-                            <MenuItem value={"fg"}>FG</MenuItem>
-                            <MenuItem value={"ko"}>KO</MenuItem>
-                            <MenuItem value={"punt"}>Punt</MenuItem>
-                        </Select>
-                    </Grid>
-                    {/* <Grid item xs={12} md={3} lg={2}>
-                        <InputLabel id="demo-simple-select-label">Coverage</InputLabel>
-                        <Select
-                            labelId="demo-simple-select-label"
-                            id="demo-simple-select"
-                            className={classes.fullWidth}
-                            onChange={handleChange}
-                            inputRef={coverageRef}
-                            >
-                            <MenuItem value={"man"}>Man</MenuItem>
-                            <MenuItem value={"zone"}>Zone</MenuItem>
-                            <MenuItem value={"blitz"}>Blitz</MenuItem>
-                        </Select>
-                    </Grid> */}
-                    <Grid item xs={12}>
-                        <Button className={classes.button} disabled={loading} variant="contained" type="submit">Save down</Button>
-                        <Button onClick={handleTurnover} className={classes.button} disabled={loading} variant="contained" type="button">Turnover</Button>
-                    </Grid>
-                </Grid>
-            </form>
-            {/* {downs && (
-                <DownList downs={downs}></DownList>
-            )} */}
-        </div>
+                </form>
+                ) : (
+                    <DownsList />
+                )}
+            </div>
+            <GameBottomNav 
+                gameId={props.match.params.id}
+                setView={setView}
+            />
+        </>
     )
 }

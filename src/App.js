@@ -10,6 +10,7 @@ import ForgotPassword from './component/ForgotPassword'
 import Dashboard from './containers/Dashboard'
 import PrivateRoute from './component/PrivateRoute'
 import UpdateProfile from './component/UpdateProfile'
+// import Downs from './component/Game/DownList'
 
 import Navbar from './component/Navbar'
 import BottomNav from './containers/BottomNavigation'
@@ -45,14 +46,15 @@ function App() {
               <PrivateRoute exact path="/" component={Dashboard}/>
               <PrivateRoute exact path="/new-game" component={NewGame}/>
               <PrivateRoute exact path="/game/:id" component={Game}/>
+              {/* <PrivateRoute exact path="/game/:id/downs" component={Downs}/> */}
               <Route path="/login" component={Login}/>
               <Route path="/signup" component={Signup}/>
               <Route path="/forgot" component={ForgotPassword}/>
-              <Route path="/update-profile" component={UpdateProfile}/>
+              <Route path="/settings" component={UpdateProfile}/>
             </Switch>
           </Grid>
-              {currentUser ? (
-          <BottomNav className={classes.BottomNav}></BottomNav>
+              {currentUser ? (null
+          // <BottomNav className={classes.BottomNav}></BottomNav>
           ) : null}
           </Router>
         {/* </AuthProvider> */}
