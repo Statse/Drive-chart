@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     },
     fullWidth: {
         width: '100%'
+    },
+    container: {
+        padding: "15px",
     }
 }));
   
@@ -103,24 +106,24 @@ export default function Game(props) {
     }
 
     return (
-        <div>
+        <div class={classes.container}>
             {home} {homeScore} vs {awayScore} {away}
             <form onSubmit={handleSubmit}>
                 <Grid container spacing={3}>
-                    <Grid item xs={3}>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                className={classes.fullWidth + " " + classes.selectEmpty}
-                                onChange={handleChange}
-                                inputRef={possessionRef}
-                                label="Possession"
-                                >
-                                <MenuItem value={"home"}>Home</MenuItem>
-                                <MenuItem value={"away"}>Away</MenuItem>
-                            </Select>
+                    <Grid item xs={12} md={3} lg={2}>
+                        <Select
+                            labelId="demo-simple-select-label"
+                            id="demo-simple-select"
+                            className={classes.fullWidth + " " + classes.selectEmpty}
+                            onChange={handleChange}
+                            inputRef={possessionRef}
+                            label="Possession"
+                            >
+                            <MenuItem value={"home"}>Home</MenuItem>
+                            <MenuItem value={"away"}>Away</MenuItem>
+                        </Select>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={12} md={3} lg={2}>
                             {/* <InputLabel id="demo-simple-select-label">Poksession</InputLabel> */}
                             <Select
                                 labelId="demo-simple-select-label"
@@ -137,17 +140,17 @@ export default function Game(props) {
                                 <MenuItem value={5}>OT</MenuItem>
                             </Select>
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={12} md={3} lg={2}>
                         <TextField className={classes.fullWidth} id="standard-basic" type="number" required inputRef={downRef} label="Down" />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={12} md={3} lg={2}>
                         <TextField className={classes.fullWidth} id="standard-basic" type="number" required inputRef={distanceRef} label="Distance" />
                     </Grid>
-                    <Grid item xs={3}>
+                    <Grid item xs={12} md={3} lg={2}>
                         <TextField className={classes.fullWidth} id="standard-basic" type="number" required inputRef={personelRef} label="Personel" />
                     </Grid>
                     
-                    <Grid item xs={3}>
+                    <Grid item xs={12} md={3} lg={2}>
                         <InputLabel id="demo-simple-select-label">Play type</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
@@ -165,7 +168,7 @@ export default function Game(props) {
                             <MenuItem value={"punt"}>Punt</MenuItem>
                         </Select>
                     </Grid>
-                    {/* <Grid item xs={3}>
+                    {/* <Grid item xs={12} md={3} lg={2}>
                         <InputLabel id="demo-simple-select-label">Coverage</InputLabel>
                         <Select
                             labelId="demo-simple-select-label"
@@ -185,9 +188,9 @@ export default function Game(props) {
                     </Grid>
                 </Grid>
             </form>
-            {downs && (
+            {/* {downs && (
                 <DownList downs={downs}></DownList>
-            )}
+            )} */}
         </div>
     )
 }

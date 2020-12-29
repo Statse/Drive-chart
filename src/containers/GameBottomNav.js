@@ -25,7 +25,7 @@ const useStyles = makeStyles({
   }
 });
 
-export default function BottomNav() {
+export default function GameBottomNav() {
   const history = useHistory();
   const classes = useStyles();
   const [value, setValue] = React.useState('games');

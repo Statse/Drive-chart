@@ -2,7 +2,7 @@ import React from 'react'
 import { useAuth } from './context/AuthContext';
 import {BrowserRouter as Router, Switch, Route } from "react-router-dom"
 
-
+import NewGame from './component/NewGame'
 import Signup from './component/Singup'
 import Login from './component/Login'
 import Game from './containers/Game'
@@ -33,27 +33,28 @@ function App() {
     <>
       {/* <AuthProvider> */}
         <Navbar></Navbar>
-          <Grid
+         
+          <Router> <Grid
           container
           className={classes.appGrid}
           direction="column"
           justify="center"
           alignItems="center"
           >
-          <Router>
-              <Switch>
-                <PrivateRoute exact path="/" component={Dashboard}/>
-                <PrivateRoute exact path="/game/:id" component={Game}/>
-                <Route path="/login" component={Login}/>
-                <Route path="/signup" component={Signup}/>
-                <Route path="/forgot" component={ForgotPassword}/>
-                <Route path="/update-profile" component={UpdateProfile}/>
-              </Switch>
-          </Router>
+            <Switch>
+              <PrivateRoute exact path="/" component={Dashboard}/>
+              <PrivateRoute exact path="/new-game" component={NewGame}/>
+              <PrivateRoute exact path="/game/:id" component={Game}/>
+              <Route path="/login" component={Login}/>
+              <Route path="/signup" component={Signup}/>
+              <Route path="/forgot" component={ForgotPassword}/>
+              <Route path="/update-profile" component={UpdateProfile}/>
+            </Switch>
           </Grid>
-        {currentUser ? (
+              {currentUser ? (
           <BottomNav className={classes.BottomNav}></BottomNav>
-        ) : null}
+          ) : null}
+          </Router>
         {/* </AuthProvider> */}
       </>
   );
