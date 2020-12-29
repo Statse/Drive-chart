@@ -32,6 +32,8 @@ const useStyles = makeStyles((theme) => ({
     },
     container: {
         padding: "15px",
+        marginTop: "75px",
+        marginBottom: "75px"
     }
 }));
   
@@ -82,20 +84,45 @@ export default function Game(props) {
             }
         }
         getGame()
-    }, [error, props.match.params.id])
+    }, [error])
 
     async function handleSubmit(e){
         e.preventDefault()
         setLoading(true)
-        console.log(possessionRef.current.value)
-        console.log(downRef.current.value)
-        console.log(distanceRef.current.value)
-        console.log(personelRef.current.value)
-        console.log(coverageRef.current.value)
-        console.log(resultRef.current.value)
-        console.log(qtrRef.current.value)
         try {
-            await firebase.firestore().collection('games').doc(props.match.params.id).update()
+            console.log("TRYING?")
+            console.log(downs)
+            const down = {
+                possession: possessionRef.current.value,
+                down: downRef.current.value,
+                distance: distanceRef.current.value,
+                personel: personelRef.current.value,
+                result: resultRef.current.value,
+                qtr: qtrRef.current.value,
+                playType: playTypeRef.current.value
+            }
+            // setDowns(downs.push(down))
+            // console.log(downs)
+
+
+            //TODO: figure out how to push stuff to array
+            await firebase.firestore()
+                .collection('games')
+                .doc(props.match.params.id)
+                .push({
+                    downs: firebase.firestore().FieldValue.arrayUnion(down)
+                });
+                
+                // .set(
+                //     { 
+                //         downs: [downs.push(down)]
+                //     },
+                //     { merge: true }
+                // )
+                // .set({
+                //     downs: downs
+                // });
+
             setLoading(false)
         } catch(error) {
             console.log(error)

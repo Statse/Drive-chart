@@ -13,8 +13,11 @@ import DownListHeader from './DownListHeader'
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
+    // minWidth: 650,
   },
+  relative:{
+    position: "relative"
+  }
 });
 
 export default function DownList(props) {
@@ -22,10 +25,8 @@ export default function DownList(props) {
   const classes = useStyles();
 
   return (
-    <TableContainer component={Paper}>
-      <Table className={classes.table} size="small" aria-label="a dense table">
+      <div className={classes.relative}>
         <DownListHeader></DownListHeader>
-      </Table>
-    </TableContainer>
+      </div>
   );
 }

@@ -21,8 +21,8 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
-function createData(personel, QTR, down, distance, yardLine, playType, gain, result) {
-  return { personel, QTR, down, distance, yardLine, playType, gain, result };
+function createData(id, personel, QTR, down, distance, yardLine, playType, gain, result) {
+  return {id, personel, QTR, down, distance, yardLine, playType, gain, result };
 }
 
 const headCells = [
@@ -37,23 +37,23 @@ const headCells = [
 ];
 
 const rows = [
-  //personel, QTR, down, distance, yardLine, playType, gain, result
-  createData(21, 1, 1, 10, 45, "run", 5, "touchdown"),
-  createData(22, 1, 2, 5, 45, "run", 5, "KO"),  
-  createData(21, 1, 1, 10, 45, "run", 5, "touchdown"),
-  createData(22, 1, 1, 10, 45, "run", 5, "Pöö"),
-  createData(21, 2, 1, 10, 45, "run", 5, "touchdown"),
-  createData(22, 2, 2, 5, 45, "run", 5, "KO"),  
-  createData(21, 2, 1, 10, 45, "run", 5, "touchdown"),
-  createData(22, 2, 1, 10, 45, "run", 5, "Pöö"),
-  createData(21, 3, 1, 10, 45, "run", 5, "touchdown"),
-  createData(22, 3, 2, 5, 45, "run", 5, "KO"),  
-  createData(21, 3, 1, 10, 45, "run", 5, "touchdown"),
-  createData(22, 3, 1, 10, 45, "run", 5, "Pöö"),
-  createData(21, 4, 1, 10, 45, "run", 5, "touchdown"),
-  createData(22, 4, 2, 5, 45, "run", 5, "KO"),  
-  createData(21, 4, 1, 10, 45, "run", 5, "touchdown"),
-  createData(22, 4, 1, 10, 45, "run", 5, "Pöö"),
+  //id, personel, QTR, down, distance, yardLine, playType, gain, result
+  createData(1, 21, 1, 1, 10, 45, "run", 5, "touchdown"),
+  createData(2,22, 1, 2, 5, 45, "run", 5, "KO"),  
+  createData(3,21, 1, 1, 10, 45, "run", 5, "touchdown"),
+  createData(4,22, 1, 1, 10, 45, "run", 5, "Pöö"),
+  createData(5,21, 2, 1, 10, 45, "run", 5, "touchdown"),
+  createData(6,22, 2, 2, 5, 45, "run", 5, "KO"),  
+  createData(7,21, 2, 1, 10, 45, "run", 5, "touchdown"),
+  createData(8,22, 2, 1, 10, 45, "run", 5, "Pöö"),
+  createData(9,21, 3, 1, 10, 45, "run", 5, "touchdown"),
+  createData(10,22, 3, 2, 5, 45, "run", 5, "KO"),  
+  createData(11,21, 3, 1, 10, 45, "run", 5, "touchdown"),
+  createData(12,22, 3, 1, 10, 45, "run", 5, "Pöö"),
+  createData(13,21, 4, 1, 10, 45, "run", 5, "touchdown"),
+  createData(14,22, 4, 2, 5, 45, "run", 5, "KO"),  
+  createData(15,21, 4, 1, 10, 45, "run", 5, "touchdown"),
+  createData(16,22, 4, 1, 10, 45, "run", 5, "Pöö"),
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -203,7 +203,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   table: {
-    minWidth: 750,
+    // minWidth: 750,
   },
   visuallyHidden: {
     border: 0,
@@ -224,7 +224,7 @@ export default function EnhancedTable() {
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
@@ -321,7 +321,7 @@ export default function EnhancedTable() {
               {stableSort(rows, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
-                  const isItemSelected = isSelected(row.name);
+                  const isItemSelected = isSelected(row.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
@@ -331,7 +331,7 @@ export default function EnhancedTable() {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.name}
+                      key={row.id}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -371,10 +371,10 @@ export default function EnhancedTable() {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      <FormControlLabel
+      {/* <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
-      />
+      /> */}
     </div>
   );
 }

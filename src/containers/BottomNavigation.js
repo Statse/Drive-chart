@@ -14,7 +14,7 @@ import Fab from '@material-ui/core/Fab';
 
 const useStyles = makeStyles({
   root: {
-    position: "absolute",
+    position: "fixed",
     bottom: 0,
     left: 0,
     width: "100%"
