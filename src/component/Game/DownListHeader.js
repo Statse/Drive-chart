@@ -21,6 +21,7 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
+
 function createData(id, personel, QTR, down, distance, yardLine, playType, gain, result) {
   return {id, personel, QTR, down, distance, yardLine, playType, gain, result };
 }
@@ -36,25 +37,36 @@ const headCells = [
     { id: 'result', numeric: false, disablePadding: false, label: 'Result' },
 ];
 
-const rows = [
-  //id, personel, QTR, down, distance, yardLine, playType, gain, result
-  createData(1, 21, 1, 1, 10, 45, "run", 5, "touchdown"),
-  createData(2,22, 1, 2, 5, 45, "run", 5, "KO"),  
-  createData(3,21, 1, 1, 10, 45, "run", 5, "touchdown"),
-  createData(4,22, 1, 1, 10, 45, "run", 5, "Pöö"),
-  createData(5,21, 2, 1, 10, 45, "run", 5, "touchdown"),
-  createData(6,22, 2, 2, 5, 45, "run", 5, "KO"),  
-  createData(7,21, 2, 1, 10, 45, "run", 5, "touchdown"),
-  createData(8,22, 2, 1, 10, 45, "run", 5, "Pöö"),
-  createData(9,21, 3, 1, 10, 45, "run", 5, "touchdown"),
-  createData(10,22, 3, 2, 5, 45, "run", 5, "KO"),  
-  createData(11,21, 3, 1, 10, 45, "run", 5, "touchdown"),
-  createData(12,22, 3, 1, 10, 45, "run", 5, "Pöö"),
-  createData(13,21, 4, 1, 10, 45, "run", 5, "touchdown"),
-  createData(14,22, 4, 2, 5, 45, "run", 5, "KO"),  
-  createData(15,21, 4, 1, 10, 45, "run", 5, "touchdown"),
-  createData(16,22, 4, 1, 10, 45, "run", 5, "Pöö"),
-];
+// const rows = [
+//   //id, personel, QTR, down, distance, yardLine, playType, gain, result
+//   createData(1, 21, 1, 1, 10, 45, "run", 5, "touchdown"),
+//   createData(2,22, 1, 2, 5, 45, "run", 5, "KO"),  
+//   createData(3,21, 1, 1, 10, 45, "run", 5, "touchdown"),
+//   createData(4,22, 1, 1, 10, 45, "run", 5, "Pöö"),
+//   createData(5,21, 2, 1, 10, 45, "run", 5, "touchdown"),
+//   createData(6,22, 2, 2, 5, 45, "run", 5, "KO"),  
+//   createData(7,21, 2, 1, 10, 45, "run", 5, "touchdown"),
+//   createData(8,22, 2, 1, 10, 45, "run", 5, "Pöö"),
+//   createData(9,21, 3, 1, 10, 45, "run", 5, "touchdown"),
+//   createData(10,22, 3, 2, 5, 45, "run", 5, "KO"),  
+//   createData(11,21, 3, 1, 10, 45, "run", 5, "touchdown"),
+//   createData(12,22, 3, 1, 10, 45, "run", 5, "Pöö"),
+//   createData(13,21, 4, 1, 10, 45, "run", 5, "touchdown"),
+//   createData(14,22, 4, 2, 5, 45, "run", 5, "KO"),  
+//   createData(15,21, 4, 1, 10, 45, "run", 5, "touchdown"),
+//   createData(16,22, 4, 1, 10, 45, "run", 5, "Pöö"),
+// ];
+
+// (id, personel, QTR, down, distance, yardLine, playType, gain, result)
+function downsToDataRows(downs){
+  let downArr = []
+  for (let i = 0; i<downs.length; i++){
+    // const gain =  downs[i].
+    downArr[i] = createData(i, downs[i].personel, downs[i].qtr,  downs[i].down, "yardline", downs[i].playType, "calc",  downs[i].result)
+  }
+
+  return downArr
+}
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -218,7 +230,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable() {
+export default function EnhancedTable(props) {
+  console.log("props.downs ", props.downs)
+  const rows = downsToDataRows(props.downs)
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');

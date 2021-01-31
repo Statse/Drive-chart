@@ -101,28 +101,18 @@ export default function Game(props) {
                 qtr: qtrRef.current.value,
                 playType: playTypeRef.current.value
             }
-            // setDowns(downs.push(down))
-            // console.log(downs)
-
-
-            //TODO: figure out how to push stuff to array
+            setDowns(downs.push(down))
+            console.log(downs)
+            
             await firebase.firestore()
                 .collection('games')
                 .doc(props.match.params.id)
-                .push({
-                    downs: firebase.firestore().FieldValue.arrayUnion(down)
-                });
-                
-                // .set(
-                //     { 
-                //         downs: [downs.push(down)]
-                //     },
-                //     { merge: true }
-                // )
-                // .set({
-                //     downs: downs
-                // });
-
+                .set(
+                    { 
+                        downs: downs
+                    },
+                    { merge: true }
+                )
             setLoading(false)
         } catch(error) {
             console.log(error)
@@ -225,6 +215,7 @@ export default function Game(props) {
                                 <MenuItem value={"fg"}>Catch</MenuItem>
                                 <MenuItem value={"ko"}>Incomplete</MenuItem>
                                 <MenuItem value={"punt"}>Fumble</MenuItem>
+                                <MenuItem value={"penalty"}>Penalty</MenuItem>
                             </Select>
                         </Grid>
                         {/* <Grid item xs={12} md={3} lg={2}>
@@ -248,7 +239,7 @@ export default function Game(props) {
                     </Grid>
                 </form>
                 ) : (
-                    <DownsList />
+                    <DownsList downs={downs}/>
                 )}
             </div>
             <GameBottomNav 
