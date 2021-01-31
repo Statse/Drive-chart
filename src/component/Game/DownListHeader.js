@@ -21,25 +21,12 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
-function createData(id, personel, QTR, down, distance, yardLine, playType, result) {
-  return {id, personel, QTR, down, distance, yardLine, playType, result };
-}
-
-function downsToDataRows(downs){
-  console.log("downs", downs)
-  let downArr = []
-  for (let i = 0; i<downs.length; i++){
-    downArr[i] = createData(i, downs[i].personel, downs[i].qtr,  downs[i].down,  downs[i].distance , downs[i].playType,  downs[i].result)
-  }
-  return downArr
-}
-
 const headCells = [
     { id: 'personel', numeric: false, disablePadding: true, label: 'Personel' },
-    { id: 'QTR', numeric: true, disablePadding: false, label: 'QTR' },
+    { id: 'qtr', numeric: true, disablePadding: false, label: 'qtr' },
     { id: 'down', numeric: true, disablePadding: false, label: 'Down' },
     { id: 'distance', numeric: true, disablePadding: false, label: 'Distance' },
-    { id: 'yardLine', numeric: true, disablePadding: false, label: 'Yard line' },
+    // { id: 'yardLine', numeric: true, disablePadding: false, label: 'Yard line' },
     { id: 'playType', numeric: false, disablePadding: false, label: 'Play type' },
     { id: 'result', numeric: false, disablePadding: false, label: 'Result' },
 ];
@@ -207,14 +194,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EnhancedTable(props) {
-  
-  const downs = downsToDataRows(props.downs)
-  const currentDownsLength = props.downs.filter(down=>{
-    if (down.qtr = 1){
-      return true
-    }
-  })
-  // const rows = downsToDataRows(props.downs)
+  const downs = props.downs
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
@@ -301,7 +281,8 @@ export default function EnhancedTable(props) {
                 .map((down, index) => {
                   const isItemSelected = isSelected(down.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
-
+                  console.log("render downs")
+                  console.log(down)
                   return (
                     <TableRow
                       hover
@@ -321,10 +302,10 @@ export default function EnhancedTable(props) {
                       <TableCell component="th" id={labelId} scope="down" padding="none">
                         {down.personel}
                       </TableCell>
-                      <TableCell align="right">{down.QTR}</TableCell>
+                      <TableCell align="right">{down.qtr}</TableCell>
                       <TableCell align="right">{down.down}</TableCell>
                       <TableCell align="right">{down.distance}</TableCell>
-                      <TableCell align="right">{down.yardLine}</TableCell>
+                      {/* <TableCell align="right">{down.yardLine}</TableCell> */}
                       <TableCell align="right">{down.playType}</TableCell>
                       <TableCell align="right">{down.result}</TableCell>
                     </TableRow>
