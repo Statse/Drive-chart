@@ -27,6 +27,7 @@ const useStyles = makeStyles({
 export default function GameBottomNav(props) {
   const gameId = props.gameId
   const setView = props.setView
+  const submit = props.props
   const history = useHistory();
   const classes = useStyles();
   const [value, setValue] = React.useState('games');
@@ -43,7 +44,7 @@ export default function GameBottomNav(props) {
     <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
       <BottomNavigationAction label="Game" value="game" icon={<SportsFootballIcon />} onClick={()=>setView(`game`)} />
       <BottomNavigationAction label="Downs" value="downs" icon={<FormatListNumberedOutlinedIcon />}  onClick={()=>setView(`downs`)}  />
-      <Tooltip title="Add" aria-label="add" className={classes.addButton} onClick={()=>console.log("lol")}>
+      <Tooltip title="Add" aria-label="add" className={classes.addButton} onClick={submit}>
           <Fab color="primary">
             <SaveOutlinedIcon />
           </Fab>

@@ -26,7 +26,6 @@ const headCells = [
     { id: 'qtr', numeric: true, disablePadding: false, label: 'qtr' },
     { id: 'down', numeric: true, disablePadding: false, label: 'Down' },
     { id: 'distance', numeric: true, disablePadding: false, label: 'Distance' },
-    // { id: 'yardLine', numeric: true, disablePadding: false, label: 'Yard line' },
     { id: 'playType', numeric: false, disablePadding: false, label: 'Play type' },
     { id: 'result', numeric: false, disablePadding: false, label: 'Result' },
 ];
@@ -305,7 +304,6 @@ export default function EnhancedTable(props) {
                       <TableCell align="right">{down.qtr}</TableCell>
                       <TableCell align="right">{down.down}</TableCell>
                       <TableCell align="right">{down.distance}</TableCell>
-                      {/* <TableCell align="right">{down.yardLine}</TableCell> */}
                       <TableCell align="right">{down.playType}</TableCell>
                       <TableCell align="right">{down.result}</TableCell>
                     </TableRow>
