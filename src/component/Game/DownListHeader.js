@@ -21,6 +21,19 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
+function createData(id, personel, QTR, down, distance, yardLine, playType, result) {
+  return {id, personel, QTR, down, distance, yardLine, playType, result };
+}
+
+function downsToDataRows(downs){
+  console.log("downs", downs)
+  let downArr = []
+  for (let i = 0; i<downs.length; i++){
+    downArr[i] = createData(i, downs[i].personel, downs[i].qtr,  downs[i].down,  downs[i].distance , downs[i].playType,  downs[i].result)
+  }
+  return downArr
+}
+
 const headCells = [
     { id: 'personel', numeric: false, disablePadding: true, label: 'Personel' },
     { id: 'QTR', numeric: true, disablePadding: false, label: 'QTR' },
@@ -28,7 +41,6 @@ const headCells = [
     { id: 'distance', numeric: true, disablePadding: false, label: 'Distance' },
     { id: 'yardLine', numeric: true, disablePadding: false, label: 'Yard line' },
     { id: 'playType', numeric: false, disablePadding: false, label: 'Play type' },
-    { id: 'gain', numeric: true, disablePadding: false, label: 'Gain' },
     { id: 'result', numeric: false, disablePadding: false, label: 'Result' },
 ];
 
@@ -195,7 +207,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EnhancedTable(props) {
-  const {downs} = props
+  
+  const downs = downsToDataRows(props.downs)
+  const currentDownsLength = props.downs.filter(down=>{
+    if (down.qtr = 1){
+      return true
+    }
+  })
   // const rows = downsToDataRows(props.downs)
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
@@ -203,6 +221,7 @@ export default function EnhancedTable(props) {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(true);
+  const [selectedQTR, setSelectedQTR] = React.useState(5);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
@@ -254,26 +273,7 @@ export default function EnhancedTable(props) {
   };
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
-
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, downs.length - page * rowsPerPage);
-
-    const qtr1 = downs.filter(
-    down=>{
-        return down.QTR === 1 ? true : false
-    })
-    const qtr2 = downs.filter(
-    down=>{
-        return down.QTR === 2 ? true : false
-    })
-    const qtr3 = downs.filter(
-    down=>{
-        return down.QTR === 3 ? true : false
-    })
-    const qtr4 = downs.filter(
-    down=>{
-        return down.QTR === 4 ? true : false
-    })
-  const allDowns = downs.length
 
   return (
     <div className={classes.root}>
@@ -298,18 +298,18 @@ export default function EnhancedTable(props) {
             <TableBody>
               {stableSort(downs, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((row, index) => {
-                  const isItemSelected = isSelected(row.id);
+                .map((down, index) => {
+                  const isItemSelected = isSelected(down.id);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, row.QTR)}
+                      onClick={(event) => handleClick(event, down.QTR)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.id}
+                      key={down.id}
                       selected={isItemSelected}
                     >
                       <TableCell padding="checkbox">
@@ -318,16 +318,15 @@ export default function EnhancedTable(props) {
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell>
-                      <TableCell component="th" id={labelId} scope="row" padding="none">
-                        {row.personel}
+                      <TableCell component="th" id={labelId} scope="down" padding="none">
+                        {down.personel}
                       </TableCell>
-                      <TableCell align="right">{row.QTR}</TableCell>
-                      <TableCell align="right">{row.down}</TableCell>
-                      <TableCell align="right">{row.distance}</TableCell>
-                      <TableCell align="right">{row.yardLine}</TableCell>
-                      <TableCell align="right">{row.playType}</TableCell>
-                      <TableCell align="right">{row.gain}</TableCell>
-                      <TableCell align="right">{row.result}</TableCell>
+                      <TableCell align="right">{down.QTR}</TableCell>
+                      <TableCell align="right">{down.down}</TableCell>
+                      <TableCell align="right">{down.distance}</TableCell>
+                      <TableCell align="right">{down.yardLine}</TableCell>
+                      <TableCell align="right">{down.playType}</TableCell>
+                      <TableCell align="right">{down.result}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -340,7 +339,7 @@ export default function EnhancedTable(props) {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[1,2,3,4,5,50]}
           component="div"
           count={downs.length}
           rowsPerPage={rowsPerPage}
