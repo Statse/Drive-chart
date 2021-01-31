@@ -137,7 +137,7 @@ export default function Game(props) {
             <div class={classes.container}>
                 <div style={{marginBottom: "15px"}}>{home} {homeScore} vs {awayScore} {away}</div>
                 {view === "game" ? (
-                <form onSubmit={handleSubmit}>
+                <form id="game-form" onSubmit={handleSubmit}>
                     <Grid container spacing={3}>
                         <Grid item xs={12} md={3} lg={2}>
                             <InputLabel id="possession-label">Possession</InputLabel>
@@ -234,10 +234,10 @@ export default function Game(props) {
                                 <MenuItem value={"blitz"}>Blitz</MenuItem>
                             </Select>
                         </Grid> */}
-                        <Grid item xs={12}>
+                        {/* <Grid item xs={12}>
                             <Button className={classes.button} disabled={loading} variant="contained" type="submit">Save down</Button>
                             <Button onClick={handleTurnover} className={classes.button} disabled={loading} variant="contained" type="button">Turnover</Button>
-                        </Grid>
+                        </Grid> */}
                     </Grid>
                 </form>
                 ) : (
@@ -245,6 +245,7 @@ export default function Game(props) {
                 )}
             </div>
             <GameBottomNav 
+                formId='game-form'
                 gameId={props.match.params.id}
                 setView={setView}
             />

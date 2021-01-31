@@ -44,10 +44,12 @@ export default function GameBottomNav(props) {
     <BottomNavigation value={value} onChange={handleChange} className={classes.root}>
       <BottomNavigationAction label="Game" value="game" icon={<SportsFootballIcon />} onClick={()=>setView(`game`)} />
       <BottomNavigationAction label="Downs" value="downs" icon={<FormatListNumberedOutlinedIcon />}  onClick={()=>setView(`downs`)}  />
-      <Tooltip title="Add" aria-label="add" className={classes.addButton} onClick={submit}>
+      <Tooltip form='game-form' title="Add" aria-label="add" className={classes.addButton}>
+        <button onClick={submit} form='game-form' style={{background: "none", border: "none",}}>
           <Fab color="primary">
             <SaveOutlinedIcon />
           </Fab>
+        </button>
       </Tooltip>
     </BottomNavigation>
   );
