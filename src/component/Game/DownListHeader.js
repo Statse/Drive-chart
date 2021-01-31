@@ -21,11 +21,6 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 
-
-function createData(id, personel, QTR, down, distance, yardLine, playType, gain, result) {
-  return {id, personel, QTR, down, distance, yardLine, playType, gain, result };
-}
-
 const headCells = [
     { id: 'personel', numeric: false, disablePadding: true, label: 'Personel' },
     { id: 'QTR', numeric: true, disablePadding: false, label: 'QTR' },
@@ -36,37 +31,6 @@ const headCells = [
     { id: 'gain', numeric: true, disablePadding: false, label: 'Gain' },
     { id: 'result', numeric: false, disablePadding: false, label: 'Result' },
 ];
-
-// const rows = [
-//   //id, personel, QTR, down, distance, yardLine, playType, gain, result
-//   createData(1, 21, 1, 1, 10, 45, "run", 5, "touchdown"),
-//   createData(2,22, 1, 2, 5, 45, "run", 5, "KO"),  
-//   createData(3,21, 1, 1, 10, 45, "run", 5, "touchdown"),
-//   createData(4,22, 1, 1, 10, 45, "run", 5, "Pöö"),
-//   createData(5,21, 2, 1, 10, 45, "run", 5, "touchdown"),
-//   createData(6,22, 2, 2, 5, 45, "run", 5, "KO"),  
-//   createData(7,21, 2, 1, 10, 45, "run", 5, "touchdown"),
-//   createData(8,22, 2, 1, 10, 45, "run", 5, "Pöö"),
-//   createData(9,21, 3, 1, 10, 45, "run", 5, "touchdown"),
-//   createData(10,22, 3, 2, 5, 45, "run", 5, "KO"),  
-//   createData(11,21, 3, 1, 10, 45, "run", 5, "touchdown"),
-//   createData(12,22, 3, 1, 10, 45, "run", 5, "Pöö"),
-//   createData(13,21, 4, 1, 10, 45, "run", 5, "touchdown"),
-//   createData(14,22, 4, 2, 5, 45, "run", 5, "KO"),  
-//   createData(15,21, 4, 1, 10, 45, "run", 5, "touchdown"),
-//   createData(16,22, 4, 1, 10, 45, "run", 5, "Pöö"),
-// ];
-
-// (id, personel, QTR, down, distance, yardLine, playType, gain, result)
-function downsToDataRows(downs){
-  let downArr = []
-  for (let i = 0; i<downs.length; i++){
-    // const gain =  downs[i].
-    downArr[i] = createData(i, downs[i].personel, downs[i].qtr,  downs[i].down, "yardline", downs[i].playType, "calc",  downs[i].result)
-  }
-
-  return downArr
-}
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -231,8 +195,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EnhancedTable(props) {
-  console.log("props.downs ", props.downs)
-  const rows = downsToDataRows(props.downs)
+  const {downs} = props
+  // const rows = downsToDataRows(props.downs)
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
@@ -249,7 +213,7 @@ export default function EnhancedTable(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = rows.map((n) => n.name);
+      const newSelecteds = downs.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -291,25 +255,25 @@ export default function EnhancedTable(props) {
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, downs.length - page * rowsPerPage);
 
-    const qtr1 = rows.filter(
+    const qtr1 = downs.filter(
     down=>{
         return down.QTR === 1 ? true : false
     })
-    const qtr2 = rows.filter(
+    const qtr2 = downs.filter(
     down=>{
         return down.QTR === 2 ? true : false
     })
-    const qtr3 = rows.filter(
+    const qtr3 = downs.filter(
     down=>{
         return down.QTR === 3 ? true : false
     })
-    const qtr4 = rows.filter(
+    const qtr4 = downs.filter(
     down=>{
         return down.QTR === 4 ? true : false
     })
-  const allDowns = rows.length
+  const allDowns = downs.length
 
   return (
     <div className={classes.root}>
@@ -329,10 +293,10 @@ export default function EnhancedTable(props) {
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={downs.length}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
+              {stableSort(downs, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row, index) => {
                   const isItemSelected = isSelected(row.id);
@@ -378,7 +342,7 @@ export default function EnhancedTable(props) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={rows.length}
+          count={downs.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}

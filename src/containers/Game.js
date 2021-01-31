@@ -62,6 +62,8 @@ export default function Game(props) {
     const playTypeRef = useRef()
     const resultRef = useRef()
 
+    console.log("downs ", downs)
+
     useEffect(async ()=>{
         setError("")
         setLoading(true)
