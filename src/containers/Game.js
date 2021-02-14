@@ -30,6 +30,9 @@ const useStyles = makeStyles((theme) => ({
     fullWidth: {
         width: '100%'
     },
+    bottomMargin: {
+        marginBottom: '1.5rem'
+    },
     container: {
         padding: "15px",
         marginTop: "75px",
@@ -57,6 +60,11 @@ export default function Game(props) {
     const qtrRef = useRef()
     const downRef = useRef()
     const distanceRef = useRef()
+    const gainRef = useRef()
+    const yardLineRef = useRef()
+    const hashRef = useRef()
+    const motionRef = useRef()
+    const playDirectionRef = useRef()
     const personelRef = useRef()
     const coverageRef = useRef()
     const playTypeRef = useRef()
@@ -92,17 +100,37 @@ export default function Game(props) {
         e.preventDefault()
         setLoading(true)
         try {
-            console.log("TRYING?")
             console.log(downs)
-            const down = {
-                possession: possessionRef.current.value,
-                down: downRef.current.value,
-                distance: distanceRef.current.value,
-                personel: personelRef.current.value,
-                result: resultRef.current.value,
-                qtr: qtrRef.current.value,
-                playType: playTypeRef.current.value
-            }
+    
+
+            const down = [
+                possessionRef.current.value || null,
+                qtrRef.current.value || null,
+                downRef.current.value || null,
+                distanceRef.current.value || null,
+                yardLineRef.current.value || null,
+                gainRef.current.value || null,
+                hashRef.current.value || null,
+                motionRef.current.value || null,
+                playDirectionRef.current.value || null,
+                personelRef.current.value || null,
+                playTypeRef.current.value || null,
+                resultRef.current.value || null,
+            ]
+            // const down = {
+            //     possession: possessionRef.current.value,
+            //     down: downRef.current.value,
+            //     gain: gainRef.current.value,
+            //     yardLine: yardLineRef.current.value,
+            //     distance: distanceRef.current.value,
+            //     hash: hashRef.current.value,
+            //     motionDirection: motionRef.current.value,
+            //     playDirection: playDirectionRef.current.value,
+            //     personel: personelRef.current.value,
+            //     result: resultRef.current.value,
+            //     qtr: qtrRef.current.value,
+            //     playType: playTypeRef.current.value
+            // }
             setDowns(downs.push(down))
             console.log(downs)
             
@@ -132,6 +160,8 @@ export default function Game(props) {
 
     }
 
+    //reference for values
+    // https://www.hudl.com/support/classic/breakdown-stats-reports/hudl-assist/how-hudl-breaks-down-video
     return (
         <>
             <div class={classes.container}>
@@ -170,19 +200,23 @@ export default function Game(props) {
                                     <MenuItem value={5}>OT</MenuItem>
                                 </Select>
                         </Grid>
+                        {/*not in Kickoff, PAT, 2PT */}
+                        {playTypeRef !== 0 && playTypeRef !== 5 && playTypeRef !== 6 && (
+                            <Grid item xs={12} md={3} lg={2}>
+                                <InputLabel className={classes.bottomMargin} id="down-label">Down</InputLabel>
+                                <TextField  labelId="down-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={downRef}/>
+                            </Grid>
+                        )}
+                        {/*         
+                            0 home team end zone
+                            100 away team endzone 
+                            25 home team 25y line
+                            75 away team 25y line 
+                        */}
                         <Grid item xs={12} md={3} lg={2}>
-                            <InputLabel id="down-label">Down</InputLabel>
-                            <TextField  labelId="down-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={downRef}/>
+                            <InputLabel className={classes.bottomMargin} id="yard-label">Yard Line</InputLabel>
+                            <TextField labelId="yard-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={yardLineRef} />
                         </Grid>
-                        <Grid item xs={12} md={3} lg={2}>
-                            <InputLabel id="distance-label">Distance</InputLabel>
-                            <TextField labelId="distance-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={distanceRef} />
-                        </Grid>
-                        <Grid item xs={12} md={3} lg={2}>
-                            <InputLabel id="personel-label">Personel</InputLabel>
-                            <TextField labelId="personel-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={personelRef} />
-                        </Grid>
-                        
                         <Grid item xs={12} md={3} lg={2}>
                             <InputLabel id="playtype-label">Play type</InputLabel>
                             <Select
@@ -192,14 +226,70 @@ export default function Game(props) {
                                 onChange={handleChange}
                                 inputRef={playTypeRef}
                                 >
-                                <MenuItem value={"pass"}>Pass</MenuItem>
-                                <MenuItem value={"run"}>Run</MenuItem>
-                                <MenuItem value={"pat"}>PAT</MenuItem>
-                                <MenuItem value={"2-pt-conversion"}>2 pt conversion</MenuItem>
-                                <MenuItem value={"fg"}>FG</MenuItem>
-                                <MenuItem value={"ko"}>KO</MenuItem>
-                                <MenuItem value={"punt"}>Punt</MenuItem>
+                                <MenuItem value={0}>KO</MenuItem>
+                                <MenuItem value={1}>Run</MenuItem>
+                                <MenuItem value={2}>Pass</MenuItem>
+                                <MenuItem value={3}>Punt</MenuItem>
+                                <MenuItem value={4}>FG</MenuItem>
+                                <MenuItem value={5}>PAT</MenuItem>
+                                <MenuItem value={6}>2 pt conversion</MenuItem>
                             </Select>
+                        </Grid>
+                        {/*not in Kickoff, PAT, 2PT */}
+                        {playTypeRef !== 0 && playTypeRef !== 5 && playTypeRef !== 6 && (
+                            <Grid item xs={12} md={3} lg={2}>
+                                <InputLabel className={classes.bottomMargin} id="distance-label">Distance</InputLabel>
+                                <TextField labelId="distance-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={distanceRef} />
+                            </Grid>
+                        )}
+
+                        <Grid item xs={12} md={3} lg={2}>
+                            <InputLabel className={classes.bottomMargin} id="gain-label">Gain</InputLabel>
+                            <TextField labelId="gain-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={gainRef} />
+                        </Grid>
+                        <Grid item xs={12} md={3} lg={2}>
+                            <InputLabel className={classes.bottomMargin} id="hash-label">Hash</InputLabel>
+                            <Select
+                                labelId="hash-label"
+                                id="demo-simple-select"
+                                className={classes.fullWidth}
+                                onChange={handleChange}
+                                inputRef={hashRef}
+                                >
+                                <MenuItem value={0}>L</MenuItem>
+                                <MenuItem value={1}>M</MenuItem>
+                                <MenuItem value={2}>R</MenuItem>
+                            </Select>
+                        </Grid>
+                        <Grid item xs={12} md={3} lg={2}>
+                            <InputLabel id="motion-label">Motion direction</InputLabel>
+                            <Select
+                                labelId="motion-label"
+                                id="demo-simple-select"
+                                className={classes.fullWidth}
+                                onChange={handleChange}
+                                inputRef={motionRef}
+                                >
+                                <MenuItem value={0}>L</MenuItem>
+                                <MenuItem value={1}>R</MenuItem>
+                            </Select>
+                        </Grid>
+                        <Grid item xs={12} md={3} lg={2}>
+                            <InputLabel id="playdirection-label">Play direction</InputLabel>
+                            <Select
+                                labelId="playdirection-label"
+                                id="demo-simple-select"
+                                className={classes.fullWidth}
+                                onChange={handleChange}
+                                inputRef={playDirectionRef}
+                                >
+                                <MenuItem value={0}>L</MenuItem>
+                                <MenuItem value={1}>R</MenuItem>
+                            </Select>
+                        </Grid>
+                        <Grid item xs={12} md={3} lg={2}>
+                            <InputLabel  id="personel-label">Personel</InputLabel>
+                            <TextField labelId="personel-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={personelRef} />
                         </Grid>
                         <Grid item xs={12} md={3} lg={2}>
                             <InputLabel id="result-label">Play result</InputLabel>
@@ -210,30 +300,29 @@ export default function Game(props) {
                                 onChange={handleChange}
                                 inputRef={resultRef}
                                 >
-                                <MenuItem value={"pass"}>Touchdown</MenuItem>
-                                <MenuItem value={"run"}>PAT good</MenuItem>
-                                <MenuItem value={"pat"}>PAT no good</MenuItem>
-                                <MenuItem value={"2-pt-conversion"}>2 pt conversion good</MenuItem>
-                                <MenuItem value={"fg"}>Catch</MenuItem>
-                                <MenuItem value={"ko"}>Incomplete</MenuItem>
-                                <MenuItem value={"punt"}>Fumble</MenuItem>
-                                <MenuItem value={"penalty"}>Penalty</MenuItem>
+                                    
+                                <MenuItem value={0}>Turnover</MenuItem>
+                                <MenuItem value={1}>Run</MenuItem>
+                                <MenuItem value={2}>Complete</MenuItem>
+                                <MenuItem value={3}>Incomplete</MenuItem>
+                                <MenuItem value={4}>Touchdown</MenuItem>
+                                <MenuItem value={5}>Fumble</MenuItem>
+                                <MenuItem value={6}>Fumble TD</MenuItem>
+                                <MenuItem value={7}>Interception</MenuItem>
+                                <MenuItem value={8}>Interception TD</MenuItem>
+                                <MenuItem value={9}>Sack</MenuItem>
+                                <MenuItem value={10}>Safety</MenuItem>
+
+                                <MenuItem value={11}>FG good</MenuItem>
+                                <MenuItem value={12}>FG miss</MenuItem>
+
+                                <MenuItem value={13}>PAT good</MenuItem>
+                                <MenuItem value={14}>PAT no good</MenuItem>
+                                <MenuItem value={15}>2 pt conversion good</MenuItem>
+
+                                <MenuItem value={16}>Penalty</MenuItem>
                             </Select>
                         </Grid>
-                        {/* <Grid item xs={12} md={3} lg={2}>
-                            <InputLabel id="demo-simple-select-label">Coverage</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                className={classes.fullWidth}
-                                onChange={handleChange}
-                                inputRef={coverageRef}
-                                >
-                                <MenuItem value={"man"}>Man</MenuItem>
-                                <MenuItem value={"zone"}>Zone</MenuItem>
-                                <MenuItem value={"blitz"}>Blitz</MenuItem>
-                            </Select>
-                        </Grid> */}
                         {/* <Grid item xs={12}>
                             <Button className={classes.button} disabled={loading} variant="contained" type="submit">Save down</Button>
                             <Button onClick={handleTurnover} className={classes.button} disabled={loading} variant="contained" type="button">Turnover</Button>
