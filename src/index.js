@@ -5,6 +5,9 @@ import reportWebVitals from './reportWebVitals';
 import "bootstrap/dist/css/bootstrap.min.css"
 import { AuthProvider } from './context/AuthContext';
 
+//firebase hosting
+//https://medium.com/swlh/how-to-deploy-a-react-app-with-firebase-hosting-98063c5bf425
+
 ReactDOM.render(
   <React.StrictMode>
     <AuthProvider>
