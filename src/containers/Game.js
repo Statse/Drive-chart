@@ -101,8 +101,6 @@ export default function Game(props) {
         setLoading(true)
         try {
             console.log(downs)
-    
-
             const down = [
                 possessionRef.current.value || null,
                 qtrRef.current.value || null,
@@ -117,6 +115,8 @@ export default function Game(props) {
                 playTypeRef.current.value || null,
                 resultRef.current.value || null,
             ]
+            console.log("Possession, quater, down, distance, yard line, gain, hash, motion direction, play direction, personel, play type, result")
+            console.log(down)
             // const down = {
             //     possession: possessionRef.current.value,
             //     down: downRef.current.value,
@@ -169,7 +169,7 @@ export default function Game(props) {
                 {view === "game" ? (
                 <form id="game-form" onSubmit={handleSubmit}>
                     <Grid container spacing={3}>
-                        <Grid item xs={12} md={3} lg={2}>
+                        <Grid item xs={12} md={2}>
                             <InputLabel id="possession-label">Possession</InputLabel>
                             <Select
                                 labelId="possession-label"
@@ -179,11 +179,11 @@ export default function Game(props) {
                                 inputRef={possessionRef}
                                 label="Possession"
                                 >
-                                <MenuItem value={"home"}>Home</MenuItem>
-                                <MenuItem value={"away"}>Away</MenuItem>
+                                <MenuItem value={0}>Home</MenuItem>
+                                <MenuItem value={1}>Away</MenuItem>
                             </Select>
                         </Grid>
-                        <Grid item xs={12} md={3} lg={2}>
+                        <Grid item xs={12} md={2}>
                                 <InputLabel id="QTR-label">QTR</InputLabel>
                                 <Select
                                     labelId="QTR-label"
@@ -202,7 +202,7 @@ export default function Game(props) {
                         </Grid>
                         {/*not in Kickoff, PAT, 2PT */}
                         {playTypeRef !== 0 && playTypeRef !== 5 && playTypeRef !== 6 && (
-                            <Grid item xs={12} md={3} lg={2}>
+                            <Grid item xs={12} md={2}>
                                 <InputLabel className={classes.bottomMargin} id="down-label">Down</InputLabel>
                                 <TextField  labelId="down-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={downRef}/>
                             </Grid>
@@ -213,12 +213,12 @@ export default function Game(props) {
                             25 home team 25y line
                             75 away team 25y line 
                         */}
-                        <Grid item xs={12} md={3} lg={2}>
+                        <Grid item xs={12} md={2}>
                             <InputLabel className={classes.bottomMargin} id="yard-label">Yard Line</InputLabel>
                             <TextField labelId="yard-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={yardLineRef} />
                         </Grid>
-                        <Grid item xs={12} md={3} lg={2}>
-                            <InputLabel id="playtype-label">Play type</InputLabel>
+                        <Grid item xs={12} md={2}>
+                            <InputLabel className={classes.bottomMargin} id="playtype-label">Play type</InputLabel>
                             <Select
                                 labelId="playtype-label"
                                 id="demo-simple-select"
@@ -237,17 +237,17 @@ export default function Game(props) {
                         </Grid>
                         {/*not in Kickoff, PAT, 2PT */}
                         {playTypeRef !== 0 && playTypeRef !== 5 && playTypeRef !== 6 && (
-                            <Grid item xs={12} md={3} lg={2}>
+                            <Grid item xs={12} md={2}>
                                 <InputLabel className={classes.bottomMargin} id="distance-label">Distance</InputLabel>
                                 <TextField labelId="distance-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={distanceRef} />
                             </Grid>
                         )}
 
-                        <Grid item xs={12} md={3} lg={2}>
+                        <Grid item xs={12} md={2}>
                             <InputLabel className={classes.bottomMargin} id="gain-label">Gain</InputLabel>
                             <TextField labelId="gain-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={gainRef} />
                         </Grid>
-                        <Grid item xs={12} md={3} lg={2}>
+                        <Grid item xs={12} md={2}>
                             <InputLabel className={classes.bottomMargin} id="hash-label">Hash</InputLabel>
                             <Select
                                 labelId="hash-label"
@@ -261,8 +261,8 @@ export default function Game(props) {
                                 <MenuItem value={2}>R</MenuItem>
                             </Select>
                         </Grid>
-                        <Grid item xs={12} md={3} lg={2}>
-                            <InputLabel id="motion-label">Motion direction</InputLabel>
+                        <Grid item xs={12} md={2}>
+                            <InputLabel className={classes.bottomMargin} id="motion-label">Motion direction</InputLabel>
                             <Select
                                 labelId="motion-label"
                                 id="demo-simple-select"
@@ -274,8 +274,8 @@ export default function Game(props) {
                                 <MenuItem value={1}>R</MenuItem>
                             </Select>
                         </Grid>
-                        <Grid item xs={12} md={3} lg={2}>
-                            <InputLabel id="playdirection-label">Play direction</InputLabel>
+                        <Grid item xs={12} md={2}>
+                            <InputLabel className={classes.bottomMargin} id="playdirection-label">Play direction</InputLabel>
                             <Select
                                 labelId="playdirection-label"
                                 id="demo-simple-select"
@@ -287,12 +287,12 @@ export default function Game(props) {
                                 <MenuItem value={1}>R</MenuItem>
                             </Select>
                         </Grid>
-                        <Grid item xs={12} md={3} lg={2}>
-                            <InputLabel  id="personel-label">Personel</InputLabel>
+                        <Grid item xs={12} md={2}>
+                            <InputLabel className={classes.bottomMargin} id="personel-label">Personel</InputLabel>
                             <TextField labelId="personel-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={personelRef} />
                         </Grid>
-                        <Grid item xs={12} md={3} lg={2}>
-                            <InputLabel id="result-label">Play result</InputLabel>
+                        <Grid item xs={12} md={2}>
+                            <InputLabel className={classes.bottomMargin} id="result-label">Play result</InputLabel>
                             <Select
                                 labelId="result-label"
                                 id="demo-simple-select"
