@@ -56,19 +56,19 @@ export default function Game(props) {
     
     const [view, setView] = useState("game")
     
-    const possessionRef = useRef()
-    const qtrRef = useRef()
-    const downRef = useRef()
-    const distanceRef = useRef()
-    const gainRef = useRef()
-    const yardLineRef = useRef()
-    const hashRef = useRef()
-    const motionRef = useRef()
-    const playDirectionRef = useRef()
-    const personelRef = useRef()
-    const coverageRef = useRef()
-    const playTypeRef = useRef()
-    const resultRef = useRef()
+    const [possession, setPossession] = useState(0)
+    const [quarter, setQuarter] = useState(1)
+    const [down, setDown] = useState(1)
+    const [distance, setDistance] = useState()
+    const [gain, setGain] = useState()
+    const [yardline, setYardline] = useState()
+    const [hash, setHash] = useState()
+    const [motion, setMotion] = useState()
+    const [playDirection, setPlaydirection] = useState()
+    const [personel, setPersonel] = useState()
+    const [coverage, setCoverage] = useState()
+    const [playType, setPlaytype] = useState()
+    const [result, setResult] = useState()
 
     console.log("downs ", downs)
 
@@ -102,18 +102,18 @@ export default function Game(props) {
         try {
             console.log(downs)
             const down = [
-                possessionRef.current.value || null,
-                qtrRef.current.value || null,
-                downRef.current.value || null,
-                distanceRef.current.value || null,
-                yardLineRef.current.value || null,
-                gainRef.current.value || null,
-                hashRef.current.value || null,
-                motionRef.current.value || null,
-                playDirectionRef.current.value || null,
-                personelRef.current.value || null,
-                playTypeRef.current.value || null,
-                resultRef.current.value || null,
+                possession || null,
+                quarter || null,
+                down || null,
+                distance || null,
+                yardline || null,
+                gain || null,
+                hash || null,
+                motion || null,
+                playDirection || null,
+                personel || null,
+                playType || null,
+                result || null,
             ]
             console.log("Possession, quater, down, distance, yard line, gain, hash, motion direction, play direction, personel, play type, result")
             console.log(down)
@@ -129,7 +129,7 @@ export default function Game(props) {
             //     personel: personelRef.current.value,
             //     result: resultRef.current.value,
             //     qtr: qtrRef.current.value,
-            //     playType: playTypeRef.current.value
+            //     playType: playType.current.value
             // }
             setDowns(downs.push(down))
             console.log(downs)
@@ -152,12 +152,57 @@ export default function Game(props) {
         setLoading(false)
     }
 
-    const handleChange = (event) => {
-        setBall(event.target.value);
-    };
-
     const handleTurnover = () => {
 
+    }
+
+    //game logic here
+    const handlePossessionChange = (e) => {
+        setPossession(e.target.value)
+    }
+
+    const handleQuarterChange = (e) => {
+        setQuarter(e.target.value)
+    }
+
+    const handleDownChange = (e) => {
+        setDown(e.target.value)
+    }
+
+    const handleYardlineChange = (e) => {
+        setYardline(e.target.value)
+    }
+
+    const handlePlayTypeChange = (e) => {
+        setPlaytype(e.target.value)
+    }
+
+    const handleDistanceChange = (e) => {
+        setDistance(e.target.value)
+    }
+
+    const handleHashChange = (e) => {
+        setHash(e.target.value)
+    }
+
+    const handleMotionChange = (e) => {
+        setMotion(e.target.value)
+    }
+
+    const handlePlaydirectionChange = (e) => {
+        setPlaydirection(e.target.value)
+    }
+
+    const handleResultChange = (e) => {
+        setResult(e.target.value)
+    }
+
+    const handlePersonelChange = (e) => {
+        setPersonel(e.target.value)
+    }
+
+    const handleGainChange = (e) => {
+        setGain(e.target.value)
     }
 
     //reference for values
@@ -175,8 +220,9 @@ export default function Game(props) {
                                 labelId="possession-label"
                                 id="demo-simple-select"
                                 className={classes.fullWidth + " " + classes.selectEmpty}
-                                onChange={handleChange}
-                                inputRef={possessionRef}
+                                onChange={handlePossessionChange}
+                                value={possession}
+                                // inputRef={possessionRef}
                                 label="Possession"
                                 >
                                 <MenuItem value={0}>Home</MenuItem>
@@ -189,9 +235,10 @@ export default function Game(props) {
                                     labelId="QTR-label"
                                     id="demo-simple-select"
                                     className={classes.fullWidth + " " + classes.selectEmpty}
-                                    onChange={handleChange}
+                                    onChange={handleQuarterChange}
                                     label="QTR"
-                                    inputRef={qtrRef}
+                                    value={quarter}
+                                    // inputRef={qtrRef}
                                     >
                                     <MenuItem value={1}>1</MenuItem>
                                     <MenuItem value={2}>2</MenuItem>
@@ -201,10 +248,18 @@ export default function Game(props) {
                                 </Select>
                         </Grid>
                         {/*not in Kickoff, PAT, 2PT */}
-                        {playTypeRef !== 0 && playTypeRef !== 5 && playTypeRef !== 6 && (
+                        {playType !== 0 && playType !== 5 && playType !== 6 && (
                             <Grid item xs={12} md={2}>
                                 <InputLabel className={classes.bottomMargin} id="down-label">Down</InputLabel>
-                                <TextField  labelId="down-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={downRef}/>
+                                <TextField  
+                                labelId="down-label" 
+                                className={classes.fullWidth} 
+                                id="standard-basic"
+                                type="number" 
+                                onChange={handleDownChange}
+                                // inputRef={downRef}
+                                value={down}
+                                required />
                             </Grid>
                         )}
                         {/*         
@@ -215,7 +270,15 @@ export default function Game(props) {
                         */}
                         <Grid item xs={12} md={2}>
                             <InputLabel className={classes.bottomMargin} id="yard-label">Yard Line</InputLabel>
-                            <TextField labelId="yard-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={yardLineRef} />
+                            <TextField 
+                            labelId="yard-label"
+                            className={classes.fullWidth} 
+                            id="standard-basic" 
+                            type="number" 
+                            value={yardline}
+                            onChange={handleYardlineChange}
+                            // inputRef={yardLineRef}
+                            required  />
                         </Grid>
                         <Grid item xs={12} md={2}>
                             <InputLabel className={classes.bottomMargin} id="playtype-label">Play type</InputLabel>
@@ -223,8 +286,9 @@ export default function Game(props) {
                                 labelId="playtype-label"
                                 id="demo-simple-select"
                                 className={classes.fullWidth}
-                                onChange={handleChange}
-                                inputRef={playTypeRef}
+                                onChange={handlePlayTypeChange}
+                                value={playType}
+                                // inputRef={playType}
                                 >
                                 <MenuItem value={0}>KO</MenuItem>
                                 <MenuItem value={1}>Run</MenuItem>
@@ -236,16 +300,34 @@ export default function Game(props) {
                             </Select>
                         </Grid>
                         {/*not in Kickoff, PAT, 2PT */}
-                        {playTypeRef !== 0 && playTypeRef !== 5 && playTypeRef !== 6 && (
+                        {playType !== 0 && playType !== 5 && playType !== 6 && (
                             <Grid item xs={12} md={2}>
                                 <InputLabel className={classes.bottomMargin} id="distance-label">Distance</InputLabel>
-                                <TextField labelId="distance-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={distanceRef} />
+                                <TextField 
+                                labelId="distance-label" 
+                                className={classes.fullWidth}
+                                 id="standard-basic" 
+                                 type="number" 
+                                 required 
+                                 onChange={handleDistanceChange}
+                                 value={distance}
+                                //  inputRef={distanceRef} 
+                                 />
                             </Grid>
                         )}
 
                         <Grid item xs={12} md={2}>
                             <InputLabel className={classes.bottomMargin} id="gain-label">Gain</InputLabel>
-                            <TextField labelId="gain-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={gainRef} />
+                            <TextField 
+                            labelId="gain-label" 
+                            className={classes.fullWidth} 
+                            id="standard-basic" 
+                            type="number" 
+                            required 
+                            value={gain}
+                            onChange={handleGainChange}
+                            // inputRef={gainRef} 
+                            />
                         </Grid>
                         <Grid item xs={12} md={2}>
                             <InputLabel className={classes.bottomMargin} id="hash-label">Hash</InputLabel>
@@ -253,8 +335,9 @@ export default function Game(props) {
                                 labelId="hash-label"
                                 id="demo-simple-select"
                                 className={classes.fullWidth}
-                                onChange={handleChange}
-                                inputRef={hashRef}
+                                value={hash}
+                                onChange={handleHashChange}
+                                // inputRef={hashRef}
                                 >
                                 <MenuItem value={0}>L</MenuItem>
                                 <MenuItem value={1}>M</MenuItem>
@@ -267,9 +350,11 @@ export default function Game(props) {
                                 labelId="motion-label"
                                 id="demo-simple-select"
                                 className={classes.fullWidth}
-                                onChange={handleChange}
-                                inputRef={motionRef}
+                                onChange={handleMotionChange}
+                                value={motion}
+                                // inputRef={motionRef}
                                 >
+                                <MenuItem value={null}>No motion</MenuItem>
                                 <MenuItem value={0}>L</MenuItem>
                                 <MenuItem value={1}>R</MenuItem>
                             </Select>
@@ -280,8 +365,9 @@ export default function Game(props) {
                                 labelId="playdirection-label"
                                 id="demo-simple-select"
                                 className={classes.fullWidth}
-                                onChange={handleChange}
-                                inputRef={playDirectionRef}
+                                onChange={handlePlaydirectionChange}
+                                value={playDirection}
+                                // inputRef={playDirectionRef}
                                 >
                                 <MenuItem value={0}>L</MenuItem>
                                 <MenuItem value={1}>R</MenuItem>
@@ -289,7 +375,16 @@ export default function Game(props) {
                         </Grid>
                         <Grid item xs={12} md={2}>
                             <InputLabel className={classes.bottomMargin} id="personel-label">Personel</InputLabel>
-                            <TextField labelId="personel-label" className={classes.fullWidth} id="standard-basic" type="number" required inputRef={personelRef} />
+                            <TextField 
+                            labelId="personel-label" 
+                            className={classes.fullWidth} 
+                            id="standard-basic" 
+                            type="number" 
+                            required 
+                            value={personel}
+                            onChange={handlePersonelChange}
+                            // inputRef={personelRef} 
+                            />
                         </Grid>
                         <Grid item xs={12} md={2}>
                             <InputLabel className={classes.bottomMargin} id="result-label">Play result</InputLabel>
@@ -297,8 +392,9 @@ export default function Game(props) {
                                 labelId="result-label"
                                 id="demo-simple-select"
                                 className={classes.fullWidth}
-                                onChange={handleChange}
-                                inputRef={resultRef}
+                                onChange={handleResultChange}
+                                value={result}
+                                // inputRef={resultRef}
                                 >
                                     
                                 <MenuItem value={0}>Turnover</MenuItem>
