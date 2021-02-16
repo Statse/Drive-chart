@@ -22,12 +22,10 @@ export function AuthProvider({children}) {
     }
 
     function logout() {
-        //if you want to use different login just change this function. 
         return auth.signOut()
     }
 
     function resetPassword(email) {
-        //if you want to use different login just change this function. 
         return auth.sendPasswordResetEmail(email)
     }
 

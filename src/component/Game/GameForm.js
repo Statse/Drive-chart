@@ -1,12 +1,14 @@
 import React, {useRef, useState, useEffect} from 'react'
 import firebase from '../../firebase'
 
+import {useGame} from '../../context/GameContext'
 //ui
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+
 // import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Grid from '@material-ui/core/Grid';
@@ -32,10 +34,9 @@ const useStyles = makeStyles((theme) => ({
 }));
   
 
-export default function Game(props) {
-    console.log("props", props)
-
-    const {setDowns, downs} = props
+export default function GameForm(props) {
+    console.log("GameForm", props)
+    const {_setDowns, downs} = useGame()
     const classes = useStyles();
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
@@ -44,48 +45,39 @@ export default function Game(props) {
     const [possession, setPossession] = useState(0)
     const [quarter, setQuarter] = useState(1)
     const [down, setDown] = useState(1)
-    const [distance, setDistance] = useState()
-    const [gain, setGain] = useState()
-    const [yardline, setYardline] = useState()
-    const [hash, setHash] = useState()
-    const [motion, setMotion] = useState()
-    const [playDirection, setPlaydirection] = useState()
-    const [personel, setPersonel] = useState()
-    const [coverage, setCoverage] = useState()
-    const [playType, setPlaytype] = useState()
-    const [result, setResult] = useState()
+    const [distance, setDistance] = useState("")
+    const [gain, setGain] = useState("")
+    const [yardline, setYardline] = useState("")
+    const [hash, setHash] = useState("")
+    const [motion, setMotion] = useState("")
+    const [playDirection, setPlaydirection] = useState("")
+    const [personel, setPersonel] = useState("")
+    const [coverage, setCoverage] = useState("")
+    const [playType, setPlaytype] = useState("")
+    const [result, setResult] = useState("")
 
     async function handleSubmit(e){
         e.preventDefault()
         setLoading(true)
         try {
-            console.log("==========handleSubmit============")
+            const thisDown = {
+                possession: possession,
+                quarter: quarter,
+                down: down,
+                distance: distance,
+                yardline: yardline,
+                gain: gain,
+                hash: hash,
+                motion: motion,
+                playDirection: playDirection,
+                personel: personel,
+                playType: playType,
+                result: result,
+            }
+
+            console.log("push downs")
             console.log(downs)
-            const thisDown = [
-                possession || null,
-                quarter || null,
-                down || null,
-                distance || null,
-                yardline || null,
-                gain || null,
-                hash || null,
-                motion || null,
-                playDirection || null,
-                personel || null,
-                playType || null,
-                result || null,
-            ]
-
-            // setDistance(distance-(gain*-1))
-            // setYardline(distance-(gain*-1))
-            // if (distance<=0){
-            //     setDistance(10)
-            // }
-
-            console.log("Possession, quater, down, distance, yard line, gain, hash, motion direction, play direction, personel, play type, result")
-            console.log(thisDown)
-
-            setDowns(downs.push(thisDown))
+            _setDowns(downs.push(thisDown))
             console.log(downs)
             
             await firebase.firestore()
