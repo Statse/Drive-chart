@@ -17,8 +17,6 @@ export function AuthProvider({children}) {
     }
 
     function login(email, password) {
-
-        console.log(email)
         //if you want to use different login just change this function. 
         return auth.signInWithEmailAndPassword(email, password)
     }
