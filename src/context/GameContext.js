@@ -8,7 +8,7 @@ export function useGame(){
 
 export function GameProvider({children}) {
     const [game, setGame] = useState([])
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] = useState(false)
 
     function name(params) {
         //do stuff

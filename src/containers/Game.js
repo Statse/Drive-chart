@@ -1,6 +1,6 @@
 import React, {useRef, useState, useEffect} from 'react'
 import firebase from '../firebase'
-import GameProvider from '../context/GameContext'
+import {GameProvider} from '../context/GameContext'
 
 import GameForm from '../component/Game/GameForm'
 import DownsList from '../component/Game/DownList'
@@ -19,6 +19,7 @@ const useStyles = makeStyles((theme) => ({
   
 
 export default function Game(props) {
+    console.log("GAME")
     console.log(props)
     const classes = useStyles();
     const [error, setError] = useState("")
@@ -75,7 +76,7 @@ export default function Game(props) {
     //reference for values
     // https://www.hudl.com/support/classic/breakdown-stats-reports/hudl-assist/how-hudl-breaks-down-video
     return (
-        <>
+        <GameProvider>
             <div class={classes.container}>
                 <div style={{marginBottom: "15px"}}>{home} {homeScore} vs {awayScore} {away}</div>
                 {view === "game" ? (
@@ -92,6 +93,6 @@ export default function Game(props) {
                 gameId={props.match.params.id}
                 setView={setView}
             />
-        </>
+        </GameProvider>
     )
 }
