@@ -3,7 +3,7 @@ Pull repo
 `npm install`
 `npm start`
 
-# JS doc for documenting code
+# JS doc
 https://jsdoc.app/
 
 # Firebase 
