@@ -1,6 +1,10 @@
 # Quickstart 
+Install node 10.16.3 should work https://nodejs.org/en/
+
 Pull repo
+
 `npm install`
+
 `npm start`
 
 # JS doc
