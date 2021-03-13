@@ -1,3 +1,11 @@
+#JS doc for documenting code
+https://jsdoc.app/
+
+#Firebase 
+https://firebase.google.com/docs
+
+You need to login to your firebase account with firebase CLI
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
