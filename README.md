@@ -1,8 +1,11 @@
-#JS doc for documenting code
+# JS doc for documenting code
 https://jsdoc.app/
 
-#Firebase 
+# Firebase 
 https://firebase.google.com/docs
+
+#  Component library
+https://material-ui.com/
 
 You need to login to your firebase account with firebase CLI
 
