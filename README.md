@@ -1,3 +1,8 @@
+# Quickstart 
+Pull repo
+`npm install`
+`npm start`
+
 # JS doc for documenting code
 https://jsdoc.app/
 
