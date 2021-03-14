@@ -7,6 +7,12 @@ Pull repo
 
 `npm start`
 
+### Deploy to firebase hosting
+
+`npm run build`
+
+`firebase deploy`
+
 # JS doc
 https://jsdoc.app/
 
