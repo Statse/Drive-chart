@@ -41,6 +41,12 @@ export default function GameForm(props) {
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
     
+
+    const state = {
+        downs: [],
+        score: [6, 12],
+    }
+    const [downs, setDowns] = useState(1)
     
     const [possession, setPossession] = useState(0)
     const [quarter, setQuarter] = useState(1)
@@ -75,17 +81,17 @@ export default function GameForm(props) {
                 result: result,
             }
 
-            console.log("push downs")
-            console.log(downs)
-            _setDowns(downs.push(thisDown))
-            console.log(downs)
+            // console.log("push downs")
+            // console.log(downs)
+            // _setDowns(downs.push(thisDown))
+            // console.log(downs)
             
             await firebase.firestore()
                 .collection('games')
                 .doc(props.match.params.id)
                 .set(
                     { 
-                        downs: downs
+                        downs: downs.push(thisDown)
                     },
                     { merge: true }
                 )
