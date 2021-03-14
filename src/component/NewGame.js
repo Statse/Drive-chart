@@ -38,7 +38,7 @@ export default function NewGame() {
     const awayRef = useRef()
     const userId = firebase.auth().currentUser.uid;
 
-
+    //uus juttu
     async function newGame() {
         setError("")
         console.log(awayRef.current.value)
