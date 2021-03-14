@@ -35,18 +35,23 @@ export function GameProvider({children}) {
     }
 
     function _setDowns(down){
-        console.log("prev downs", downs)
-        console.log("_setDowns")
-        setDowns(down)
-        console.log(downs)
+        console.log("_setDowns", down)
+        console.log("downs", downs)
+        const data = downs.concat([down])
+
+        console.log(">>>>>>SET DOWNS", data)
+
+        setDowns(data)
     }
 
     const value = {
+        _setDowns,
         downs,
         getGame,
-        _setDowns
     }
 
+
+    console.log("Game context", downs)
     return (
         <GameContext.Provider value={value}>
             {!loading && children}

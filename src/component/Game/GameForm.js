@@ -74,17 +74,14 @@ export default function GameForm(props) {
                 result: result,
             }
 
-            // console.log("push downs")
-            // console.log(downs)
-            // _setDowns(downs.push(thisDown))
-            // console.log(downs)
+            _setDowns(thisDown)
             
             await firebase.firestore()
                 .collection('games')
                 .doc(props.match.params.id)
                 .set(
                     { 
-                        downs: downs.push(thisDown)
+                        downs: downs
                     },
                     { merge: true }
                 )

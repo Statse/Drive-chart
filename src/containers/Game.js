@@ -59,7 +59,7 @@ export default function Game(props) {
     // https://www.hudl.com/support/classic/breakdown-stats-reports/hudl-assist/how-hudl-breaks-down-video
     return (
         <>
-            <div class={classes.container}>
+            <div className={classes.container}>
                 {/* <div style={{marginBottom: "15px"}}>{home} {homeScore} vs {awayScore} {away}</div> */}
                 {view === "game" ? (
                     <GameForm {...props}></GameForm>

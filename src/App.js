@@ -13,7 +13,7 @@ import UpdateProfile from './component/UpdateProfile'
 // import Downs from './component/Game/DownList'
 
 import Navbar from './component/Navbar'
-import BottomNav from './containers/BottomNavigation'
+// import BottomNav from './containers/BottomNavigation'
 //ui
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
