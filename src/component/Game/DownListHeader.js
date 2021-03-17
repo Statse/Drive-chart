@@ -19,7 +19,10 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import FilterListIcon from '@material-ui/icons/FilterList';
+
+import DownEditor from './DownEditor'
 
 const headCells = [
     { id: 'personel', numeric: false, disablePadding: true, label: 'Personel' },
@@ -193,8 +196,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EnhancedTable(props) {
-  const downs = props.downs
+  const {downs, matchId} = props
   const classes = useStyles();
+  const [downToEdit, setDownToEdit] = React.useState(null);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
   const [selected, setSelected] = React.useState({});
@@ -202,6 +206,7 @@ export default function EnhancedTable(props) {
   const [dense, setDense] = React.useState(true);
   const [selectedQTR, setSelectedQTR] = React.useState(5);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [editorOpen, setEditorOpen] = React.useState(false);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -225,6 +230,17 @@ export default function EnhancedTable(props) {
     event.preventDefault();
     selected[id] = !selected[id];
     setSelected({...selected});
+  };
+
+  const handleClickEdit = (event, down) => {
+    event.stopPropagation();
+    setDownToEdit(down);
+    setEditorOpen(true);
+  };
+
+  const handleEditorClose = (value) => {
+    setEditorOpen(false);
+    // setSelectedValue(value);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -290,6 +306,11 @@ export default function EnhancedTable(props) {
                       <TableCell align="right">{down.distance}</TableCell>
                       <TableCell align="right">{down.playType}</TableCell>
                       <TableCell align="right">{down.result}</TableCell>
+                      <TableCell algin="right">
+                        <IconButton aria-label="edit" onClick={(event) => handleClickEdit(event, down)}>
+                          <MoreVertIcon />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -315,6 +336,7 @@ export default function EnhancedTable(props) {
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
       /> */}
+      <DownEditor down={downToEdit} open={editorOpen} onClose={handleEditorClose} matchId={matchId} />
     </div>
   );
 }

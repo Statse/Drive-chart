@@ -36,24 +36,26 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GameForm(props) {
     console.log("GameForm", props)
+    const initialDown = props.down || {}
     const {_setDowns, downs} = useGame()
     const classes = useStyles();
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
-    
-    const [possession, setPossession] = useState(0)
-    const [quarter, setQuarter] = useState(1)
-    const [down, setDown] = useState(1)
-    const [distance, setDistance] = useState("")
-    const [gain, setGain] = useState("")
-    const [yardline, setYardline] = useState("")
-    const [hash, setHash] = useState("")
-    const [motion, setMotion] = useState("")
-    const [playDirection, setPlaydirection] = useState("")
-    const [personel, setPersonel] = useState("")
-    const [coverage, setCoverage] = useState("")
-    const [playType, setPlaytype] = useState("")
-    const [result, setResult] = useState("")
+
+    const [possession, setPossession] = useState(initialDown.possession || 0)
+    const [quarter, setQuarter] = useState(initialDown.quarter || 1)
+    const [down, setDown] = useState(initialDown.down || 1)
+    const [downId, setDownId] = useState(initialDown.downId || null)
+    const [distance, setDistance] = useState(initialDown.distance || "")
+    const [gain, setGain] = useState(initialDown.gain || "")
+    const [yardline, setYardline] = useState(initialDown.yardline || "")
+    const [hash, setHash] = useState(initialDown.hash || "")
+    const [motion, setMotion] = useState(initialDown.motion || "")
+    const [playDirection, setPlaydirection] = useState(initialDown.playDirection || "")
+    const [personel, setPersonel] = useState(initialDown.personel || "")
+    const [coverage, setCoverage] = useState(initialDown.coverage || "")
+    const [playType, setPlaytype] = useState(initialDown.playType || "")
+    const [result, setResult] = useState(initialDown.result || "")
 
     async function handleSubmit(e){
         e.preventDefault()
@@ -72,16 +74,16 @@ export default function GameForm(props) {
                 personel: personel,
                 playType: playType,
                 result: result,
-                id: Math.max.apply(Math, downs.map((o) => (o.id))) + 1,
+                id: downId === null ? Math.max.apply(Math, downs.map((o) => (o.id))) + 1 : downId,
             }
 
             _setDowns(thisDown)
             
             await firebase.firestore()
                 .collection('games')
-                .doc(props.match.params.id)
+                .doc(props.matchId)
                 .set(
-                    { 
+                    {
                         downs: downs
                     },
                     { merge: true }
