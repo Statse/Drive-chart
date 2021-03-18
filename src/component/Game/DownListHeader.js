@@ -197,7 +197,7 @@ export default function EnhancedTable(props) {
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState([]);
+  const [selected, setSelected] = React.useState({});
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(true);
   const [selectedQTR, setSelectedQTR] = React.useState(5);
@@ -211,31 +211,20 @@ export default function EnhancedTable(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = downs.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
+      setSelected(downs.reduce(
+        (o, down) => {
+          o[down.id] = true;
+          return o;
+        }, {}));
+    } else {
+      setSelected({});
     }
-    setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
-
-    setSelected(newSelected);
+  const handleClick = (event, id) => {
+    event.preventDefault();
+    selected[id] = !selected[id];
+    setSelected({...selected});
   };
 
   const handleChangePage = (event, newPage) => {
@@ -251,13 +240,13 @@ export default function EnhancedTable(props) {
     setDense(event.target.checked);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (name) => selected[name];
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, downs.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={Object.values(selected).reduce((a,b) => a + b, 0)} />
         <TableContainer>
           <Table
             className={classes.table}
@@ -267,7 +256,7 @@ export default function EnhancedTable(props) {
           >
             <EnhancedTableHead
               classes={classes}
-              numSelected={selected.length}
+              numSelected={Object.values(selected).reduce((a,b) => a + b, 0)}
               order={order}
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
@@ -285,19 +274,14 @@ export default function EnhancedTable(props) {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, down.QTR)}
+                      onClick={(event) => handleClick(event, down.id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={down.id}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        />
-                      </TableCell>
+                      <TableCell padding="checkbox" />
                       <TableCell component="th" id={labelId} scope="down" padding="none">
                         {down.personel}
                       </TableCell>

@@ -72,6 +72,7 @@ export default function GameForm(props) {
                 personel: personel,
                 playType: playType,
                 result: result,
+                id: Math.max.apply(Math, downs.map((o) => (o.id))) + 1,
             }
 
             _setDowns(thisDown)
