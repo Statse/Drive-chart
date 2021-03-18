@@ -62,9 +62,9 @@ export default function Game(props) {
             <div className={classes.container}>
                 {/* <div style={{marginBottom: "15px"}}>{home} {homeScore} vs {awayScore} {away}</div> */}
                 {view === "game" ? (
-                    <GameForm {...props}></GameForm>
+                    <GameForm matchId={props.match.params.id}></GameForm>
                 ) : (
-                    <DownsList downs={downs}/>
+                    <DownsList matchId={props.match.params.id} downs={downs}/>
                 )}
             </div>
             <GameBottomNav 

@@ -22,12 +22,12 @@ const useStyles = makeStyles({
 });
 
 export default function DownList(props) {
-  const {downs} = props
+  const {downs, matchId} = props
   const classes = useStyles();
 
   return (
       <div className={classes.relative}>
-        <DownListHeader downs={downs}></DownListHeader>
+        <DownListHeader downs={downs} matchId={matchId}></DownListHeader>
       </div>
   );
 }

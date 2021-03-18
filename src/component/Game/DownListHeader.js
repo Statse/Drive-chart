@@ -19,7 +19,10 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import FilterListIcon from '@material-ui/icons/FilterList';
+
+import DownEditor from './DownEditor'
 
 const headCells = [
     { id: 'personel', numeric: false, disablePadding: true, label: 'Personel' },
@@ -193,15 +196,17 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function EnhancedTable(props) {
-  const downs = props.downs
+  const {downs, matchId} = props
   const classes = useStyles();
+  const [downToEdit, setDownToEdit] = React.useState(null);
   const [order, setOrder] = React.useState('asc');
   const [orderBy, setOrderBy] = React.useState('calories');
-  const [selected, setSelected] = React.useState([]);
+  const [selected, setSelected] = React.useState({});
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(true);
   const [selectedQTR, setSelectedQTR] = React.useState(5);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [editorOpen, setEditorOpen] = React.useState(false);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -211,31 +216,31 @@ export default function EnhancedTable(props) {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = downs.map((n) => n.name);
-      setSelected(newSelecteds);
-      return;
+      setSelected(downs.reduce(
+        (o, down) => {
+          o[down.id] = true;
+          return o;
+        }, {}));
+    } else {
+      setSelected({});
     }
-    setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
+  const handleClick = (event, id) => {
+    event.preventDefault();
+    selected[id] = !selected[id];
+    setSelected({...selected});
+  };
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1),
-      );
-    }
+  const handleClickEdit = (event, down) => {
+    event.stopPropagation();
+    setDownToEdit(down);
+    setEditorOpen(true);
+  };
 
-    setSelected(newSelected);
+  const handleEditorClose = (value) => {
+    setEditorOpen(false);
+    // setSelectedValue(value);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -251,13 +256,13 @@ export default function EnhancedTable(props) {
     setDense(event.target.checked);
   };
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (name) => selected[name];
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, downs.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={Object.values(selected).reduce((a,b) => a + b, 0)} />
         <TableContainer>
           <Table
             className={classes.table}
@@ -267,7 +272,7 @@ export default function EnhancedTable(props) {
           >
             <EnhancedTableHead
               classes={classes}
-              numSelected={selected.length}
+              numSelected={Object.values(selected).reduce((a,b) => a + b, 0)}
               order={order}
               orderBy={orderBy}
               onSelectAllClick={handleSelectAllClick}
@@ -285,19 +290,14 @@ export default function EnhancedTable(props) {
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, down.QTR)}
+                      onClick={(event) => handleClick(event, down.id)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={down.id}
                       selected={isItemSelected}
                     >
-                      <TableCell padding="checkbox">
-                        <Checkbox
-                          checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
-                        />
-                      </TableCell>
+                      <TableCell padding="checkbox" />
                       <TableCell component="th" id={labelId} scope="down" padding="none">
                         {down.personel}
                       </TableCell>
@@ -306,6 +306,11 @@ export default function EnhancedTable(props) {
                       <TableCell align="right">{down.distance}</TableCell>
                       <TableCell align="right">{down.playType}</TableCell>
                       <TableCell align="right">{down.result}</TableCell>
+                      <TableCell algin="right">
+                        <IconButton aria-label="edit" onClick={(event) => handleClickEdit(event, down)}>
+                          <MoreVertIcon />
+                        </IconButton>
+                      </TableCell>
                     </TableRow>
                   );
                 })}
@@ -331,6 +336,7 @@ export default function EnhancedTable(props) {
         control={<Switch checked={dense} onChange={handleChangeDense} />}
         label="Dense padding"
       /> */}
+      <DownEditor down={downToEdit} open={editorOpen} onClose={handleEditorClose} matchId={matchId} />
     </div>
   );
 }
