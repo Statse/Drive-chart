@@ -45,7 +45,7 @@ export default function GameForm(props) {
     const [homeScore, setHomeScore] = useState("")
     const [awayScore, setAwayScore] = useState("")
     const [possession, setPossession] = useState("Home")
-    const [field, setField] = useState(-1)
+    const [direction, setDirection] = useState(-1)
     const [quarter, setQuarter] = useState(1)
     const [down, setDown] = useState(1)
     const [distance, setDistance] = useState("")
@@ -133,14 +133,18 @@ export default function GameForm(props) {
                 const points = thisDown.playType ==="FG" ? 3 : 1
                 if (thisDown.result ==="Good"){    
                     if (thisDown.possession == "Home"){
-                        setHomeScore(homeScore+score)
+                        setHomeScore(homeScore+points)
                     } else if (thisDown.possession == "Away"){
-                        setAwayScore(awayScore+score)
+                        setAwayScore(awayScore+points)
                     }
                     setPlaytype("KO")
                 } else if (thisDown.result == "No good"){
                     setPlaytype("KO")
                 }
+            }
+
+            if (thisDown.playType ==="Punt"){
+                setPossession(thisDown.possession === "Home" ? "Away" : "Home")
             }
 
 
@@ -156,7 +160,7 @@ export default function GameForm(props) {
 
     const mapDownToState = (down) =>{
         setPossession(down.possession)
-        setField(down.possession == "Home" ? -1 : 1)
+        setDirection(down.possession == "Home" ? -1 : 1)
         setQuarter(down.quarter)
         setDown(down.down)
         setDistance(down.distance)
@@ -172,7 +176,11 @@ export default function GameForm(props) {
     //game logic here
     const handlePossessionChange = (e) => {
         setPossession(e.target.value)
-        setField(e.target.value == "Home" ? -1 : 1)
+        setDirection(e.target.value == "Home" ? -1 : 1)
+
+        if (playType === "KO"){
+            setYardline(20*direction) 
+        }
     }
 
     const handleQuarterChange = (e) => {
@@ -192,7 +200,7 @@ export default function GameForm(props) {
         setPlaytype(e.target.value)
 
         if (e.target.value==="KO"){
-            setYardline(20*field) 
+            setYardline(20*direction) 
         }
     }
 
