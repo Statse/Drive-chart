@@ -42,6 +42,8 @@ export default function GameForm(props) {
     const [loading, setLoading] = useState(false)
     
     const [series, setSeries] = useState(1)
+    const [homeScore, setHomeScore] = useState("")
+    const [awayScore, setAwayScore] = useState("")
     const [possession, setPossession] = useState("Home")
     const [field, setField] = useState(-1)
     const [quarter, setQuarter] = useState(1)
@@ -65,6 +67,8 @@ export default function GameForm(props) {
           
 
             const thisDown = {
+                homeScore: homeScore,
+                awayScore: awayScore,
                 possession: possession,
                 quarter: quarter,
                 down: down,
@@ -94,7 +98,52 @@ export default function GameForm(props) {
                     { merge: true }
                 )
 
-            //form logic here
+            //GAME LOGIC
+
+            //New downs
+            if (thisDown.gain > thisDown.distance){
+                setDistance(10)
+                setDown(1)
+            }
+
+
+            //Scoring
+            if (thisDown.result ==="TD"){
+                setPlaytype("PAT")
+                if (thisDown.possession == "Home"){
+                    setHomeScore(homeScore+6)
+                } else if (thisDown.possession == "Away"){
+                    setAwayScore(awayScore+6)
+                }
+            }
+
+            if (thisDown.result ==="Fumble TD" || thisDown.result ==="Int td"){    
+                if (thisDown.possession == "Home"){
+                    setPossession("Away")
+                    setAwayScore(awayScore+6)
+                } else if (thisDown.possession == "Away"){
+                    setPossession("Home")
+                    setHomeScore(homeScore+6)
+                }
+                setPlaytype("PAT")
+            }
+
+            
+            if (thisDown.playType ==="FG" || thisDown.playType ==="2pt"){
+                const points = thisDown.playType ==="FG" ? 3 : 1
+                if (thisDown.result ==="Good"){    
+                    if (thisDown.possession == "Home"){
+                        setHomeScore(homeScore+score)
+                    } else if (thisDown.possession == "Away"){
+                        setAwayScore(awayScore+score)
+                    }
+                    setPlaytype("KO")
+                } else if (thisDown.result == "No good"){
+                    setPlaytype("KO")
+                }
+            }
+
+
             
             setLoading(false)
         } catch(error) {
@@ -188,8 +237,8 @@ export default function GameForm(props) {
                         value={possession}
                         label="Possession"
                         >
-                        <MenuItem value={0}>Home</MenuItem>
-                        <MenuItem value={1}>Away</MenuItem>
+                        <MenuItem value={"Home"}>Home</MenuItem>
+                        <MenuItem value={"Away"}>Away</MenuItem>
                     </Select>
                 </Grid>
                 <Grid item xs={12} md={2}>
@@ -245,8 +294,8 @@ export default function GameForm(props) {
                         
                         {/* FG, XP */}
 
-                        {playType=="FG" || playType == "PAT" && (<MenuItem value={11}>Good</MenuItem>)}
-                        {playType=="FG" || playType == "PAT" && (<MenuItem value={12}>No Good</MenuItem>)}
+                        {playType=="FG" || playType == "PAT" && (<MenuItem value={"Good"}>Good</MenuItem>)}
+                        {playType=="FG" || playType == "PAT" && (<MenuItem value={"No good"}>No Good</MenuItem>)}
 
                         {/* pass */}
                         {playType=="Pass" && (<MenuItem value={"Complete"}>Complete</MenuItem>)}
@@ -352,8 +401,8 @@ export default function GameForm(props) {
                             value={motion}
                             >
                             <MenuItem value={null}>No motion</MenuItem>
-                            <MenuItem value={"Left"}>L</MenuItem>
-                            <MenuItem value={"Right"}>R</MenuItem>
+                            <MenuItem value={"L"}>L</MenuItem>
+                            <MenuItem value={"R"}>R</MenuItem>
                         </Select>
                     </Grid>
                 )}
@@ -367,8 +416,8 @@ export default function GameForm(props) {
                             onChange={handlePlaydirectionChange}
                             value={playDirection}
                             >
-                            <MenuItem value={0}>L</MenuItem>
-                            <MenuItem value={1}>R</MenuItem>
+                            <MenuItem value={"L"}>L</MenuItem>
+                            <MenuItem value={"R"}>R</MenuItem>
                         </Select>
                     </Grid>
                 )}
