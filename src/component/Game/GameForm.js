@@ -42,7 +42,8 @@ export default function GameForm(props) {
     const [loading, setLoading] = useState(false)
     
     const [series, setSeries] = useState(1)
-    const [possession, setPossession] = useState(0)
+    const [possession, setPossession] = useState("Home")
+    const [field, setField] = useState(-1)
     const [quarter, setQuarter] = useState(1)
     const [down, setDown] = useState(1)
     const [distance, setDistance] = useState("")
@@ -55,12 +56,13 @@ export default function GameForm(props) {
     const [coverage, setCoverage] = useState("")
     const [playType, setPlaytype] = useState("")
     const [result, setResult] = useState("")
+    const prevDown = downs[downs.length-1]
 
     async function handleSubmit(e){
         e.preventDefault()
         setLoading(true)
         try {
-            const prevDown = downs[downs.length-1]
+          
 
             const thisDown = {
                 possession: possession,
@@ -81,7 +83,6 @@ export default function GameForm(props) {
             console.log("thisDown", thisDown)
 
             const _downs = _setDowns(thisDown)
-            console.log("_downs", _downs)
             
             await firebase.firestore()
                 .collection('games')
@@ -92,6 +93,9 @@ export default function GameForm(props) {
                     },
                     { merge: true }
                 )
+
+            //form logic here
+            
             setLoading(false)
         } catch(error) {
             console.log(error)
@@ -101,9 +105,25 @@ export default function GameForm(props) {
         setLoading(false)
     }
 
+    const mapDownToState = (down) =>{
+        setPossession(down.possession)
+        setField(down.possession == "Home" ? -1 : 1)
+        setQuarter(down.quarter)
+        setDown(down.down)
+        setDistance(down.distance)
+        setGain(down.gain)
+        setYardline(down.yardline)
+        setHash(down.hash)
+        setMotion(down.motion)
+        setPlaydirection(down.playDirection)
+        setPersonel(down.personel)
+        setResult(down.result)
+    }
+
     //game logic here
     const handlePossessionChange = (e) => {
         setPossession(e.target.value)
+        setField(e.target.value == "Home" ? -1 : 1)
     }
 
     const handleQuarterChange = (e) => {
@@ -123,7 +143,6 @@ export default function GameForm(props) {
         setPlaytype(e.target.value)
 
         if (e.target.value==="KO"){
-            const field = possession === 0 ? -1 : 1; // 0 home 1 away
             setYardline(20*field) 
         }
     }
