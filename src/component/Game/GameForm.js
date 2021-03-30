@@ -42,6 +42,7 @@ export default function GameForm(props) {
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
     
+    const [series, setSeries] = useState(1)
     const [possession, setPossession] = useState(0)
     const [quarter, setQuarter] = useState(1)
     const [down, setDown] = useState(1)
@@ -159,7 +160,6 @@ export default function GameForm(props) {
                         className={classes.fullWidth + " " + classes.selectEmpty}
                         onChange={handlePossessionChange}
                         value={possession}
-                        // inputRef={possessionRef}
                         label="Possession"
                         >
                         <MenuItem value={0}>Home</MenuItem>
@@ -175,7 +175,6 @@ export default function GameForm(props) {
                             onChange={handleQuarterChange}
                             label="QTR"
                             value={quarter}
-                            // inputRef={qtrRef}
                             >
                             <MenuItem value={1}>1</MenuItem>
                             <MenuItem value={2}>2</MenuItem>
@@ -185,7 +184,7 @@ export default function GameForm(props) {
                         </Select>
                 </Grid>
                 {/*not in Kickoff, PAT, 2PT */}
-                {playType !== 0 && playType !== 5 && playType !== 6 && (
+                {playType !== "PAT" && playType !== "2pt" && playType !== "KO" && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="down-label">Down</InputLabel>
                         <TextField  
@@ -194,7 +193,6 @@ export default function GameForm(props) {
                         id="standard-basic"
                         type="number" 
                         onChange={handleDownChange}
-                        // inputRef={downRef}
                         value={down}
                         required />
                     </Grid>
@@ -214,7 +212,6 @@ export default function GameForm(props) {
                     type="number" 
                     value={yardline}
                     onChange={handleYardlineChange}
-                    // inputRef={yardLineRef}
                     required  />
                      {/* <Slider
                         defaultValue={0}
@@ -233,19 +230,51 @@ export default function GameForm(props) {
                         className={classes.fullWidth}
                         onChange={handlePlayTypeChange}
                         value={playType}
-                        // inputRef={playType}
                         >
-                        <MenuItem value={0}>KO</MenuItem>
-                        <MenuItem value={1}>Run</MenuItem>
-                        <MenuItem value={2}>Pass</MenuItem>
-                        <MenuItem value={3}>Punt</MenuItem>
-                        <MenuItem value={4}>FG</MenuItem>
-                        <MenuItem value={5}>PAT</MenuItem>
-                        <MenuItem value={6}>2 pt conversion</MenuItem>
+                        <MenuItem value={"KO"}>KO</MenuItem>
+                        <MenuItem value={"Run"}>Run</MenuItem>
+                        <MenuItem value={"Pass"}>Pass</MenuItem>
+                        <MenuItem value={"Punt"}>Punt</MenuItem>
+                        <MenuItem value={"FG"}>FG</MenuItem>
+                        <MenuItem value={"PAT"}>PAT</MenuItem>
+                        <MenuItem value={"2pt"}>2 pt conversion</MenuItem>
                     </Select>
                 </Grid>
+                <Grid item xs={12} md={2}>
+                    <InputLabel className={classes.bottomMargin} id="result-label">Play result</InputLabel>
+                    <Select
+                        labelId="result-label"
+                        id="demo-simple-select"
+                        className={classes.fullWidth}
+                        onChange={handleResultChange}
+                        value={result}
+                        >
+                        
+                        {/* FG, XP */}
+
+                        {playType=="FG" || playType == "PAT" && (<MenuItem value={11}>Good</MenuItem>)}
+                        {playType=="FG" || playType == "PAT" && (<MenuItem value={12}>No Good</MenuItem>)}
+
+                        {/* pass */}
+                        {playType=="Pass" && (<MenuItem value={"Complete"}>Complete</MenuItem>)}
+                        {playType=="Pass" && (<MenuItem value={"Incomplete"}>Incomplete</MenuItem>)}
+                        {playType=="Pass" && (<MenuItem value={"Int"}>Interception</MenuItem>)}
+                        {playType=="Pass" && (<MenuItem value={"Int td"}>Interception TD</MenuItem>)}
+
+                        {/* Other */}
+                        <MenuItem value={"Run"}>Run</MenuItem>
+                        <MenuItem value={"TD"}>Touchdown</MenuItem>
+                        <MenuItem value={"Fumble"}>Fumble</MenuItem>
+                        <MenuItem value={"Fumble TD"}>Fumble TD</MenuItem>
+                        <MenuItem value={"Sack"}>Sack</MenuItem>
+                        <MenuItem value={"Safety"}>Safety</MenuItem>
+                        <MenuItem value={"Penalty"}>Penalty</MenuItem>
+                        <MenuItem value={"Turnover"}>Turnover</MenuItem>
+                    </Select>
+                </Grid>
+
                 {/*not in Kickoff, PAT, 2PT */}
-                {playType !== 0 && playType !== 5 && playType !== 6 && (
+                {playType !== "PAT" || playType !== "2pt" || playType !== "KO" && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="distance-label">Distance</InputLabel>
                         <TextField 
@@ -256,7 +285,6 @@ export default function GameForm(props) {
                             required 
                             onChange={handleDistanceChange}
                             value={distance}
-                        //  inputRef={distanceRef} 
                             />
                     </Grid>
                 )}
@@ -271,7 +299,6 @@ export default function GameForm(props) {
                     required 
                     value={gain}
                     onChange={handleGainChange}
-                    // inputRef={gainRef} 
                     />
                 </Grid>
                 <Grid item xs={12} md={2}>
@@ -282,28 +309,29 @@ export default function GameForm(props) {
                         className={classes.fullWidth}
                         value={hash}
                         onChange={handleHashChange}
-                        // inputRef={hashRef}
                         >
                         <MenuItem value={0}>L</MenuItem>
                         <MenuItem value={1}>M</MenuItem>
                         <MenuItem value={2}>R</MenuItem>
                     </Select>
                 </Grid>
-                <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="motion-label">Motion direction</InputLabel>
-                    <Select
-                        labelId="motion-label"
-                        id="demo-simple-select"
-                        className={classes.fullWidth}
-                        onChange={handleMotionChange}
-                        value={motion}
-                        // inputRef={motionRef}
-                        >
-                        <MenuItem value={null}>No motion</MenuItem>
-                        <MenuItem value={0}>L</MenuItem>
-                        <MenuItem value={1}>R</MenuItem>
-                    </Select>
-                </Grid>
+                {/*not in Kickoff, PAT, 2PT */}
+                {playType !== "PAT" || playType !== "KO" || playType !== "FG" && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="motion-label">Motion direction</InputLabel>
+                        <Select
+                            labelId="motion-label"
+                            id="demo-simple-select"
+                            className={classes.fullWidth}
+                            onChange={handleMotionChange}
+                            value={motion}
+                            >
+                            <MenuItem value={null}>No motion</MenuItem>
+                            <MenuItem value={"Left"}>L</MenuItem>
+                            <MenuItem value={"Right"}>R</MenuItem>
+                        </Select>
+                    </Grid>
+                )}
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="playdirection-label">Play direction</InputLabel>
                     <Select
@@ -312,7 +340,6 @@ export default function GameForm(props) {
                         className={classes.fullWidth}
                         onChange={handlePlaydirectionChange}
                         value={playDirection}
-                        // inputRef={playDirectionRef}
                         >
                         <MenuItem value={0}>L</MenuItem>
                         <MenuItem value={1}>R</MenuItem>
@@ -329,51 +356,9 @@ export default function GameForm(props) {
                     required 
                     value={personel}
                     onChange={handlePersonelChange}
-                    // inputRef={personelRef} 
                     />
                 </Grid>
                 )}
-                <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="result-label">Play result</InputLabel>
-                    <Select
-                        labelId="result-label"
-                        id="demo-simple-select"
-                        className={classes.fullWidth}
-                        onChange={handleResultChange}
-                        value={result}
-                        // inputRef={resultRef}
-                        >
-
-                        {/* <MenuItem value={0}>KO</MenuItem>
-                        <MenuItem value={1}>Run</MenuItem>
-                        <MenuItem value={2}>Pass</MenuItem>
-                        <MenuItem value={3}>Punt</MenuItem>
-                        <MenuItem value={4}>FG</MenuItem>
-                        <MenuItem value={5}>PAT</MenuItem>
-                        <MenuItem value={6}>2 pt conversion</MenuItem> */}
-                        
-                        {/* FG, XP */}
-
-                        <MenuItem value={11}>Good</MenuItem>
-                        <MenuItem value={12}>No Good</MenuItem>
-
-                        {/* pass */}
-                        <MenuItem value={2}>Complete</MenuItem>
-                        <MenuItem value={3}>Incomplete</MenuItem>
-                        <MenuItem value={7}>Interception</MenuItem>
-                        <MenuItem value={8}>Interception TD</MenuItem>
-
-                        {/* Other */}
-                        <MenuItem value={1}>Run</MenuItem>
-                        <MenuItem value={4}>Touchdown</MenuItem>
-                        <MenuItem value={5}>Fumble</MenuItem>
-                        <MenuItem value={6}>Fumble TD</MenuItem>
-                        <MenuItem value={9}>Sack</MenuItem>
-                        <MenuItem value={10}>Safety</MenuItem>
-                        <MenuItem value={17}>Penalty</MenuItem>
-                        <MenuItem value={0}>Turnover</MenuItem>
-                    </Select>
-                </Grid>
                 {/* <Grid item xs={12}>
                     <Button className={classes.button} disabled={loading} variant="contained" type="submit">Save down</Button>
                     <Button onClick={handleTurnover} className={classes.button} disabled={loading} variant="contained" type="button">Turnover</Button>
