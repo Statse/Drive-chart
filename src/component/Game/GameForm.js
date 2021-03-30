@@ -119,6 +119,14 @@ export default function GameForm(props) {
 
 
         setPlaytype(e.target.value)
+
+        if (e.target.value==="KO"){
+            const field = possession === 0 ? -1 : 1; // 0 home 1 away
+            console.log(possession)
+            console.log(e.target.value)
+            console.log(field)
+            setYardline(20*field) 
+        }
     }
 
     const handleDistanceChange = (e) => {
@@ -183,45 +191,12 @@ export default function GameForm(props) {
                             <MenuItem value={5}>OT</MenuItem>
                         </Select>
                 </Grid>
-                {/*not in Kickoff, PAT, 2PT */}
-                {playType !== "PAT" && playType !== "2pt" && playType !== "KO" && (
-                    <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="down-label">Down</InputLabel>
-                        <TextField  
-                        labelId="down-label" 
-                        className={classes.fullWidth} 
-                        id="standard-basic"
-                        type="number" 
-                        onChange={handleDownChange}
-                        value={down}
-                        required />
-                    </Grid>
-                )}
                 {/*         
                     -50 home team end zone
                     -25 home team 25y line
                     25 away team 25y line 
                     50 away team endzone 
                 */}
-                <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="yard-label">Yard Line</InputLabel>
-                    <TextField 
-                    labelId="yard-label"
-                    className={classes.fullWidth} 
-                    id="standard-basic" 
-                    type="number" 
-                    value={yardline}
-                    onChange={handleYardlineChange}
-                    required  />
-                     {/* <Slider
-                        defaultValue={0}
-                        step={1}
-                        marks
-                        min={-50}
-                        max={50}
-                        valueLabelDisplay="auto"
-                    /> */}
-                </Grid>
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="playtype-label">Play type</InputLabel>
                     <Select
@@ -272,9 +247,41 @@ export default function GameForm(props) {
                         <MenuItem value={"Turnover"}>Turnover</MenuItem>
                     </Select>
                 </Grid>
-
+                <Grid item xs={12} md={2}>
+                    <InputLabel className={classes.bottomMargin} id="yard-label">Yard Line</InputLabel>
+                    <TextField 
+                    labelId="yard-label"
+                    className={classes.fullWidth} 
+                    id="standard-basic" 
+                    type="number" 
+                    value={yardline}
+                    onChange={handleYardlineChange}
+                    required  />
+                     {/* <Slider
+                        defaultValue={0}
+                        step={1}
+                        marks
+                        min={-50}
+                        max={50}
+                        valueLabelDisplay="auto"
+                    /> */}
+                </Grid>
                 {/*not in Kickoff, PAT, 2PT */}
-                {playType !== "PAT" || playType !== "2pt" || playType !== "KO" && (
+                {playType !== "PAT" && playType !== "2pt" && playType !== "KO" && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="down-label">Down</InputLabel>
+                        <TextField  
+                        labelId="down-label" 
+                        className={classes.fullWidth} 
+                        id="standard-basic"
+                        type="number" 
+                        onChange={handleDownChange}
+                        value={down}
+                        required />
+                    </Grid>
+                )}
+                {/*not in Kickoff, PAT, 2PT */}
+                {playType !== "PAT" && playType !== "2pt" && playType !== "KO" && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="distance-label">Distance</InputLabel>
                         <TextField 
@@ -316,7 +323,7 @@ export default function GameForm(props) {
                     </Select>
                 </Grid>
                 {/*not in Kickoff, PAT, 2PT */}
-                {playType !== "PAT" || playType !== "KO" || playType !== "FG" && (
+                {playType !== "PAT" && playType !== "KO" && playType !== "FG" && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="motion-label">Motion direction</InputLabel>
                         <Select
@@ -345,7 +352,7 @@ export default function GameForm(props) {
                         <MenuItem value={1}>R</MenuItem>
                     </Select>
                 </Grid>
-                {playType !== 0 && playType !== 5 && playType !== 6 && (
+                {playType !== "PAT" && playType !== "KO" && playType !== "FG" && (
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="personel-label">Personel</InputLabel>
                     <TextField 
