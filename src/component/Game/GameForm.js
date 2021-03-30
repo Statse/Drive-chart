@@ -112,6 +112,10 @@ export default function GameForm(props) {
     }
 
     const handlePlayTypeChange = (e) => {
+        //Logic here
+
+
+
         setPlaytype(e.target.value)
     }
 
@@ -338,26 +342,20 @@ export default function GameForm(props) {
                         <MenuItem value={4}>FG</MenuItem>
                         <MenuItem value={5}>PAT</MenuItem>
                         <MenuItem value={6}>2 pt conversion</MenuItem> */}
-                            
                         
-                        {(playType === 4 || playType === 5 || playType === 6) && (
-                            <>
-                                <MenuItem value={11}>Good</MenuItem>
-                                <MenuItem value={12}>No Good</MenuItem>
-                            </>
-                        )}
+                        {/* FG, XP */}
 
-                        {playType === 2 && (
-                            <>
-                                <MenuItem value={2}>Complete</MenuItem>
-                                <MenuItem value={3}>Incomplete</MenuItem>
-                                <MenuItem value={7}>Interception</MenuItem>
-                                <MenuItem value={8}>Interception TD</MenuItem>
-                            </>
-                        )}
-                        {playType === 1 && (
-                            <MenuItem value={1}>Run</MenuItem>
-                        )}
+                        <MenuItem value={11}>Good</MenuItem>
+                        <MenuItem value={12}>No Good</MenuItem>
+
+                        {/* pass */}
+                        <MenuItem value={2}>Complete</MenuItem>
+                        <MenuItem value={3}>Incomplete</MenuItem>
+                        <MenuItem value={7}>Interception</MenuItem>
+                        <MenuItem value={8}>Interception TD</MenuItem>
+
+                        {/* Other */}
+                        <MenuItem value={1}>Run</MenuItem>
                         <MenuItem value={4}>Touchdown</MenuItem>
                         <MenuItem value={5}>Fumble</MenuItem>
                         <MenuItem value={6}>Fumble TD</MenuItem>
