@@ -7,6 +7,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
+import Slider from '@material-ui/core/Slider';
 import MenuItem from '@material-ui/core/MenuItem';
 
 // import FormControl from '@material-ui/core/FormControl';
@@ -199,10 +200,10 @@ export default function GameForm(props) {
                     </Grid>
                 )}
                 {/*         
-                    0 home team end zone
-                    100 away team endzone 
-                    25 home team 25y line
-                    75 away team 25y line 
+                    -50 home team end zone
+                    -25 home team 25y line
+                    25 away team 25y line 
+                    50 away team endzone 
                 */}
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="yard-label">Yard Line</InputLabel>
@@ -215,6 +216,14 @@ export default function GameForm(props) {
                     onChange={handleYardlineChange}
                     // inputRef={yardLineRef}
                     required  />
+                     {/* <Slider
+                        defaultValue={0}
+                        step={1}
+                        marks
+                        min={-50}
+                        max={50}
+                        valueLabelDisplay="auto"
+                    /> */}
                 </Grid>
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="playtype-label">Play type</InputLabel>
