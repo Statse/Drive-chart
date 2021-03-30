@@ -36,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
   
 
 export default function GameForm(props) {
-    console.log("GameForm", props)
     const {_setDowns, downs} = useGame()
     const classes = useStyles();
     const [error, setError] = useState("")
@@ -61,6 +60,8 @@ export default function GameForm(props) {
         e.preventDefault()
         setLoading(true)
         try {
+            const prevDown = downs[downs.length-1]
+
             const thisDown = {
                 possession: possession,
                 quarter: quarter,
@@ -76,14 +77,18 @@ export default function GameForm(props) {
                 result: result,
             }
 
-            _setDowns(thisDown)
+            console.log("prevDown", prevDown)
+            console.log("thisDown", thisDown)
+
+            const _downs = _setDowns(thisDown)
+            console.log("_downs", _downs)
             
             await firebase.firestore()
                 .collection('games')
                 .doc(props.match.params.id)
                 .set(
                     { 
-                        downs: downs
+                        downs: _downs
                     },
                     { merge: true }
                 )
@@ -115,16 +120,10 @@ export default function GameForm(props) {
 
     const handlePlayTypeChange = (e) => {
         //Logic here
-
-
-
         setPlaytype(e.target.value)
 
         if (e.target.value==="KO"){
             const field = possession === 0 ? -1 : 1; // 0 home 1 away
-            console.log(possession)
-            console.log(e.target.value)
-            console.log(field)
             setYardline(20*field) 
         }
     }
@@ -317,9 +316,9 @@ export default function GameForm(props) {
                         value={hash}
                         onChange={handleHashChange}
                         >
-                        <MenuItem value={0}>L</MenuItem>
-                        <MenuItem value={1}>M</MenuItem>
-                        <MenuItem value={2}>R</MenuItem>
+                        <MenuItem value={"L"}>L</MenuItem>
+                        <MenuItem value={"M"}>M</MenuItem>
+                        <MenuItem value={"R"}>R</MenuItem>
                     </Select>
                 </Grid>
                 {/*not in Kickoff, PAT, 2PT */}
@@ -339,19 +338,21 @@ export default function GameForm(props) {
                         </Select>
                     </Grid>
                 )}
-                <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="playdirection-label">Play direction</InputLabel>
-                    <Select
-                        labelId="playdirection-label"
-                        id="demo-simple-select"
-                        className={classes.fullWidth}
-                        onChange={handlePlaydirectionChange}
-                        value={playDirection}
-                        >
-                        <MenuItem value={0}>L</MenuItem>
-                        <MenuItem value={1}>R</MenuItem>
-                    </Select>
-                </Grid>
+                {result !== "Penalty" && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="playdirection-label">Play direction</InputLabel>
+                        <Select
+                            labelId="playdirection-label"
+                            id="demo-simple-select"
+                            className={classes.fullWidth}
+                            onChange={handlePlaydirectionChange}
+                            value={playDirection}
+                            >
+                            <MenuItem value={0}>L</MenuItem>
+                            <MenuItem value={1}>R</MenuItem>
+                        </Select>
+                    </Grid>
+                )}
                 {playType !== "PAT" && playType !== "KO" && playType !== "FG" && (
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="personel-label">Personel</InputLabel>

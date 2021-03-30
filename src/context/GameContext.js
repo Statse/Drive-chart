@@ -39,9 +39,21 @@ export function GameProvider({children}) {
         console.log("downs", downs)
         const data = downs.concat([down])
 
-        console.log(">>>>>>SET DOWNS", data)
-
         setDowns(data)
+
+        return data
+    }
+
+    async function submitDown(gameId){
+        await firebase.firestore()
+            .collection('games')
+            .doc(gameId)
+            .set(
+                { 
+                    downs: downs
+                },
+                { merge: true }
+            )
     }
 
     const value = {
