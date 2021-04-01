@@ -5,9 +5,8 @@ import {useGame} from '../../context/GameContext'
 //ui
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
-import Slider from '@material-ui/core/Slider';
+// import Slider from '@material-ui/core/Slider';
 import MenuItem from '@material-ui/core/MenuItem';
 
 // import FormControl from '@material-ui/core/FormControl';
@@ -110,18 +109,18 @@ export default function GameForm(props) {
             //Scoring
             if (thisDown.result ==="TD"){
                 setPlaytype("PAT")
-                if (thisDown.possession == "Home"){
+                if (thisDown.possession ==="Home"){
                     setHomeScore(homeScore+6)
-                } else if (thisDown.possession == "Away"){
+                } else if (thisDown.possession ==="Away"){
                     setAwayScore(awayScore+6)
                 }
             }
 
             if (thisDown.result ==="Fumble TD" || thisDown.result ==="Int td"){    
-                if (thisDown.possession == "Home"){
+                if (thisDown.possession ==="Home"){
                     setPossession("Away")
                     setAwayScore(awayScore+6)
-                } else if (thisDown.possession == "Away"){
+                } else if (thisDown.possession ==="Away"){
                     setPossession("Home")
                     setHomeScore(homeScore+6)
                 }
@@ -132,19 +131,19 @@ export default function GameForm(props) {
             if (thisDown.playType ==="FG" || thisDown.playType ==="2pt"){
                 const points = thisDown.playType ==="FG" ? 3 : 1
                 if (thisDown.result ==="Good"){    
-                    if (thisDown.possession == "Home"){
+                    if (thisDown.possession ==="Home"){
                         setHomeScore(homeScore+points)
-                    } else if (thisDown.possession == "Away"){
+                    } else if (thisDown.possession ==="Away"){
                         setAwayScore(awayScore+points)
                     }
                     setPlaytype("KO")
-                } else if (thisDown.result == "No good"){
+                } else if (thisDown.result ==="No good"){
                     setPlaytype("KO")
                 }
             }
 
             if (thisDown.playType ==="Punt"){
-                setPossession(thisDown.possession === "Home" ? "Away" : "Home")
+                setPossession(thisDown.possession ==="Home" ? "Away" : "Home")
             }
 
 
@@ -160,7 +159,7 @@ export default function GameForm(props) {
 
     const mapDownToState = (down) =>{
         setPossession(down.possession)
-        setDirection(down.possession == "Home" ? -1 : 1)
+        setDirection(down.possession ==="Home" ? -1 : 1)
         setQuarter(down.quarter)
         setDown(down.down)
         setDistance(down.distance)
@@ -176,10 +175,10 @@ export default function GameForm(props) {
     //game logic here
     const handlePossessionChange = (e) => {
         setPossession(e.target.value)
-        setDirection(e.target.value == "Home" ? -1 : 1)
+        setDirection(e.target.value ==="Home" ? -1 : 1)
 
-        if (playType === "KO"){
-            setYardline(20*direction) 
+        if (playType ==="KO"){
+            setYardline(35*direction) 
         }
     }
 
@@ -200,7 +199,7 @@ export default function GameForm(props) {
         setPlaytype(e.target.value)
 
         if (e.target.value==="KO"){
-            setYardline(20*direction) 
+            setYardline(35*direction) 
         }
     }
 
@@ -302,8 +301,11 @@ export default function GameForm(props) {
                         
                         {/* FG, XP */}
 
-                        {playType=="FG" || playType == "PAT" && (<MenuItem value={"Good"}>Good</MenuItem>)}
-                        {playType=="FG" || playType == "PAT" && (<MenuItem value={"No good"}>No Good</MenuItem>)}
+                        {playType=="FG" || playType ==="PAT" && (<MenuItem value={"Good"}>Good</MenuItem>)}
+                        {playType=="FG" || playType ==="PAT" && (<MenuItem value={"No good"}>No Good</MenuItem>)}
+
+                        
+                        {playType=="KO" || playType ==="Punt" && (<MenuItem value={"Good"}>Touchback</MenuItem>)}
 
                         {/* pass */}
                         {playType=="Pass" && (<MenuItem value={"Complete"}>Complete</MenuItem>)}
@@ -342,7 +344,7 @@ export default function GameForm(props) {
                     /> */}
                 </Grid>
                 {/*not in Kickoff, PAT, 2PT */}
-                {playType !== "PAT" && playType !== "2pt" && playType !== "KO" && (
+                {playType !=="PAT" && playType !=="2pt" && playType !=="KO" && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="down-label">Down</InputLabel>
                         <TextField  
@@ -356,7 +358,7 @@ export default function GameForm(props) {
                     </Grid>
                 )}
                 {/*not in Kickoff, PAT, 2PT */}
-                {playType !== "PAT" && playType !== "2pt" && playType !== "KO" && (
+                {playType !=="PAT" && playType !=="2pt" && playType !=="KO" && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="distance-label">Distance</InputLabel>
                         <TextField 
@@ -398,7 +400,7 @@ export default function GameForm(props) {
                     </Select>
                 </Grid>
                 {/*not in Kickoff, PAT, 2PT */}
-                {playType !== "PAT" && playType !== "KO" && playType !== "FG" && (
+                {playType !=="PAT" && playType !=="KO" && playType !=="FG" && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="motion-label">Motion direction</InputLabel>
                         <Select
@@ -414,7 +416,7 @@ export default function GameForm(props) {
                         </Select>
                     </Grid>
                 )}
-                {result !== "Penalty" && (
+                {result !=="Penalty" && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="playdirection-label">Play direction</InputLabel>
                         <Select
@@ -429,7 +431,7 @@ export default function GameForm(props) {
                         </Select>
                     </Grid>
                 )}
-                {playType !== "PAT" && playType !== "KO" && playType !== "FG" && (
+                {playType !=="PAT" && playType !=="KO" && playType !=="FG" && (
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="personel-label">Personel</InputLabel>
                     <TextField 
