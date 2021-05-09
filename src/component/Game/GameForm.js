@@ -232,6 +232,22 @@ export default function GameForm(props) {
     }
 
     const handleResultChange = (e) => {
+
+        if (e.target.value === "Touchback"){
+            console.log("direction", direction)
+            console.log("yardline", yardline)
+            console.log("gain", gain)
+
+            if (possession === "Home"){
+                console.log(100-(yardline*direction))
+                setGain((100-(yardline*direction)))
+            } else if (possession === "Away") {
+                console.log((100*direction-(yardline)))
+                setGain((100*direction-(yardline)))
+            }
+
+        }
+
         setResult(e.target.value)
     }
 
