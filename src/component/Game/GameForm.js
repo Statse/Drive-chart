@@ -136,9 +136,8 @@ export default function GameForm(props) {
                         setDirection(-1)
                     }
 
-                    setYardline(20*direction) 
+                    setYardline(25*direction) 
                 }
-
 
                 setPossession("Away") 
                 setPossession("Home") 
