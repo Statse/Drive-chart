@@ -63,8 +63,6 @@ export default function GameForm(props) {
         e.preventDefault()
         setLoading(true)
         try {
-          
-
             const thisDown = {
                 homeScore: homeScore,
                 awayScore: awayScore,
@@ -171,7 +169,7 @@ export default function GameForm(props) {
         setLoading(false)
     }
 
-    const mapDownToState = (down) =>{
+    const mapDownToState = (down) => {
         setPossession(down.possession)
         setDirection(down.possession ==="Home" ? -1 : 1)
         setQuarter(down.quarter)
@@ -315,11 +313,13 @@ export default function GameForm(props) {
                         
                         {/* FG, XP */}
 
-                        {playType=="FG" || playType ==="PAT" && (<MenuItem value={"Good"}>Good</MenuItem>)}
-                        {playType=="FG" || playType ==="PAT" && (<MenuItem value={"No good"}>No Good</MenuItem>)}
+                        { (playType=="FG" || playType ==="PAT") && (<MenuItem value={"Good"}>Good</MenuItem>)}
+                        { (playType=="FG" || playType ==="PAT") && (<MenuItem value={"No good"}>No Good</MenuItem>)}
 
                         
-                        {playType=="KO" || playType ==="Punt" && (<MenuItem value={"Touchback"}>Touchback</MenuItem>)}
+                        { (playType==="KO" || playType === "Punt") && (
+                          <MenuItem value={"Touchback"}>Touchback</MenuItem>
+                        )}
 
                         {/* pass */}
                         {playType=="Pass" && (<MenuItem value={"Complete"}>Complete</MenuItem>)}
