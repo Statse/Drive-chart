@@ -127,6 +127,22 @@ export default function GameForm(props) {
                 setPlaytype("PAT")
             }
 
+            // KICKING PLAYS
+            if (thisDown.playType ==="KO" || thisDown.playType ==="punt"){
+                if (thisDown.result ==="Touchback"){    
+                    if (thisDown.possession ==="Home"){
+                        setDirection(1)
+                    } else if (thisDown.possession ==="Away"){
+                        setDirection(-1)
+                    }
+
+                    setYardline(20*direction) 
+                }
+
+
+                setPossession("Away") 
+                setPossession("Home") 
+            }
             
             if (thisDown.playType ==="FG" || thisDown.playType ==="2pt"){
                 const points = thisDown.playType ==="FG" ? 3 : 1
@@ -145,7 +161,6 @@ export default function GameForm(props) {
             if (thisDown.playType ==="Punt"){
                 setPossession(thisDown.possession ==="Home" ? "Away" : "Home")
             }
-
 
             
             setLoading(false)
@@ -305,7 +320,7 @@ export default function GameForm(props) {
                         {playType=="FG" || playType ==="PAT" && (<MenuItem value={"No good"}>No Good</MenuItem>)}
 
                         
-                        {playType=="KO" || playType ==="Punt" && (<MenuItem value={"Good"}>Touchback</MenuItem>)}
+                        {playType=="KO" || playType ==="Punt" && (<MenuItem value={"Touchback"}>Touchback</MenuItem>)}
 
                         {/* pass */}
                         {playType=="Pass" && (<MenuItem value={"Complete"}>Complete</MenuItem>)}

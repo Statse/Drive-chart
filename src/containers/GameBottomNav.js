@@ -7,7 +7,7 @@ import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
 import SaveOutlinedIcon from '@material-ui/icons/SaveOutlined';
 import FormatListNumberedOutlinedIcon from '@material-ui/icons/FormatListNumberedOutlined';
 import SportsFootballIcon from '@material-ui/icons/SportsFootball';
-import AddIcon from '@material-ui/icons/Add';
+// import AddIcon from '@material-ui/icons/Add';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 
@@ -25,7 +25,7 @@ const useStyles = makeStyles({
 });
 
 export default function GameBottomNav(props) {
-  const gameId = props.gameId
+  // const gameId = props.gameId
   const setView = props.setView
   const submit = props.props
   const history = useHistory();
