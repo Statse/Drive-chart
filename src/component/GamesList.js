@@ -15,9 +15,6 @@ export default function GamesList() {
         const getGames = async () => {
             try {
                 const snapshot = await firebase.firestore().collection('games').where('owner', '==', userId).get();
-                snapshot.forEach(doc => {
-                    console.log(doc.id, '=>', doc.data());
-                });
                 const data =  snapshot.docs.map(doc =>{
                     return {
                         ...doc.data(),
@@ -35,8 +32,6 @@ export default function GamesList() {
           };
         getGames();
     }, [error])
-
-    console.log(games)
 
     return (
         <>
