@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from 'react'
 import firebase from '../firebase'
+import GameCard from './GameCard'
 
 export default function GamesList() {
     const [games, setGames] = useState([]);
@@ -15,38 +16,26 @@ export default function GamesList() {
             try {
                 const res = await firebase.firestore().collection('games').where('owner', '==', userId).get();
                 const data =  res.docs.map(doc => doc.data());
-                // const data =  res.data()
-                console.log("this is loaded ", data)
             setGames(data)
+            setLoading(false)
             } catch {
                 setLoading(false)
                 console.log(error)
                 setError(error)
             }
           };
-       
-          getGames();
-        // async function getGames(){
-        //     try {
-        //         const res = await firebase.firestore().collection('games')
-        //         const data =  res.data()
-        //         console.log("this is loaded ", data)
-        //         setGames(data)
-        //     } catch {
-        //         setLoading(false)
-        //         console.log(error)
-        //         setError(error)
-        //     }
-        // }
+        getGames();
     }, [error])
 
     console.log(games)
 
     return (
         <>
-            {loading && (
+            {!loading && games && (
                 <div>
-                    game
+                    {games.map((game)=>{
+                        <GameCard gameData={game} />
+                    })}
                 </div>
             )}
         </>
