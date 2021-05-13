@@ -5,6 +5,8 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import { Link, useHistory } from "react-router-dom"
+import { useAuth } from '../context/AuthContext'
 
 const useStyles = makeStyles({
   root: {
@@ -29,19 +31,19 @@ const useStyles = makeStyles({
   },
 });
 
-export default function OutlinedCard() {
+export default function GameCard(props) {
   const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
+  const history = useHistory()
 
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
-          17 Northern lights - Jaguars 21
+        {props.homeScore} {props.home} - {props.away} {props.awayScore}
         </Typography>
       </CardContent>
       <CardActions className={classes.flexCenter}>
-        <Button color="primary" size="small">Go to game</Button>
+        <Button onClick={()=>history.push(`/game/${props.id}`)}color="primary" size="small">Go to game</Button>
       </CardActions>
     </Card>
   );

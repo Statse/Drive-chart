@@ -14,8 +14,17 @@ export default function GamesList() {
         setLoading(true)
         const getGames = async () => {
             try {
-                const res = await firebase.firestore().collection('games').where('owner', '==', userId).get();
-                const data =  res.docs.map(doc => doc.data());
+                const snapshot = await firebase.firestore().collection('games').where('owner', '==', userId).get();
+                snapshot.forEach(doc => {
+                    console.log(doc.id, '=>', doc.data());
+                });
+                const data =  snapshot.docs.map(doc =>{
+                    return {
+                        ...doc.data(),
+                        id: doc.id
+                    }
+                 
+                });
             setGames(data)
             setLoading(false)
             } catch {
@@ -33,8 +42,15 @@ export default function GamesList() {
         <>
             {!loading && games && (
                 <div>
-                    {games.map((game)=>{
-                        <GameCard gameData={game} />
+                    <h3>Pelit</h3>
+                    {games.map(game=>{
+                        return <GameCard 
+                            home={game.home}
+                            homeScore={game.homeScore}
+                            away={game.away}
+                            awayScore={game.awayScore}
+                            id={game.id}
+                        />
                     })}
                 </div>
             )}
