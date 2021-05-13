@@ -25,15 +25,10 @@ const useStyles = makeStyles({
 });
 
 export default function GameBottomNav(props) {
-  // const gameId = props.gameId
   const setView = props.setView
   const submit = props.props
   const classes = useStyles();
   const [value, setValue] = React.useState('games');
-
-  // function handleLink(link) {
-  //   history.push(link);
-  // }
 
   const handleChange = (event, newValue) => {
     setValue(newValue);

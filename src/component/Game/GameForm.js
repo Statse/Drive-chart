@@ -49,7 +49,8 @@ export default function GameForm(props) {
     const [down, setDown] = useState(1)
     const [distance, setDistance] = useState("")
     const [gain, setGain] = useState("")
-    const [yardline, setYardline] = useState("")
+    const [startYardline, setStartYardline] = useState("")
+    const [endYardline, setEndYardline] = useState("")
     const [hash, setHash] = useState("")
     const [motion, setMotion] = useState("")
     const [playDirection, setPlaydirection] = useState("")
@@ -70,7 +71,8 @@ export default function GameForm(props) {
                 quarter: quarter,
                 down: down,
                 distance: distance,
-                yardline: yardline,
+                startYardline: startYardline,
+                endYardline: endYardline,
                 gain: gain,
                 hash: hash,
                 motion: motion,
@@ -134,7 +136,7 @@ export default function GameForm(props) {
                         setDirection(-1)
                     }
 
-                    setYardline(25*direction) 
+                    startYardline(25*direction) 
                 }
 
                 setPossession("Away") 
@@ -176,7 +178,8 @@ export default function GameForm(props) {
         setDown(down.down)
         setDistance(down.distance)
         setGain(down.gain)
-        setYardline(down.yardline)
+        setStartYardline(down.startYardline)
+        setEndYardline(down.endYardline)
         setHash(down.hash)
         setMotion(down.motion)
         setPlaydirection(down.playDirection)
@@ -190,7 +193,7 @@ export default function GameForm(props) {
         setDirection(e.target.value ==="Home" ? -1 : 1)
 
         if (playType ==="KO"){
-            setYardline(35*direction) 
+            setStartYardline(35*direction) 
         }
     }
 
@@ -202,8 +205,16 @@ export default function GameForm(props) {
         setDown(e.target.value)
     }
 
-    const handleYardlineChange = (e) => {
-        setYardline(e.target.value)
+    const handleStartYardlineChange = (e) => {
+        setStartYardline(e.target.value)
+    }
+
+    const handleEndYardlineChange = (e) => {
+        setEndYardline(e.target.value)
+    }
+
+    const handleYardlineBlur = (e) => {
+        //limit values
     }
 
     const handlePlayTypeChange = (e) => {
@@ -211,7 +222,7 @@ export default function GameForm(props) {
         setPlaytype(e.target.value)
 
         if (e.target.value==="KO"){
-            setYardline(35*direction) 
+            setStartYardline(35*direction) 
         }
     }
 
@@ -235,15 +246,15 @@ export default function GameForm(props) {
 
         if (e.target.value === "Touchback"){
             console.log("direction", direction)
-            console.log("yardline", yardline)
+            console.log("yardline", startYardline)
             console.log("gain", gain)
 
             if (possession === "Home"){
-                console.log(100-(yardline*direction))
-                setGain((100-(yardline*direction)))
+                console.log(100-(startYardline*direction))
+                setGain((100-(startYardline*direction)))
             } else if (possession === "Away") {
-                console.log((100*direction-(yardline)))
-                setGain((100*direction-(yardline)))
+                console.log((100*direction-(startYardline)))
+                setGain((100*direction-(startYardline)))
             }
 
         }
@@ -355,14 +366,35 @@ export default function GameForm(props) {
                     </Select>
                 </Grid>
                 <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="yard-label">Yard Line</InputLabel>
+                    <InputLabel className={classes.bottomMargin} id="yard-label">Start yard Line</InputLabel>
                     <TextField 
                     labelId="yard-label"
                     className={classes.fullWidth} 
                     id="standard-basic" 
                     type="number" 
-                    value={yardline}
-                    onChange={handleYardlineChange}
+                    value={startYardline}
+                    onChange={handleStartYardlineChange}
+                    onBlur={handleYardlineBlur}
+                    required  />
+                     {/* <Slider
+                        defaultValue={0}
+                        step={1}
+                        marks
+                        min={-50}
+                        max={50}
+                        valueLabelDisplay="auto"
+                    /> */}
+                </Grid>
+                <Grid item xs={12} md={2}>
+                    <InputLabel className={classes.bottomMargin} id="yard-label">End yard Line</InputLabel>
+                    <TextField 
+                    labelId="yard-label"
+                    className={classes.fullWidth} 
+                    id="standard-basic" 
+                    type="number" 
+                    value={endYardline}
+                    onChange={handleEndYardlineChange}
+                    onBlur={handleYardlineBlur}
                     required  />
                      {/* <Slider
                         defaultValue={0}
@@ -403,7 +435,7 @@ export default function GameForm(props) {
                     </Grid>
                 )}
 
-                <Grid item xs={12} md={2}>
+                {/* <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="gain-label">Gain</InputLabel>
                     <TextField 
                     labelId="gain-label" 
@@ -414,7 +446,7 @@ export default function GameForm(props) {
                     value={gain}
                     onChange={handleGainChange}
                     />
-                </Grid>
+                </Grid> */}
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="hash-label">Hash</InputLabel>
                     <Select
