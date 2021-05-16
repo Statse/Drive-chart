@@ -21,31 +21,10 @@ const useStyles = makeStyles((theme) => ({
 export default function Game(props) {
     const classes = useStyles();
     const [error, setError] = useState("")
-    const [loading, setLoading] = useState(false)
     const {getGame} = useGame()
     const {downs} = useGame()
     console.log("downs", downs)
-    // const {getGame} = useGame()
-    // const [home, setHome] = useState("")
-    // const [homeScore, setHomeScore] = useState("")
-    // const [away, setAway] = useState("")
-    // const [awayScore, setAwayScore] = useState("")
-    
     const [view, setView] = useState("game")
-    
-    // const [possession, setPossession] = useState(0)
-    // const [quarter, setQuarter] = useState(1)
-    // const [down, setDown] = useState(1)
-    // const [distance, setDistance] = useState()
-    // const [gain, setGain] = useState()
-    // const [yardline, setYardline] = useState()
-    // const [hash, setHash] = useState()
-    // const [motion, setMotion] = useState()
-    // const [playDirection, setPlaydirection] = useState()
-    // const [personel, setPersonel] = useState()
-    // const [coverage, setCoverage] = useState()
-    // const [playType, setPlaytype] = useState()
-    // const [result, setResult] = useState()
 
     
     useEffect(async ()=>{
