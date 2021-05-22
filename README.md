@@ -1,3 +1,8 @@
+# Football stuff
+Personel:
+https://insidethe49.com/football-101/offensive-personnel-packages-nfl/
+
+
 # Quickstart 
 Install node 10.16.3 should work https://nodejs.org/en/
 

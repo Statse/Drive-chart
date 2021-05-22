@@ -5,8 +5,8 @@ import {useGame} from '../../context/GameContext'
 //ui
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
 // import Slider from '@material-ui/core/Slider';
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
 // import FormControl from '@material-ui/core/FormControl';
@@ -103,23 +103,28 @@ export default function GameForm(props) {
                 )
 
             //GAME LOGIC
-            setPossession("")
-            setDirection("")
-            setQuarter("")
-            setDown("")
-            setDistance("")
+            // setPossession("")
+            // setDirection("")
+            // setQuarter("")
+        
             // setGain("")
-            setStartYardline("")
-            setEndYardline("")
+            // setStartYardline("")
+            // setEndYardline("")
+            // setCoverage("")
 
             setHash("")
             setMotion("")
             setPlaydirection("")
             setPersonel("")
-            // setCoverage("")
             setPlaytype("")
             setResult("")
+                    
 
+            setStartYardline(thisDown.endYardline)
+            setEndYardline("")
+
+
+         
             //Scoring
             if (thisDown.result ==="TD"){
                 setPlaytype("PAT")
@@ -141,20 +146,22 @@ export default function GameForm(props) {
                 setPlaytype("PAT")
             }
 
+
+
             // KICKING PLAYS
             if (thisDown.playType ==="KO" || thisDown.playType ==="punt"){
-                if (thisDown.result ==="Touchback"){    
-                    if (thisDown.possession ==="Home"){
-                        setDirection(1)
-                    } else if (thisDown.possession ==="Away"){
-                        setDirection(-1)
-                    }
-
-                    startYardline(25*direction) 
+                if (thisDown.possession ==="Home"){
+                    setDirection(1)
+                    setPossession("Away") 
+                } else if (thisDown.possession ==="Away"){
+                    setDirection(-1)
+                    setPossession("Home") 
                 }
-
-                setPossession("Away") 
-                setPossession("Home") 
+                if (thisDown.result ==="Touchback"){    
+                    setStartYardline(20) 
+                    setDistance(10)
+                    setDown(1)
+                }
             }
             
             if (thisDown.playType ==="FG" || thisDown.playType ==="2pt"){
@@ -174,7 +181,6 @@ export default function GameForm(props) {
             if (thisDown.playType ==="Punt"){
                 setPossession(thisDown.possession ==="Home" ? "Away" : "Home")
             }
-
             
             setLoading(false)
         } catch(error) {
@@ -261,15 +267,6 @@ export default function GameForm(props) {
         if (e.target.value === "Touchback"){
             console.log("direction", direction)
             console.log("yardline", startYardline)
-
-            // if (possession === "Home"){
-            //     console.log(100-(startYardline*direction))
-            //     setGain((100-(startYardline*direction)))
-            // } else if (possession === "Away") {
-            //     console.log((100*direction-(startYardline)))
-            //     setGain((100*direction-(startYardline)))
-            // }
-
         }
 
         setResult(e.target.value)
@@ -322,10 +319,11 @@ export default function GameForm(props) {
                     </Select>
                 </Grid>
                 {/*         
-                    -50 home team end zone
-                    -25 home team 25y line
-                    25 away team 25y line 
-                    50 away team endzone 
+                   Always show from offensives perspective
+
+                   own 0-50 
+                   opp 50-0 
+                   0 === safety/td
                 */}
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="playtype-label">Play type</InputLabel>
@@ -356,14 +354,6 @@ export default function GameForm(props) {
                     onChange={handleStartYardlineChange}
                     onBlur={handleYardlineBlur}
                     required  />
-                     {/* <Slider
-                        defaultValue={0}
-                        step={1}
-                        marks
-                        min={-50}
-                        max={50}
-                        valueLabelDisplay="auto"
-                    /> */}
                 </Grid>
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="yard-label">End yard Line</InputLabel>
@@ -376,14 +366,6 @@ export default function GameForm(props) {
                     onChange={handleEndYardlineChange}
                     onBlur={handleYardlineBlur}
                     required  />
-                     {/* <Slider
-                        defaultValue={0}
-                        step={1}
-                        marks
-                        min={-50}
-                        max={50}
-                        valueLabelDisplay="auto"
-                    /> */}
                 </Grid>
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="result-label">Play result</InputLabel>
@@ -408,14 +390,13 @@ export default function GameForm(props) {
                         {/* pass */}
                         {playType=="Pass" && (<MenuItem value={"Complete"}>Complete</MenuItem>)}
                         {playType=="Pass" && (<MenuItem value={"Incomplete"}>Incomplete</MenuItem>)}
-                        {playType=="Pass" && (<MenuItem value={"Int"}>Interception</MenuItem>)}
-                        {playType=="Pass" && (<MenuItem value={"Int td"}>Interception TD</MenuItem>)}
+                        {playType=="Pass" && (<MenuItem value={"Interception"}>Interception</MenuItem>)}
 
                         {/* Other */}
-                        <MenuItem value={"Run"}>Run</MenuItem>
+                        <MenuItem value={"Rush"}>Rush</MenuItem>
                         <MenuItem value={"TD"}>Touchdown</MenuItem>
                         <MenuItem value={"Fumble"}>Fumble</MenuItem>
-                        <MenuItem value={"Fumble TD"}>Fumble TD</MenuItem>
+                        <MenuItem value={"Fumble turnover"}>Fumble turnover</MenuItem>
                         <MenuItem value={"Sack"}>Sack</MenuItem>
                         <MenuItem value={"Safety"}>Safety</MenuItem>
                         <MenuItem value={"Penalty"}>Penalty</MenuItem>
