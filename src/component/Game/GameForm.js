@@ -48,19 +48,18 @@ export default function GameForm(props) {
     const [loading, setLoading] = useState(false)
     
     const [init, setInit] = useState(false)
-    const [series, setSeries] = useState(1)
-    const [homeScore, setHomeScore] = useState("")
-    const [awayScore, setAwayScore] = useState("")
+    const [homeScore, setHomeScore] = useState(0)
+    const [awayScore, setAwayScore] = useState(0)
     const [possession, setPossession] = useState("Home")
     const [quarter, setQuarter] = useState(1)
     const [down, setDown] = useState(1)
-    const [distance, setDistance] = useState("")
-    const [startYardline, setStartYardline] = useState("")
-    const [endYardline, setEndYardline] = useState("")
+    const [distance, setDistance] = useState(10)
+    const [startYardline, setStartYardline] = useState(0)
+    const [endYardline, setEndYardline] = useState(0)
     const [hash, setHash] = useState("")
     const [motion, setMotion] = useState("")
     const [playDirection, setPlaydirection] = useState("")
-    const [personel, setPersonel] = useState("")
+    const [personel, setPersonel] = useState(20)
     const [playType, setPlaytype] = useState("")
     const [result, setResult] = useState("")
     const prevDown = downs[downs.length-1]
@@ -68,6 +67,7 @@ export default function GameForm(props) {
     async function handleSubmit(e){
         e.preventDefault()
         setLoading(true)
+        console.log("Loading...")
         try {
             const thisDown = {
                 homeScore: homeScore,
@@ -78,7 +78,6 @@ export default function GameForm(props) {
                 distance: distance,
                 startYardline: startYardline,
                 endYardline: endYardline,
-                // gain: gain,
                 hash: hash,
                 motion: motion,
                 playDirection: playDirection,
@@ -102,93 +101,14 @@ export default function GameForm(props) {
                     { merge: true }
                 )
 
-            //GAME LOGIC
-            setHash("")
-            setMotion("")
-            setPlaydirection("")
-            setPersonel("")
-            setPlaytype("")
-            setResult("")
-                    
-            setStartYardline(thisDown.endYardline)
-            setEndYardline("")
-            setDown(down+1)
-            setDistance(distance-(endYardline-startYardline))
-
-            //new downs
-            if ((endYardline-startYardline)>distance){
-                setDistance(10)
-                setDown(1)
-            }
-
-         
-            //Scoring
-            if (thisDown.result ==="TD"){
-                setPlaytype("PAT")
-                if (thisDown.possession ==="Home"){
-                    setHomeScore(homeScore+6)
-                } else if (thisDown.possession ==="Away"){
-                    setAwayScore(awayScore+6)
-                }
-            }
-
-            if (thisDown.result ==="Fumble TD" || thisDown.result ==="Int td"){    
-                if (thisDown.possession ==="Home"){
-                    setPossession("Away")
-                    setAwayScore(awayScore+6)
-                } else if (thisDown.possession ==="Away"){
-                    setPossession("Home")
-                    setHomeScore(homeScore+6)
-                }
-                setPlaytype("PAT")
-            }
-
-
-
-            // KICKING PLAYS
-            if (thisDown.playType ==="KO" || thisDown.playType ==="punt"){
-                if (thisDown.possession ==="Home"){
-                    setPossession("Away") 
-                } else if (thisDown.possession ==="Away"){
-                    setPossession("Home") 
-                }
-                if (thisDown.result ==="Touchback"){    
-                    setStartYardline(20) 
-                    setDistance(10)
-                    setDown(1)
-                }
-            }
-            
-            if (thisDown.playType ==="FG" || thisDown.playType ==="2pt") {
-                const points = thisDown.playType ==="FG" ? 3 : 1
-                if (thisDown.result ==="Good"){    
-                    if (thisDown.possession ==="Home"){
-                        setHomeScore(homeScore+points)
-                    } else if (thisDown.possession ==="Away"){
-                        setAwayScore(awayScore+points)
-                    }
-                    setPlaytype("KO")
-                } else if (thisDown.result ==="No good"){
-                    setPlaytype("KO")
-                }
-            }
-
-            
-            //new downs
-            if ((endYardline-startYardline)>distance && thisDown.playType ==="Punt" ){
-                setDistance(10)
-                setDown(1)
-            }
-
-            if (thisDown.playType ==="Punt"){
-                setPossession(thisDown.possession ==="Home" ? "Away" : "Home")
-            }
-            
+            setInit(false)
             setLoading(false)
+            console.log("Done!")
         } catch(error) {
             alert(error)
             console.log(error)
             setLoading(false)
+            console.log("Done!")
             return setError("Submit failed")
         }
         setLoading(false)
@@ -269,19 +189,181 @@ export default function GameForm(props) {
     const handlePersonelChange = (e) => {
         setPersonel(e.target.value)
     }
-    
+
+
+    const turnOverTD = () =>{
+        if (downs[downs.length-1].possession ==="Home"){
+            setPossession("Away")
+            setAwayScore(awayScore+6)
+        } else if (downs[downs.length-1].possession ==="Away"){
+            setPossession("Home")
+            setHomeScore(homeScore+6)
+        }
+    }
+
+    const changePossession = () => {
+        if (downs[downs.length-1].possession === "Home"){
+            setPossession("Away")
+        } else if (downs[downs.length-1].possession ==="Away"){
+            setPossession("Home")
+        }
+    }
+
+    // <MenuItem value={"Turnover"}>Turnover</MenuItem>
+
+    const playResultHandler = (result) => {
+        switch(result) {
+            case "Good":
+                // code block
+            break;
+            case "No good":
+                // code block
+            break;
+            case "Touchback":
+                setStartYardline(20) 
+                setDistance(10)
+                setDown(1)
+                if (downs[downs.length-1].possession ==="Home"){
+                    setPossession("Away")
+                } else if (downs[downs.length-1].possession ==="Away"){
+                    setPossession("Home")
+                }
+            break;
+            case "Complete":
+                // code block
+            break;
+            case "Incomplete":
+                // code block
+            break;
+            case "Interception":
+                // code block
+            break;
+            case "Rush":
+                // code block
+            break;
+            case "TD":
+                // code block
+            break;
+            case "Sack":
+                // code block
+            break;
+            case "Safety":
+                // code block
+            break;
+            case "Turnover": 
+                if (downs[downs.length-1].possession === "Home"){
+                    setPossession("Away")
+                } else if (downs[downs.length-1].possession ==="Away"){
+                    setPossession("Home")
+                }
+                // code block
+            break;
+            case "Fumble":
+                // code block
+            break;
+            case "Fumble turnover":
+                // code block
+            break;
+            case "Fumble TD ":
+                turnOverTD()
+            break;
+            case "Int td":
+                turnOverTD()
+            break;
+            case "Penalty":
+                // code block
+            break;
+            default:
+              // code block
+              console.log("default")
+          }
+    }
+
     //init based on previous downs
     if (!init && downs.length){ 
+        setHash("")
+        setMotion("")
+        setPlaydirection("")
+        setPersonel("")
+        setPlaytype("")
+        setResult("")
+
         setInit(true)
         setStartYardline(downs[downs.length-1].endYardline)
         setEndYardline("")
         setDown(downs[downs.length-1].down+1)
         setDistance(downs[downs.length-1].distance - (downs[downs.length-1].endYardline-downs[downs.length-1].startYardline))
+
+                
+        setStartYardline(downs[downs.length-1].endYardline)
+        setEndYardline("")
+        setDown(down+1)
+        setDistance(distance-(endYardline-startYardline))
+
+        //new downs
+        if ((endYardline-startYardline)>distance){
+            setDistance(10)
+            setDown(1)
+        }
+     
+        //Scoring
+        if (downs[downs.length-1].result ==="TD"){
+            setPlaytype("PAT")
+            if (downs[downs.length-1].possession ==="Home"){
+                setHomeScore(homeScore+6)
+            } else if (downs[downs.length-1].possession ==="Away"){
+                setAwayScore(awayScore+6)
+            }
+        }
+
+        if (downs[downs.length-1].result ==="Fumble TD" || downs[downs.length-1].result ==="Int td"){    
+            
+            setPlaytype("PAT")
+        }
+
+
+
+        // KICKING PLAYS
+        if (downs[downs.length-1].playType ==="KO" || downs[downs.length-1].playType ==="punt"){
+            if (downs[downs.length-1].possession ==="Home"){
+                setPossession("Away") 
+            } else if (downs[downs.length-1].possession ==="Away"){
+                setPossession("Home") 
+            }
+            if (downs[downs.length-1].result ==="Touchback"){    
+          
+            }
+        }
+        
+        if (downs[downs.length-1].playType ==="FG" || downs[downs.length-1].playType ==="2pt") {
+            const points = downs[downs.length-1].playType ==="FG" ? 3 : 1
+            if (downs[downs.length-1].result ==="Good"){    
+                if (downs[downs.length-1].possession ==="Home"){
+                    setHomeScore(homeScore+points)
+                } else if (downs[downs.length-1].possession ==="Away"){
+                    setAwayScore(awayScore+points)
+                }
+                setPlaytype("KO")
+            } else if (downs[downs.length-1].result ==="No good"){
+                setPlaytype("KO")
+            }
+        }
+
+        
+        //new downs
+        if ((endYardline-startYardline)>distance && downs[downs.length-1].playType ==="Punt" ){
+            setDistance(10)
+            setDown(1)
+        }
+
+        if (downs[downs.length-1].playType ==="Punt"){
+            setPossession(downs[downs.length-1].possession ==="Home" ? "Away" : "Home")
+        }
     }
 
     return ( 
     <div className={useStyles.wrapper}>
-        {downs.length && (
+        {downs.length  > 0 && (
            <DownNavigation downs={downs}/>
         )}
         <form id="game-form" onSubmit={handleSubmit}>
