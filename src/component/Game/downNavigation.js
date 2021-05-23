@@ -5,6 +5,14 @@ export default function downNavigation(props) {
     return (
         <div>
         <h3>Previous down</h3>
+        <div style={{display:"flex",
+                    width: '100%',
+                    justifyContent: "space-between"}
+                    }>
+                        <button onClick={()=>alert("prev func")}>Previous</button>
+                        <button onClick={()=>alert("Next func")}>Next</button>
+
+        </div>
         <table style={{width:"100%", marginBottom:"3rem"}}>
             <tr style={{display:"flex",
                         width: '100%',

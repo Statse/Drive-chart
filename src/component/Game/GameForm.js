@@ -13,7 +13,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Grid from '@material-ui/core/Grid';
 
-import downNavigation from './downNavigation'
+import DownNavigation from './downNavigation'
 
 import { ControlPointSharp } from '@material-ui/icons';
 
@@ -55,14 +55,12 @@ export default function GameForm(props) {
     const [quarter, setQuarter] = useState(1)
     const [down, setDown] = useState(1)
     const [distance, setDistance] = useState("")
-    // const [gain, setGain] = useState("")
     const [startYardline, setStartYardline] = useState("")
     const [endYardline, setEndYardline] = useState("")
     const [hash, setHash] = useState("")
     const [motion, setMotion] = useState("")
     const [playDirection, setPlaydirection] = useState("")
     const [personel, setPersonel] = useState("")
-    const [coverage, setCoverage] = useState("")
     const [playType, setPlaytype] = useState("")
     const [result, setResult] = useState("")
     const prevDown = downs[downs.length-1]
@@ -105,14 +103,6 @@ export default function GameForm(props) {
                 )
 
             //GAME LOGIC
-            // setPossession("")
-            // setQuarter("")
-        
-            // setGain("")
-            // setStartYardline("")
-            // setEndYardline("")
-            // setCoverage("")
-
             setHash("")
             setMotion("")
             setPlaydirection("")
@@ -204,12 +194,12 @@ export default function GameForm(props) {
         setLoading(false)
     }
 
-    const mapDownToState = (down) => {
+
+    const mapDownToCurrentState = (down) => {
         setPossession(down.possession)
         setQuarter(down.quarter)
         setDown(down.down)
         setDistance(down.distance)
-        // setGain(down.gain)
         setStartYardline(down.startYardline)
         setEndYardline(down.endYardline)
         setHash(down.hash)
@@ -279,10 +269,6 @@ export default function GameForm(props) {
     const handlePersonelChange = (e) => {
         setPersonel(e.target.value)
     }
-
-    const handleGainChange = (e) => {
-        // setGain(e.target.value)
-    }
     
     //init based on previous downs
     if (!init && downs.length){ 
@@ -296,7 +282,7 @@ export default function GameForm(props) {
     return ( 
     <div className={useStyles.wrapper}>
         {downs.length && (
-           <downNavigation downs={downs}/>
+           <DownNavigation downs={downs}/>
         )}
         <form id="game-form" onSubmit={handleSubmit}>
             <Grid container spacing={3}>
@@ -445,19 +431,6 @@ export default function GameForm(props) {
                             />
                     </Grid>
                 )}
-
-                {/* <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="gain-label">Gain</InputLabel>
-                    <TextField 
-                    labelId="gain-label" 
-                    className={classes.fullWidth} 
-                    id="standard-basic" 
-                    type="number" 
-                    required 
-                    value={gain}
-                    onChange={handleGainChange}
-                    />
-                </Grid> */}
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="hash-label">Hash</InputLabel>
                     <Select
