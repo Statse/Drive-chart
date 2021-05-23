@@ -13,7 +13,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Grid from '@material-ui/core/Grid';
 
-import Modal from '../Modal';
+import downNavigation from './downNavigation'
+
+import { ControlPointSharp } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     wrapper: {
@@ -45,11 +47,11 @@ export default function GameForm(props) {
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
     
+    const [init, setInit] = useState(false)
     const [series, setSeries] = useState(1)
     const [homeScore, setHomeScore] = useState("")
     const [awayScore, setAwayScore] = useState("")
     const [possession, setPossession] = useState("Home")
-    const [direction, setDirection] = useState(-1)
     const [quarter, setQuarter] = useState(1)
     const [down, setDown] = useState(1)
     const [distance, setDistance] = useState("")
@@ -104,7 +106,6 @@ export default function GameForm(props) {
 
             //GAME LOGIC
             // setPossession("")
-            // setDirection("")
             // setQuarter("")
         
             // setGain("")
@@ -119,10 +120,16 @@ export default function GameForm(props) {
             setPlaytype("")
             setResult("")
                     
-
             setStartYardline(thisDown.endYardline)
             setEndYardline("")
+            setDown(down+1)
+            setDistance(distance-(endYardline-startYardline))
 
+            //new downs
+            if ((endYardline-startYardline)>distance){
+                setDistance(10)
+                setDown(1)
+            }
 
          
             //Scoring
@@ -151,10 +158,8 @@ export default function GameForm(props) {
             // KICKING PLAYS
             if (thisDown.playType ==="KO" || thisDown.playType ==="punt"){
                 if (thisDown.possession ==="Home"){
-                    setDirection(1)
                     setPossession("Away") 
                 } else if (thisDown.possession ==="Away"){
-                    setDirection(-1)
                     setPossession("Home") 
                 }
                 if (thisDown.result ==="Touchback"){    
@@ -164,7 +169,7 @@ export default function GameForm(props) {
                 }
             }
             
-            if (thisDown.playType ==="FG" || thisDown.playType ==="2pt"){
+            if (thisDown.playType ==="FG" || thisDown.playType ==="2pt") {
                 const points = thisDown.playType ==="FG" ? 3 : 1
                 if (thisDown.result ==="Good"){    
                     if (thisDown.possession ==="Home"){
@@ -178,12 +183,20 @@ export default function GameForm(props) {
                 }
             }
 
+            
+            //new downs
+            if ((endYardline-startYardline)>distance && thisDown.playType ==="Punt" ){
+                setDistance(10)
+                setDown(1)
+            }
+
             if (thisDown.playType ==="Punt"){
                 setPossession(thisDown.possession ==="Home" ? "Away" : "Home")
             }
             
             setLoading(false)
         } catch(error) {
+            alert(error)
             console.log(error)
             setLoading(false)
             return setError("Submit failed")
@@ -193,7 +206,6 @@ export default function GameForm(props) {
 
     const mapDownToState = (down) => {
         setPossession(down.possession)
-        setDirection(down.possession ==="Home" ? -1 : 1)
         setQuarter(down.quarter)
         setDown(down.down)
         setDistance(down.distance)
@@ -210,10 +222,8 @@ export default function GameForm(props) {
     //game logic here
     const handlePossessionChange = (e) => {
         setPossession(e.target.value)
-        setDirection(e.target.value ==="Home" ? -1 : 1)
-
         if (playType ==="KO"){
-            setStartYardline(35*direction) 
+            setStartYardline(35) 
         }
     }
 
@@ -242,7 +252,7 @@ export default function GameForm(props) {
         setPlaytype(e.target.value)
 
         if (e.target.value==="KO"){
-            setStartYardline(35*direction) 
+            setStartYardline(35) 
         }
     }
 
@@ -263,12 +273,6 @@ export default function GameForm(props) {
     }
 
     const handleResultChange = (e) => {
-
-        if (e.target.value === "Touchback"){
-            console.log("direction", direction)
-            console.log("yardline", startYardline)
-        }
-
         setResult(e.target.value)
     }
 
@@ -279,12 +283,21 @@ export default function GameForm(props) {
     const handleGainChange = (e) => {
         // setGain(e.target.value)
     }
+    
+    //init based on previous downs
+    if (!init && downs.length){ 
+        setInit(true)
+        setStartYardline(downs[downs.length-1].endYardline)
+        setEndYardline("")
+        setDown(downs[downs.length-1].down+1)
+        setDistance(downs[downs.length-1].distance - (downs[downs.length-1].endYardline-downs[downs.length-1].startYardline))
+    }
 
     return ( 
     <div className={useStyles.wrapper}>
-        <Modal
-         text="Down saved"
-        />
+        {downs.length && (
+           <downNavigation downs={downs}/>
+        )}
         <form id="game-form" onSubmit={handleSubmit}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={2}>
