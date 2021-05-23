@@ -15,8 +15,6 @@ import Grid from '@material-ui/core/Grid';
 
 import DownNavigation from './downNavigation'
 
-import { ControlPointSharp } from '@material-ui/icons';
-
 const useStyles = makeStyles((theme) => ({
     wrapper: {
         position: "relative",
@@ -211,7 +209,7 @@ export default function GameForm(props) {
         setPlaytype("PAT")
     }
 
-    const PAT = () => {
+    const PAT = (points) => {
         if (downs[downs.length-1].possession ==="Home"){
             setHomeScore(homeScore+points)
         } else if (downs[downs.length-1].possession ==="Away"){
@@ -232,8 +230,13 @@ export default function GameForm(props) {
 
     const playResultHandler = (result) => {
         switch(result) {
+            case "xp good":
+                PAT(1)
+            break;
+            case "2pt good":
+                PAT(2)
+            break;
             case "Good":
-                PAT()
             break;
             case "No good":
                 setPlaytype("KO")
@@ -336,16 +339,6 @@ export default function GameForm(props) {
                 setPossession("Home") 
             }
         }
-        
-        if (downs[downs.length-1].playType ==="FG" || downs[downs.length-1].playType ==="2pt") {
-            const points = downs[downs.length-1].playType ==="FG" ? 3 : 1
-            if (downs[downs.length-1].result ==="Good"){    
-          
-            } else if (downs[downs.length-1].result ==="No good"){
-                setPlaytype("KO")
-            }
-        }
-
         
         //new downs
         if ((endYardline-startYardline)>distance && downs[downs.length-1].playType ==="Punt" ){
@@ -456,12 +449,14 @@ export default function GameForm(props) {
                         >
                         
                         {/* FG, XP */}
+                        {(playType ==="PAT") && (<MenuItem value={"xp good"}>XP good</MenuItem>)}
+                        {(playType ==="PAT") && (<MenuItem value={"2pt good"}>2pt good</MenuItem>)}
 
-                        { (playType=="FG" || playType ==="PAT") && (<MenuItem value={"Good"}>Good</MenuItem>)}
-                        { (playType=="FG" || playType ==="PAT") && (<MenuItem value={"No good"}>No Good</MenuItem>)}
+                        {(playType=="FG") && (<MenuItem value={"Good"}>Good</MenuItem>)}
+                        {(playType=="FG" || playType ==="PAT") && (<MenuItem value={"No good"}>No Good</MenuItem>)}
 
                         
-                        { (playType==="KO" || playType === "Punt") && (
+                        {(playType==="KO" || playType === "Punt") && (
                           <MenuItem value={"Touchback"}>Touchback</MenuItem>
                         )}
 
