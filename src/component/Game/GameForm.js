@@ -98,7 +98,7 @@ export default function GameForm(props) {
                     },
                     { merge: true }
                 )
-
+            console.log("Saved to db...")
             setInit(false)
             setLoading(false)
             console.log("Done!")
@@ -189,6 +189,15 @@ export default function GameForm(props) {
     }
 
 
+    const turnover = () => {
+        if (downs[downs.length-1].possession ==="Home"){
+            setPossession("Away")
+        } else if (downs[downs.length-1].possession ==="Away"){
+            setPossession("Home")
+        }
+        setStartYardline(100-downs[downs.length-1].endYardline)
+    }
+
     const turnOverTD = () =>{
         if (downs[downs.length-1].possession ==="Home"){
             setPossession("Away")
@@ -226,9 +235,25 @@ export default function GameForm(props) {
         }
     }
 
-    // <MenuItem value={"Turnover"}>Turnover</MenuItem>
+    const firstDowns  = () =>  {
+        setDistance(10)
+        setDown(1)
+    }
 
     const playResultHandler = (result) => {
+
+        //Init form
+        setHash("")
+        setMotion("")
+        setPlaydirection("")
+        setPersonel("")
+        setPlaytype("")
+        setResult("")
+        setStartYardline(downs[downs.length-1].endYardline)
+        setEndYardline("")
+        setDown(downs[downs.length-1].down+1)
+        setDistance(downs[downs.length-1].distance - (downs[downs.length-1].endYardline-downs[downs.length-1].startYardline))
+
         switch(result) {
             case "xp good":
                 PAT(1)
@@ -243,8 +268,7 @@ export default function GameForm(props) {
             break;
             case "Touchback":
                 setStartYardline(20) 
-                setDistance(10)
-                setDown(1)
+                firstDowns()
                 if (downs[downs.length-1].possession ==="Home"){
                     setPossession("Away")
                 } else if (downs[downs.length-1].possession ==="Away"){
@@ -259,6 +283,12 @@ export default function GameForm(props) {
             break;
             case "Interception":
                 // code block
+                if (downs[downs.length-1].endYardline === 0) {
+                    turnOverTD()
+                } else {
+                    turnover()
+                    firstDowns()
+                }
             break;
             case "Rush":
                 // code block
@@ -274,24 +304,19 @@ export default function GameForm(props) {
                 // code block
             break;
             case "Turnover": 
-                if (downs[downs.length-1].possession === "Home"){
-                    setPossession("Away")
-                } else if (downs[downs.length-1].possession ==="Away"){
-                    setPossession("Home")
-                }
+                turnover()
                 // code block
             break;
-            case "Fumble":
+            case "Fumble recover":
                 // code block
             break;
             case "Fumble turnover":
-                // code block
-            break;
-            case "Fumble TD ":
-                turnOverTD()
-            break;
-            case "Int td":
-                turnOverTD()
+                if (downs[downs.length-1].endYardline === 0) {
+                    turnOverTD()
+                } else {
+                    turnover()
+                    firstDowns()
+                }
             break;
             case "Penalty":
                 // code block
@@ -304,23 +329,8 @@ export default function GameForm(props) {
 
     //init based on previous downs
     if (!init && downs.length){ 
-        setHash("")
-        setMotion("")
-        setPlaydirection("")
-        setPersonel("")
-        setPlaytype("")
-        setResult("")
 
         setInit(true)
-        setStartYardline(downs[downs.length-1].endYardline)
-        setEndYardline("")
-        setDown(downs[downs.length-1].down+1)
-        setDistance(downs[downs.length-1].distance - (downs[downs.length-1].endYardline-downs[downs.length-1].startYardline))
-
-        setStartYardline(downs[downs.length-1].endYardline)
-        setEndYardline("")
-        setDown(down+1)
-        setDistance(distance-(endYardline-startYardline))
 
         playResultHandler(downs[downs.length-1].result)
 
@@ -411,7 +421,6 @@ export default function GameForm(props) {
                         <MenuItem value={"Punt"}>Punt</MenuItem>
                         <MenuItem value={"FG"}>FG</MenuItem>
                         <MenuItem value={"PAT"}>PAT</MenuItem>
-                        <MenuItem value={"2pt"}>2 pt conversion</MenuItem>
                     </Select>
                 </Grid>
                 <Grid item xs={12} md={2}>
@@ -468,7 +477,7 @@ export default function GameForm(props) {
                         {/* Other */}
                         <MenuItem value={"Rush"}>Rush</MenuItem>
                         <MenuItem value={"TD"}>Touchdown</MenuItem>
-                        <MenuItem value={"Fumble"}>Fumble</MenuItem>
+                        <MenuItem value={"Fumble recover"}>Fumble recover</MenuItem>
                         <MenuItem value={"Fumble turnover"}>Fumble turnover</MenuItem>
                         <MenuItem value={"Sack"}>Sack</MenuItem>
                         <MenuItem value={"Safety"}>Safety</MenuItem>
@@ -476,8 +485,8 @@ export default function GameForm(props) {
                         <MenuItem value={"Turnover"}>Turnover</MenuItem>
                     </Select>
                 </Grid>
-                {/*not in Kickoff, PAT, 2PT */}
-                {playType !=="PAT" && playType !=="2pt" && playType !=="KO" && (
+                {/*not in Kickoff, PAT */}
+                {playType !=="PAT" && playType !=="KO" && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="down-label">Down</InputLabel>
                         <TextField  
@@ -490,8 +499,8 @@ export default function GameForm(props) {
                         required />
                     </Grid>
                 )}
-                {/*not in Kickoff, PAT, 2PT */}
-                {playType !=="PAT" && playType !=="2pt" && playType !=="KO" && (
+                {/*not in Kickoff, PAT */}
+                {playType !=="PAT" && playType !=="KO" && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="distance-label">Distance</InputLabel>
                         <TextField 
@@ -519,7 +528,7 @@ export default function GameForm(props) {
                         <MenuItem value={"R"}>R</MenuItem>
                     </Select>
                 </Grid>
-                {/*not in Kickoff, PAT, 2PT */}
+                {/*not in Kickoff, PAT */}
                 {playType !=="PAT" && playType !=="KO" && playType !=="FG" && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="motion-label">Motion direction</InputLabel>
