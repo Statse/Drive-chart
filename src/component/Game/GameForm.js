@@ -199,8 +199,27 @@ export default function GameForm(props) {
             setPossession("Home")
             setHomeScore(homeScore+6)
         }
+        setPlaytype("PAT")
     }
 
+    const TD = () => {
+        if (downs[downs.length-1].possession ==="Home"){
+            setHomeScore(homeScore+6)
+        } else if (downs[downs.length-1].possession ==="Away"){
+            setAwayScore(awayScore+6)
+        }
+        setPlaytype("PAT")
+    }
+
+    const PAT = () => {
+        if (downs[downs.length-1].possession ==="Home"){
+            setHomeScore(homeScore+points)
+        } else if (downs[downs.length-1].possession ==="Away"){
+            setAwayScore(awayScore+points)
+        }
+        setPlaytype("KO")
+    }
+  
     const changePossession = () => {
         if (downs[downs.length-1].possession === "Home"){
             setPossession("Away")
@@ -214,10 +233,10 @@ export default function GameForm(props) {
     const playResultHandler = (result) => {
         switch(result) {
             case "Good":
-                // code block
+                PAT()
             break;
             case "No good":
-                // code block
+                setPlaytype("KO")
             break;
             case "Touchback":
                 setStartYardline(20) 
@@ -243,6 +262,7 @@ export default function GameForm(props) {
             break;
             case "TD":
                 // code block
+                TD()
             break;
             case "Sack":
                 // code block
@@ -294,11 +314,12 @@ export default function GameForm(props) {
         setDown(downs[downs.length-1].down+1)
         setDistance(downs[downs.length-1].distance - (downs[downs.length-1].endYardline-downs[downs.length-1].startYardline))
 
-                
         setStartYardline(downs[downs.length-1].endYardline)
         setEndYardline("")
         setDown(down+1)
         setDistance(distance-(endYardline-startYardline))
+
+        playResultHandler(downs[downs.length-1].result)
 
         //new downs
         if ((endYardline-startYardline)>distance){
@@ -306,22 +327,6 @@ export default function GameForm(props) {
             setDown(1)
         }
      
-        //Scoring
-        if (downs[downs.length-1].result ==="TD"){
-            setPlaytype("PAT")
-            if (downs[downs.length-1].possession ==="Home"){
-                setHomeScore(homeScore+6)
-            } else if (downs[downs.length-1].possession ==="Away"){
-                setAwayScore(awayScore+6)
-            }
-        }
-
-        if (downs[downs.length-1].result ==="Fumble TD" || downs[downs.length-1].result ==="Int td"){    
-            
-            setPlaytype("PAT")
-        }
-
-
 
         // KICKING PLAYS
         if (downs[downs.length-1].playType ==="KO" || downs[downs.length-1].playType ==="punt"){
@@ -330,20 +335,12 @@ export default function GameForm(props) {
             } else if (downs[downs.length-1].possession ==="Away"){
                 setPossession("Home") 
             }
-            if (downs[downs.length-1].result ==="Touchback"){    
-          
-            }
         }
         
         if (downs[downs.length-1].playType ==="FG" || downs[downs.length-1].playType ==="2pt") {
             const points = downs[downs.length-1].playType ==="FG" ? 3 : 1
             if (downs[downs.length-1].result ==="Good"){    
-                if (downs[downs.length-1].possession ==="Home"){
-                    setHomeScore(homeScore+points)
-                } else if (downs[downs.length-1].possession ==="Away"){
-                    setAwayScore(awayScore+points)
-                }
-                setPlaytype("KO")
+          
             } else if (downs[downs.length-1].result ==="No good"){
                 setPlaytype("KO")
             }
