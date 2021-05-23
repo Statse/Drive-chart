@@ -135,6 +135,15 @@ export default function GameForm(props) {
         }
     }
 
+    const handlePlayTypeChange = (e) => {
+        //Logic here
+        setPlaytype(e.target.value)
+
+        if (e.target.value==="KO"){
+            setStartYardline(35) 
+        }
+    }
+
     const handleQuarterChange = (e) => {
         setQuarter(e.target.value)
     }
@@ -151,16 +160,21 @@ export default function GameForm(props) {
         setEndYardline(e.target.value)
     }
 
-    const handleYardlineBlur = (e) => {
+    const handleStartYardlineBlur = (e) => {
         //limit values
+        if (e.target.value >= 100){
+            setStartYardline(99)
+        } else if (e.target.value < 0){
+            setStartYardline(0)
+        }
     }
 
-    const handlePlayTypeChange = (e) => {
-        //Logic here
-        setPlaytype(e.target.value)
-
-        if (e.target.value==="KO"){
-            setStartYardline(35) 
+    const handleEndYardlineBlur = (e) => {
+        //limit values
+        if (e.target.value > 100){
+            setEndYardline(100)
+        } else if (e.target.value < 0){
+            setEndYardline(0)
         }
     }
 
@@ -432,7 +446,7 @@ export default function GameForm(props) {
                     type="number" 
                     value={startYardline}
                     onChange={handleStartYardlineChange}
-                    onBlur={handleYardlineBlur}
+                    onBlur={handleStartYardlineBlur}
                     required  />
                 </Grid>
                 <Grid item xs={12} md={2}>
@@ -444,7 +458,7 @@ export default function GameForm(props) {
                     type="number" 
                     value={endYardline}
                     onChange={handleEndYardlineChange}
-                    onBlur={handleYardlineBlur}
+                    onBlur={handleEndYardlineBlur}
                     required  />
                 </Grid>
                 <Grid item xs={12} md={2}>
