@@ -48,7 +48,7 @@ export default function GameForm(props) {
     const [init, setInit] = useState(false)
     const [homeScore, setHomeScore] = useState(0)
     const [awayScore, setAwayScore] = useState(0)
-    const [possession, setPossession] = useState("Home")
+    const [possession, setPossession] = useState("")
     const [quarter, setQuarter] = useState(1)
     const [down, setDown] = useState(1)
     const [distance, setDistance] = useState(10)
@@ -67,7 +67,7 @@ export default function GameForm(props) {
         setLoading(true)
         console.log("Loading...")
         try {
-            playSubmitHandler(result)
+            playSubmitHandler(playType, result)
 
             const thisDown = {
                 homeScore: homeScore,
@@ -179,7 +179,7 @@ export default function GameForm(props) {
         setDown(1)
     }
 
-    const playSubmitHandler = (result) => {
+    const playSubmitHandler = (playType, result) => {
         switch(result) {
             case "xp good":
                 PAT(1)
@@ -193,13 +193,7 @@ export default function GameForm(props) {
                 setPlaytype("KO")
             break;
             case "Touchback":
-                setStartYardline(20) 
-                firstDowns()
-                if (downs[downs.length-1].possession ==="Home"){
-                    setPossession("Away")
-                } else if (downs[downs.length-1].possession ==="Away"){
-                    setPossession("Home")
-                }
+                // code block 
             break;
             case "Complete":
                 // code block
@@ -242,9 +236,11 @@ export default function GameForm(props) {
           }
     }
 
+
     const playResultHandler = (thisDown) => {
         //Init form
-        setHash("")
+        setHash(thisDown.playDirection)
+        setPossession(thisDown.possession)
         setMotion("")
         setPlaydirection("")
         setPersonel("")
@@ -252,7 +248,7 @@ export default function GameForm(props) {
         setResult("")
         setStartYardline(thisDown.endYardline)
         setEndYardline("")
-        setDown(thisDown.down+1)
+        setDown(parseInt(thisDown.down)+1)
         setDistance(thisDown.distance - (thisDown.endYardline-thisDown.startYardline))
 
         switch(thisDown.result) {
@@ -269,6 +265,7 @@ export default function GameForm(props) {
                 setPlaytype("KO")
             break;
             case "Touchback":
+                console.log("touchback...")
                 changePossession(thisDown.possession)
                 setStartYardline(20) 
                 firstDowns()
@@ -315,12 +312,14 @@ export default function GameForm(props) {
 
     //init based on previous downs
     if (!init && downs.length){ 
-
         setInit(true)
         playResultHandler(downs[downs.length-1])
 
         //new downs
-        if ((endYardline-startYardline)>distance){
+        console.log("startYardline", downs[downs.length-1].startYardline)
+        console.log("endYardline", downs[downs.length-1].endYardline)
+        console.log("distance", downs[downs.length-1].distance)
+        if ((downs[downs.length-1].endYardline-downs[downs.length-1].startYardline)>downs[downs.length-1].distance){
             firstDowns()
         }
 
@@ -460,6 +459,7 @@ export default function GameForm(props) {
                         className={classes.fullWidth}
                         onChange={(e)=>setResult(e.target.value)}
                         value={result}
+                        required
                         >
                         
                         {/* FG, XP */}
@@ -511,12 +511,12 @@ export default function GameForm(props) {
                         <TextField 
                         labelId="distance-label" 
                         className={classes.fullWidth}
-                            id="standard-basic" 
-                            type="number" 
-                            required 
-                            onChange={(e)=>setDistance(e.target.value)}
-                            value={distance}
-                            />
+                        id="standard-basic" 
+                        type="number" 
+                        required 
+                        onChange={(e)=>setDistance(e.target.value)}
+                        value={distance}
+                        />
                     </Grid>
                 )}
                 <Grid item xs={12} md={2}>
@@ -527,6 +527,7 @@ export default function GameForm(props) {
                         className={classes.fullWidth}
                         value={hash}
                         onChange={(e)=>setHash(e.target.value)}
+                        required
                         >
                         <MenuItem value={"L"}>L</MenuItem>
                         <MenuItem value={"M"}>M</MenuItem>
