@@ -61,14 +61,12 @@ export default function GameForm(props) {
     const [playType, setPlaytype] = useState("")
     const [result, setResult] = useState("")
     const [selectedDown, setSelectedDown] = useState(1)
-    const prevDown = downs[downs.length-1]
 
     async function handleSubmit(e){
         e.preventDefault()
         setLoading(true)
         console.log("Loading...")
         try {
-
             playSubmitHandler(result)
 
             const thisDown = {
@@ -88,9 +86,7 @@ export default function GameForm(props) {
                 result: result,
             }
 
-            console.log("prevDown", prevDown)
             console.log("thisDown", thisDown)
-
             const _downs = _setDowns(thisDown)
             
             await firebase.firestore()
@@ -243,8 +239,6 @@ export default function GameForm(props) {
             case "Penalty":
                 // code block
             break;
-            default:
-              // code block
           }
     }
 
@@ -316,8 +310,6 @@ export default function GameForm(props) {
             case "Penalty":
                 // code block
             break;
-            default:
-              // code block
           }
     }
 
@@ -325,15 +317,12 @@ export default function GameForm(props) {
     if (!init && downs.length){ 
 
         setInit(true)
-
         playResultHandler(downs[downs.length-1])
 
         //new downs
         if ((endYardline-startYardline)>distance){
-            setDistance(10)
-            setDown(1)
+            firstDowns()
         }
-     
 
         // KICKING PLAYS
         if (downs[downs.length-1].playType ==="KO" || downs[downs.length-1].playType ==="punt"){
@@ -346,12 +335,11 @@ export default function GameForm(props) {
         
         //new downs
         if ((endYardline-startYardline)>distance && downs[downs.length-1].playType ==="Punt" ){
-            setDistance(10)
-            setDown(1)
+            firstDowns()
         }
 
         if (downs[downs.length-1].playType ==="Punt"){
-            setPossession(downs[downs.length-1].possession ==="Home" ? "Away" : "Home")
+            changePossession(downs[downs.length-1].possession)
         }
     }
 
