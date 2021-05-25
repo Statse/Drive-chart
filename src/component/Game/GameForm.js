@@ -60,6 +60,7 @@ export default function GameForm(props) {
     const [personel, setPersonel] = useState(20)
     const [playType, setPlaytype] = useState("")
     const [result, setResult] = useState("")
+    const [selectedDown, setSelectedDown] = useState(1)
     const prevDown = downs[downs.length-1]
 
     async function handleSubmit(e){
@@ -67,6 +68,9 @@ export default function GameForm(props) {
         setLoading(true)
         console.log("Loading...")
         try {
+
+            playSubmitHandler(result)
+
             const thisDown = {
                 homeScore: homeScore,
                 awayScore: awayScore,
@@ -128,88 +132,13 @@ export default function GameForm(props) {
     }
 
     //game logic here
-    const handlePossessionChange = (e) => {
-        setPossession(e.target.value)
-        if (playType ==="KO"){
-            setStartYardline(35) 
-        }
-    }
-
-    const handlePlayTypeChange = (e) => {
-        //Logic here
-        setPlaytype(e.target.value)
-
-        if (e.target.value==="KO"){
-            setStartYardline(35) 
-        }
-    }
-
-    const handleQuarterChange = (e) => {
-        setQuarter(e.target.value)
-    }
-
-    const handleDownChange = (e) => {
-        setDown(e.target.value)
-    }
-
-    const handleStartYardlineChange = (e) => {
-        setStartYardline(e.target.value)
-    }
-
-    const handleEndYardlineChange = (e) => {
-        setEndYardline(e.target.value)
-    }
-
-    const handleStartYardlineBlur = (e) => {
-        //limit values
-        if (e.target.value >= 100){
-            setStartYardline(99)
-        } else if (e.target.value < 0){
-            setStartYardline(0)
-        }
-    }
-
-    const handleEndYardlineBlur = (e) => {
-        //limit values
-        if (e.target.value > 100){
-            setEndYardline(100)
-        } else if (e.target.value < 0){
-            setEndYardline(0)
-        }
-    }
-
-    const handleDistanceChange = (e) => {
-        setDistance(e.target.value)
-    }
-
-    const handleHashChange = (e) => {
-        setHash(e.target.value)
-    }
-
-    const handleMotionChange = (e) => {
-        setMotion(e.target.value)
-    }
-
-    const handlePlaydirectionChange = (e) => {
-        setPlaydirection(e.target.value)
-    }
-
-    const handleResultChange = (e) => {
-        setResult(e.target.value)
-    }
-
-    const handlePersonelChange = (e) => {
-        setPersonel(e.target.value)
-    }
-
-
-    const turnover = () => {
-        if (downs[downs.length-1].possession ==="Home"){
+    const turnover = (thisDown) => {
+        if (thisDown.possession ==="Home"){
             setPossession("Away")
-        } else if (downs[downs.length-1].possession ==="Away"){
+        } else if (thisDown.possession ==="Away"){
             setPossession("Home")
         }
-        setStartYardline(100-downs[downs.length-1].endYardline)
+        setStartYardline(100-thisDown.endYardline)
     }
 
     const turnOverTD = () =>{
@@ -241,10 +170,10 @@ export default function GameForm(props) {
         setPlaytype("KO")
     }
   
-    const changePossession = () => {
-        if (downs[downs.length-1].possession === "Home"){
+    const changePossession = (possession) => {
+        if (possession === "Home"){
             setPossession("Away")
-        } else if (downs[downs.length-1].possession ==="Away"){
+        } else if (possession ==="Away"){
             setPossession("Home")
         }
     }
@@ -254,20 +183,7 @@ export default function GameForm(props) {
         setDown(1)
     }
 
-    const playResultHandler = (result) => {
-
-        //Init form
-        setHash("")
-        setMotion("")
-        setPlaydirection("")
-        setPersonel("")
-        setPlaytype("")
-        setResult("")
-        setStartYardline(downs[downs.length-1].endYardline)
-        setEndYardline("")
-        setDown(downs[downs.length-1].down+1)
-        setDistance(downs[downs.length-1].distance - (downs[downs.length-1].endYardline-downs[downs.length-1].startYardline))
-
+    const playSubmitHandler = (result) => {
         switch(result) {
             case "xp good":
                 PAT(1)
@@ -299,17 +215,86 @@ export default function GameForm(props) {
                 // code block
                 if (downs[downs.length-1].endYardline === 0) {
                     turnOverTD()
-                } else {
-                    turnover()
-                    firstDowns()
                 }
             break;
             case "Rush":
                 // code block
             break;
             case "TD":
-                // code block
                 TD()
+            break;
+            case "Sack":
+                // code block
+            break;
+            case "Safety":
+                // code block
+            break;
+            case "Turnover": 
+                // code block
+            break;
+            case "Fumble recover":
+                // code block
+            break;
+            case "Fumble turnover":
+                if (downs[downs.length-1].endYardline === 0) {
+                    turnOverTD()
+                }
+            break;
+            case "Penalty":
+                // code block
+            break;
+            default:
+              // code block
+          }
+    }
+
+    const playResultHandler = (thisDown) => {
+        //Init form
+        setHash("")
+        setMotion("")
+        setPlaydirection("")
+        setPersonel("")
+        setPlaytype("")
+        setResult("")
+        setStartYardline(thisDown.endYardline)
+        setEndYardline("")
+        setDown(thisDown.down+1)
+        setDistance(thisDown.distance - (thisDown.endYardline-thisDown.startYardline))
+
+        switch(thisDown.result) {
+            case "xp good":
+                setPlaytype("KO")
+            break;
+            case "2pt good":
+                setPlaytype("KO")
+            break;
+            case "Good":
+                setPlaytype("KO")
+            break;
+            case "No good":
+                setPlaytype("KO")
+            break;
+            case "Touchback":
+                changePossession(thisDown.possession)
+                setStartYardline(20) 
+                firstDowns()
+            break;
+            case "Complete":
+                // code block
+            break;
+            case "Incomplete":
+                // code block
+            break;
+            case "Interception":
+                // code block
+                turnover(thisDown)
+                firstDowns()
+            break;
+            case "Rush":
+                // code block
+            break;
+            case "TD":
+                // code block
             break;
             case "Sack":
                 // code block
@@ -324,20 +309,15 @@ export default function GameForm(props) {
             case "Fumble recover":
                 // code block
             break;
-            case "Fumble turnover":
-                if (downs[downs.length-1].endYardline === 0) {
-                    turnOverTD()
-                } else {
-                    turnover()
-                    firstDowns()
-                }
+            case "Fumble turnover":          
+                turnover()
+                firstDowns()
             break;
             case "Penalty":
                 // code block
             break;
             default:
               // code block
-              console.log("default")
           }
     }
 
@@ -346,7 +326,7 @@ export default function GameForm(props) {
 
         setInit(true)
 
-        playResultHandler(downs[downs.length-1].result)
+        playResultHandler(downs[downs.length-1])
 
         //new downs
         if ((endYardline-startYardline)>distance){
@@ -388,7 +368,7 @@ export default function GameForm(props) {
                             labelId="QTR-label"
                             id="demo-simple-select"
                             className={classes.fullWidth + " " + classes.selectEmpty}
-                            onChange={handleQuarterChange}
+                            onChange={(e) =>  setQuarter(e.target.value)}
                             label="QTR"
                             value={quarter}
                             >
@@ -405,7 +385,12 @@ export default function GameForm(props) {
                         labelId="possession-label"
                         id="demo-simple-select"
                         className={classes.fullWidth + " " + classes.selectEmpty}
-                        onChange={handlePossessionChange}
+                        onChange={(e) => {
+                            setPossession(e.target.value)
+                            if (playType ==="KO"){
+                                setStartYardline(35) 
+                            }
+                        }}
                         value={possession}
                         label="Possession"
                         >
@@ -426,7 +411,12 @@ export default function GameForm(props) {
                         labelId="playtype-label"
                         id="demo-simple-select"
                         className={classes.fullWidth}
-                        onChange={handlePlayTypeChange}
+                        onChange={(e) => {
+                            setPlaytype(e.target.value)
+                            if (e.target.value==="KO"){
+                                setStartYardline(35) 
+                            }
+                        }}
                         value={playType}
                         >
                         <MenuItem value={"KO"}>KO</MenuItem>
@@ -445,8 +435,15 @@ export default function GameForm(props) {
                     id="standard-basic" 
                     type="number" 
                     value={startYardline}
-                    onChange={handleStartYardlineChange}
-                    onBlur={handleStartYardlineBlur}
+                    onChange={(e) => setStartYardline(e.target.value)}
+                    onBlur={(e) => {
+                        //limit values
+                        if (e.target.value >= 100){
+                            setStartYardline(99)
+                        } else if (e.target.value < 0){
+                            setStartYardline(0)
+                        }
+                    }}
                     required  />
                 </Grid>
                 <Grid item xs={12} md={2}>
@@ -457,8 +454,14 @@ export default function GameForm(props) {
                     id="standard-basic" 
                     type="number" 
                     value={endYardline}
-                    onChange={handleEndYardlineChange}
-                    onBlur={handleEndYardlineBlur}
+                    onChange={(e)=>setEndYardline(e.target.value)}
+                    onBlur={(e) => {
+                        if (e.target.value > 100){
+                            setEndYardline(100)
+                        } else if (e.target.value < 0){
+                            setEndYardline(0)
+                        }
+                    }}
                     required  />
                 </Grid>
                 <Grid item xs={12} md={2}>
@@ -467,7 +470,7 @@ export default function GameForm(props) {
                         labelId="result-label"
                         id="demo-simple-select"
                         className={classes.fullWidth}
-                        onChange={handleResultChange}
+                        onChange={(e)=>setResult(e.target.value)}
                         value={result}
                         >
                         
@@ -508,7 +511,7 @@ export default function GameForm(props) {
                         className={classes.fullWidth} 
                         id="standard-basic"
                         type="number" 
-                        onChange={handleDownChange}
+                        onChange={(e)=>setDown(e.target.value)}
                         value={down}
                         required />
                     </Grid>
@@ -523,7 +526,7 @@ export default function GameForm(props) {
                             id="standard-basic" 
                             type="number" 
                             required 
-                            onChange={handleDistanceChange}
+                            onChange={(e)=>setDistance(e.target.value)}
                             value={distance}
                             />
                     </Grid>
@@ -535,7 +538,7 @@ export default function GameForm(props) {
                         id="demo-simple-select"
                         className={classes.fullWidth}
                         value={hash}
-                        onChange={handleHashChange}
+                        onChange={(e)=>setHash(e.target.value)}
                         >
                         <MenuItem value={"L"}>L</MenuItem>
                         <MenuItem value={"M"}>M</MenuItem>
@@ -550,7 +553,7 @@ export default function GameForm(props) {
                             labelId="motion-label"
                             id="demo-simple-select"
                             className={classes.fullWidth}
-                            onChange={handleMotionChange}
+                            onChange={(e)=>setMotion(e.target.value)}
                             value={motion}
                             >
                             <MenuItem value={null}>No motion</MenuItem>
@@ -566,7 +569,7 @@ export default function GameForm(props) {
                             labelId="playdirection-label"
                             id="demo-simple-select"
                             className={classes.fullWidth}
-                            onChange={handlePlaydirectionChange}
+                            onChange={(e)=>setPlaydirection(e.target.value)}
                             value={playDirection}
                             >
                             <MenuItem value={"L"}>L</MenuItem>
@@ -584,10 +587,32 @@ export default function GameForm(props) {
                     type="number" 
                     required 
                     value={personel}
-                    onChange={handlePersonelChange}
+                    onChange={(e)=>setPersonel(e.target.value)}
                     />
                 </Grid>
                 )}
+                 <Grid item xs={12} md={2}>
+                    <InputLabel className={classes.bottomMargin} id="down-label">Home score</InputLabel>
+                    <TextField  
+                    labelId="down-label" 
+                    className={classes.fullWidth} 
+                    id="standard-basic"
+                    type="number" 
+                    onChange={(e)=>setHomeScore(e.target.value)}
+                    value={homeScore}
+                    required />
+                </Grid>
+                <Grid item xs={12} md={2}>
+                    <InputLabel className={classes.bottomMargin} id="down-label">Away score</InputLabel>
+                    <TextField  
+                    labelId="down-label" 
+                    className={classes.fullWidth} 
+                    id="standard-basic"
+                    type="number" 
+                    onChange={(e)=>setAwayScore(e.target.value)}
+                    value={awayScore}
+                    required />
+                </Grid>
                 {/* <Grid item xs={12}>
                     <Button className={classes.button} disabled={loading} variant="contained" type="submit">Save down</Button>
                     <Button onClick={handleTurnover} className={classes.button} disabled={loading} variant="contained" type="button">Turnover</Button>
