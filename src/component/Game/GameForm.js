@@ -67,8 +67,6 @@ export default function GameForm(props) {
         setLoading(true)
         console.log("Loading...")
         try {
-            playSubmitHandler(playType, result)
-
             const thisDown = {
                 homeScore: homeScore,
                 awayScore: awayScore,
@@ -136,35 +134,6 @@ export default function GameForm(props) {
         }
         setStartYardline(100-thisDown.endYardline)
     }
-
-    const turnOverTD = () =>{
-        if (downs[downs.length-1].possession ==="Home"){
-            setPossession("Away")
-            setAwayScore(awayScore+6)
-        } else if (downs[downs.length-1].possession ==="Away"){
-            setPossession("Home")
-            setHomeScore(homeScore+6)
-        }
-        setPlaytype("PAT")
-    }
-
-    const TD = () => {
-        if (downs[downs.length-1].possession ==="Home"){
-            setHomeScore(homeScore+6)
-        } else if (downs[downs.length-1].possession ==="Away"){
-            setAwayScore(awayScore+6)
-        }
-        setPlaytype("PAT")
-    }
-
-    const PAT = (points) => {
-        if (downs[downs.length-1].possession ==="Home"){
-            setHomeScore(homeScore+points)
-        } else if (downs[downs.length-1].possession ==="Away"){
-            setAwayScore(awayScore+points)
-        }
-        setPlaytype("KO")
-    }
   
     const changePossession = (possession) => {
         if (possession === "Home"){
@@ -179,79 +148,26 @@ export default function GameForm(props) {
         setDown(1)
     }
 
-    const playSubmitHandler = (playType, result) => {
-        switch(result) {
-            case "xp good":
-                PAT(1)
-            break;
-            case "2pt good":
-                PAT(2)
-            break;
-            case "Good":
-            break;
-            case "No good":
-                setPlaytype("KO")
-            break;
-            case "Touchback":
-                // code block 
-            break;
-            case "Complete":
-                // code block
-            break;
-            case "Incomplete":
-                // code block
-            break;
-            case "Interception":
-                // code block
-                if (downs[downs.length-1].endYardline === 0) {
-                    turnOverTD()
-                }
-            break;
-            case "Rush":
-                // code block
-            break;
-            case "TD":
-                TD()
-            break;
-            case "Sack":
-                // code block
-            break;
-            case "Safety":
-                // code block
-            break;
-            case "Turnover": 
-                // code block
-            break;
-            case "Fumble recover":
-                // code block
-            break;
-            case "Fumble turnover":
-                if (downs[downs.length-1].endYardline === 0) {
-                    turnOverTD()
-                }
-            break;
-            case "Penalty":
-                // code block
-            break;
-          }
-    }
 
-
-    const playResultHandler = (thisDown) => {
+    const playResultHandler = (downData) => {
+        console.log("playResultHandler")
+        
         //Init form
-        setHash(thisDown.playDirection)
-        setPossession(thisDown.possession)
+        setHash(downData.playDirection)
+        setPossession(downData.possession)
+        setHomeScore(downData.homeScore)
+        setAwayScore(downData.awayScore)
         setMotion("")
         setPlaydirection("")
         setPersonel("")
         setPlaytype("")
         setResult("")
-        setStartYardline(thisDown.endYardline)
+        setStartYardline(downData.endYardline)
         setEndYardline("")
-        setDown(parseInt(thisDown.down)+1)
-        setDistance(thisDown.distance - (thisDown.endYardline-thisDown.startYardline))
+        setDown(parseInt(downData.down)+1)
+        setDistance(downData.distance - (downData.endYardline-downData.startYardline))
 
-        switch(thisDown.result) {
+        switch(downData.result) {
             case "xp good":
                 setPlaytype("KO")
             break;
@@ -266,7 +182,7 @@ export default function GameForm(props) {
             break;
             case "Touchback":
                 console.log("touchback...")
-                changePossession(thisDown.possession)
+                changePossession(downData.possession)
                 setStartYardline(20) 
                 firstDowns()
             break;
@@ -278,7 +194,7 @@ export default function GameForm(props) {
             break;
             case "Interception":
                 // code block
-                turnover(thisDown)
+                turnover(downData)
                 firstDowns()
             break;
             case "Rush":
@@ -286,6 +202,8 @@ export default function GameForm(props) {
             break;
             case "TD":
                 // code block
+                setPlaytype("PAT")
+                setStartYardline(97)
             break;
             case "Sack":
                 // code block
@@ -307,7 +225,11 @@ export default function GameForm(props) {
             case "Penalty":
                 // code block
             break;
-          }
+        }
+
+        if (downData.playType==="KO"){
+            setStartYardline(35) 
+        }
     }
 
     //init based on previous downs
