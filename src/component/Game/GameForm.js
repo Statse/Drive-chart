@@ -127,11 +127,7 @@ export default function GameForm(props) {
 
     //game logic here
     const turnover = (thisDown) => {
-        if (thisDown.possession ==="Home"){
-            setPossession("Away")
-        } else if (thisDown.possession ==="Away"){
-            setPossession("Home")
-        }
+        changePossession(thisDown.possession)
         setStartYardline(100-thisDown.endYardline)
     }
   
@@ -157,6 +153,7 @@ export default function GameForm(props) {
         setPossession(downData.possession)
         setHomeScore(downData.homeScore)
         setAwayScore(downData.awayScore)
+        setQuarter(downData.quarter)
         setMotion("")
         setPlaydirection("")
         setPersonel("")
@@ -166,6 +163,15 @@ export default function GameForm(props) {
         setEndYardline("")
         setDown(parseInt(downData.down)+1)
         setDistance(downData.distance - (downData.endYardline-downData.startYardline))
+
+        if (downData.playType ==="PAT"){
+            setStartYardline(35) 
+        }
+
+        if (downData.playType ==="KO"){
+            setStartYardline(100-downData.endYardline)
+        }
+
 
         switch(downData.result) {
             case "xp good":
@@ -191,10 +197,12 @@ export default function GameForm(props) {
             break;
             case "Incomplete":
                 // code block
+                setHash(downData.hash)
             break;
             case "Interception":
                 // code block
-                turnover(downData)
+                changePossession(downData.possession)
+                setStartYardline(100-downData.endYardline)
                 firstDowns()
             break;
             case "Rush":
@@ -212,14 +220,17 @@ export default function GameForm(props) {
                 // code block
             break;
             case "Turnover": 
-                turnover()
-                // code block
+                changePossession(downData.possession)
+                setStartYardline(100-downData.endYardline)
+                firstDowns()
             break;
             case "Fumble recover":
                 // code block
             break;
             case "Fumble turnover":          
-                turnover()
+                console.log("fumble turnover")
+                changePossession(downData.possession)
+                setStartYardline(100-downData.endYardline)
                 firstDowns()
             break;
             case "Penalty":
@@ -227,23 +238,27 @@ export default function GameForm(props) {
             break;
         }
 
-        if (downData.playType==="KO"){
-            setStartYardline(35) 
-        }
     }
 
     //init based on previous downs
     if (!init && downs.length){ 
         setInit(true)
-        playResultHandler(downs[downs.length-1])
 
-        //new downs
-        console.log("startYardline", downs[downs.length-1].startYardline)
-        console.log("endYardline", downs[downs.length-1].endYardline)
-        console.log("distance", downs[downs.length-1].distance)
-        if ((downs[downs.length-1].endYardline-downs[downs.length-1].startYardline)>downs[downs.length-1].distance){
+        playResultHandler(downs[downs.length-1])
+        if ((downs[downs.length-1].endYardline-downs[downs.length-1].startYardline)>=downs[downs.length-1].distance ){
+            firstDowns()
+            console.log("startYardline + distance", startYardline + distance)
+            if (downs[downs.length-1].endYardline + distance > 100){
+                //debug purposes
+                alert(downs[downs.length-1].endYardline + distance)
+            //     //if close to goal line
+            //     setDistance(100-downs[downs.length-1].endYardline)
+            }
+        } else if (downs > 4) {
+            turnover(downs[downs.length-1]) 
             firstDowns()
         }
+
 
         // KICKING PLAYS
         if (downs[downs.length-1].playType ==="KO" || downs[downs.length-1].playType ==="punt"){
@@ -252,15 +267,7 @@ export default function GameForm(props) {
             } else if (downs[downs.length-1].possession ==="Away"){
                 setPossession("Home") 
             }
-        }
-        
-        //new downs
-        if ((endYardline-startYardline)>distance && downs[downs.length-1].playType ==="Punt" ){
             firstDowns()
-        }
-
-        if (downs[downs.length-1].playType ==="Punt"){
-            changePossession(downs[downs.length-1].possession)
         }
     }
 
@@ -307,6 +314,54 @@ export default function GameForm(props) {
                         <MenuItem value={"Away"}>Away</MenuItem>
                     </Select>
                 </Grid>
+                <Grid item xs={12} md={2}>
+                    <InputLabel className={classes.bottomMargin} id="yard-label">Start yard Line</InputLabel>
+                    <TextField 
+                    labelId="yard-label"
+                    className={classes.fullWidth} 
+                    id="standard-basic" 
+                    type="number" 
+                    value={startYardline}
+                    onChange={(e) => setStartYardline(e.target.value)}
+                    onBlur={(e) => {
+                        //limit values
+                        if (e.target.value >= 100){
+                            setStartYardline(99)
+                        } else if (e.target.value < 0){
+                            setStartYardline(0)
+                        }
+                    }}
+                    required  />
+                </Grid>
+                <Grid item xs={12} md={2}>
+                    <InputLabel className={classes.bottomMargin} id="hash-label">Hash</InputLabel>
+                    <Select
+                        labelId="hash-label"
+                        id="demo-simple-select"
+                        className={classes.fullWidth}
+                        value={hash}
+                        onChange={(e)=>setHash(e.target.value)}
+                        required
+                        >
+                        <MenuItem value={"L"}>L</MenuItem>
+                        <MenuItem value={"M"}>M</MenuItem>
+                        <MenuItem value={"R"}>R</MenuItem>
+                    </Select>
+                </Grid>
+                {playType !=="KO" && playType !=="FG" && (
+                <Grid item xs={12} md={2}>
+                    <InputLabel className={classes.bottomMargin} id="personel-label">Personel</InputLabel>
+                    <TextField 
+                    labelId="personel-label" 
+                    className={classes.fullWidth} 
+                    id="standard-basic" 
+                    type="number" 
+                    value={personel}
+                    onChange={(e)=>setPersonel(e.target.value)}
+                    />
+                </Grid>
+                )}
+                
                 {/*         
                    Always show from offensives perspective
 
@@ -336,50 +391,53 @@ export default function GameForm(props) {
                         <MenuItem value={"PAT"}>PAT</MenuItem>
                     </Select>
                 </Grid>
-                <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="yard-label">Start yard Line</InputLabel>
-                    <TextField 
-                    labelId="yard-label"
-                    className={classes.fullWidth} 
-                    id="standard-basic" 
-                    type="number" 
-                    value={startYardline}
-                    onChange={(e) => setStartYardline(e.target.value)}
-                    onBlur={(e) => {
-                        //limit values
-                        if (e.target.value >= 100){
-                            setStartYardline(99)
-                        } else if (e.target.value < 0){
-                            setStartYardline(0)
-                        }
-                    }}
-                    required  />
-                </Grid>
-                <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="yard-label">End yard Line</InputLabel>
-                    <TextField 
-                    labelId="yard-label"
-                    className={classes.fullWidth} 
-                    id="standard-basic" 
-                    type="number" 
-                    value={endYardline}
-                    onChange={(e)=>setEndYardline(e.target.value)}
-                    onBlur={(e) => {
-                        if (e.target.value > 100){
-                            setEndYardline(100)
-                        } else if (e.target.value < 0){
-                            setEndYardline(0)
-                        }
-                    }}
-                    required  />
-                </Grid>
+                {/*not in Kickoff, PAT */}
+                {playType !=="KO" && playType !=="FG" && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="motion-label">Motion direction</InputLabel>
+                        <Select
+                            labelId="motion-label"
+                            id="demo-simple-select"
+                            className={classes.fullWidth}
+                            onChange={(e)=>setMotion(e.target.value)}
+                            value={motion}
+                            >
+                            <MenuItem value={null}>No motion</MenuItem>
+                            <MenuItem value={"L"}>L</MenuItem>
+                            <MenuItem value={"R"}>R</MenuItem>
+                        </Select>
+                    </Grid>
+                )}
+                {result !=="Penalty" && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="playdirection-label">Play direction</InputLabel>
+                        <Select
+                            labelId="playdirection-label"
+                            id="demo-simple-select"
+                            className={classes.fullWidth}
+                            onChange={(e)=>setPlaydirection(e.target.value)}
+                            value={playDirection}
+                            >
+                            <MenuItem value={"L"}>L</MenuItem>
+                            <MenuItem value={"R"}>R</MenuItem>
+                        </Select>
+                    </Grid>
+                )}
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="result-label">Play result</InputLabel>
                     <Select
                         labelId="result-label"
                         id="demo-simple-select"
                         className={classes.fullWidth}
-                        onChange={(e)=>setResult(e.target.value)}
+                        onChange={(e)=>{
+                            setResult(e.target.value)
+                            if (e.target.value === "Incomplete"){
+                                setEndYardline(startYardline)
+                            }
+                            if (e.target.value === "TD"){
+                                setEndYardline(100)
+                            }
+                        }}
                         value={result}
                         required
                         >
@@ -412,6 +470,24 @@ export default function GameForm(props) {
                         <MenuItem value={"Turnover"}>Turnover</MenuItem>
                     </Select>
                 </Grid>
+                <Grid item xs={12} md={2}>
+                    <InputLabel className={classes.bottomMargin} id="yard-label">End yard Line</InputLabel>
+                    <TextField 
+                    labelId="yard-label"
+                    className={classes.fullWidth} 
+                    id="standard-basic" 
+                    type="number" 
+                    value={endYardline}
+                    onChange={(e)=>setEndYardline(e.target.value)}
+                    onBlur={(e) => {
+                        if (e.target.value > 100){
+                            setEndYardline(100)
+                        } else if (e.target.value < 0){
+                            setEndYardline(0)
+                        }
+                    }}
+                    required  />
+                </Grid>
                 {/*not in Kickoff, PAT */}
                 {playType !=="PAT" && playType !=="KO" && (
                     <Grid item xs={12} md={2}>
@@ -441,67 +517,7 @@ export default function GameForm(props) {
                         />
                     </Grid>
                 )}
-                <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="hash-label">Hash</InputLabel>
-                    <Select
-                        labelId="hash-label"
-                        id="demo-simple-select"
-                        className={classes.fullWidth}
-                        value={hash}
-                        onChange={(e)=>setHash(e.target.value)}
-                        required
-                        >
-                        <MenuItem value={"L"}>L</MenuItem>
-                        <MenuItem value={"M"}>M</MenuItem>
-                        <MenuItem value={"R"}>R</MenuItem>
-                    </Select>
-                </Grid>
-                {/*not in Kickoff, PAT */}
-                {playType !=="PAT" && playType !=="KO" && playType !=="FG" && (
-                    <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="motion-label">Motion direction</InputLabel>
-                        <Select
-                            labelId="motion-label"
-                            id="demo-simple-select"
-                            className={classes.fullWidth}
-                            onChange={(e)=>setMotion(e.target.value)}
-                            value={motion}
-                            >
-                            <MenuItem value={null}>No motion</MenuItem>
-                            <MenuItem value={"L"}>L</MenuItem>
-                            <MenuItem value={"R"}>R</MenuItem>
-                        </Select>
-                    </Grid>
-                )}
-                {result !=="Penalty" && (
-                    <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="playdirection-label">Play direction</InputLabel>
-                        <Select
-                            labelId="playdirection-label"
-                            id="demo-simple-select"
-                            className={classes.fullWidth}
-                            onChange={(e)=>setPlaydirection(e.target.value)}
-                            value={playDirection}
-                            >
-                            <MenuItem value={"L"}>L</MenuItem>
-                            <MenuItem value={"R"}>R</MenuItem>
-                        </Select>
-                    </Grid>
-                )}
-                {playType !=="PAT" && playType !=="KO" && playType !=="FG" && (
-                <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="personel-label">Personel</InputLabel>
-                    <TextField 
-                    labelId="personel-label" 
-                    className={classes.fullWidth} 
-                    id="standard-basic" 
-                    type="number" 
-                    required 
-                    value={personel}
-                    onChange={(e)=>setPersonel(e.target.value)}
-                    />
-                </Grid>
-                )}
+               
                  <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="down-label">Home score</InputLabel>
                     <TextField  
