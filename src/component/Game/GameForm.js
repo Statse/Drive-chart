@@ -68,18 +68,18 @@ export default function GameForm(props) {
         console.log("Loading...")
         try {
             const thisDown = {
-                homeScore: homeScore,
-                awayScore: awayScore,
+                homeScore: parseInt(homeScore),
+                awayScore: parseInt(awayScore),
                 possession: possession,
-                quarter: quarter,
-                down: down,
-                distance: distance,
-                startYardline: startYardline,
-                endYardline: endYardline,
+                quarter: parseInt(quarter),
+                down: parseInt(down),
+                distance: parseInt(distance),
+                startYardline: parseInt(startYardline),
+                endYardline: parseInt(endYardline),
                 hash: hash,
                 motion: motion,
                 playDirection: playDirection,
-                personel: personel,
+                personel: parseInt(personel),
                 playType: playType,
                 result: result,
             }
@@ -168,7 +168,7 @@ export default function GameForm(props) {
             setStartYardline(35) 
         }
 
-        if (downData.playType ==="KO"){
+        if (downData.playType ==="KO" && downData.result !== "Turnover"){
             setStartYardline(100-downData.endYardline)
         }
 
@@ -220,9 +220,13 @@ export default function GameForm(props) {
                 // code block
             break;
             case "Turnover": 
-                changePossession(downData.possession)
-                setStartYardline(100-downData.endYardline)
-                firstDowns()
+                if (downData.playType === "KO" || downData.playType ==="punt"){
+                    firstDowns()
+                } else {
+                    changePossession(downData.possession)
+                    setStartYardline(100-downData.endYardline)
+                    firstDowns()
+                }
             break;
             case "Fumble recover":
                 // code block
@@ -244,22 +248,6 @@ export default function GameForm(props) {
     if (!init && downs.length){ 
         setInit(true)
 
-        playResultHandler(downs[downs.length-1])
-        if ((downs[downs.length-1].endYardline-downs[downs.length-1].startYardline)>=downs[downs.length-1].distance ){
-            firstDowns()
-            console.log("startYardline + distance", startYardline + distance)
-            if (downs[downs.length-1].endYardline + distance > 100){
-                //debug purposes
-                alert(downs[downs.length-1].endYardline + distance)
-            //     //if close to goal line
-            //     setDistance(100-downs[downs.length-1].endYardline)
-            }
-        } else if (downs > 4) {
-            turnover(downs[downs.length-1]) 
-            firstDowns()
-        }
-
-
         // KICKING PLAYS
         if (downs[downs.length-1].playType ==="KO" || downs[downs.length-1].playType ==="punt"){
             if (downs[downs.length-1].possession ==="Home"){
@@ -267,8 +255,28 @@ export default function GameForm(props) {
             } else if (downs[downs.length-1].possession ==="Away"){
                 setPossession("Home") 
             }
+            if (downs[downs.length-1].result)
             firstDowns()
         }
+
+        playResultHandler(downs[downs.length-1])
+        if ((downs[downs.length-1].endYardline-downs[downs.length-1].startYardline)>=downs[downs.length-1].distance ){
+            firstDowns()
+            console.log("startYardline + distance", startYardline + distance)
+
+            //endyardline or distance might be string sometimes so lets make sure its integer
+            if (parseInt(downs[downs.length-1].endYardline) + parseInt(distance) > 100){
+                alert(downs[downs.length-1].endYardline + distance)
+            //     //if close to goal line
+                setDistance(100-downs[downs.length-1].endYardline)
+            }
+        } else if (downs > 4) {
+            turnover(downs[downs.length-1]) 
+            firstDowns()
+        }
+
+
+
     }
 
     return ( 
@@ -436,6 +444,9 @@ export default function GameForm(props) {
                             }
                             if (e.target.value === "TD"){
                                 setEndYardline(100)
+                            }
+                            if (e.target.value === "No good"){
+                                setEndYardline(startYardline)
                             }
                         }}
                         value={result}
