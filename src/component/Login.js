@@ -58,7 +58,6 @@ export default function Login() {
 
         try {
             setLoading(true)
-            console.log(emailRef)
             await login(emailRef.current.value, passwordRef.current.value)
             history.push("/")
         } catch(error) {

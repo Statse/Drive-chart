@@ -17,7 +17,7 @@ export function GameProvider({children}) {
     const [loading, setLoading] = useState(false)
 
     async function getGame(id){
-        console.log("getGame",  id)
+        // console.log("getGame",  id)
         try {
             const res = await firebase.firestore().collection('games').doc(id).get();
             const data =  res.data()

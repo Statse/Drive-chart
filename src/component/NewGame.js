@@ -39,8 +39,6 @@ export default function NewGame() {
     async function newGame() {
         setLoading(true)
         setError("")
-        console.log(awayRef.current.value)
-        console.log(homeRef.current.value)
 
         if (!awayRef.current.value || !homeRef.current.value){
             return setError("Set teams!")

@@ -1,31 +1,34 @@
 import React from 'react'
 
 export default function downNavigation(props) {
-    const {downs, prevDown, down, maxDowns, downIndex, setDownIndex, setEditMode, setInit} = props
+    const {
+        resetDown, 
+        downs, 
+        prevDown, 
+        down, 
+        maxDowns, 
+        downIndex, 
+        setDownIndex, 
+        setEditMode, 
+        setInit
+    } = props
 
-    console.log("DownNavigation")
-    console.log("downIndex", downIndex)
-    console.log("maxDowns", maxDowns)
     
 
     const prev = () => {
-        console.log("prev")
         if (downIndex - 1 >= 0){
             setDownIndex(downIndex-1)
-            console.log("downIndex" + downIndex)
             setEditMode(true)
             setInit(false)
         } else {
-            console.log("Invalid index: " + downIndex - 1)
+            console.error("Invalid index: " + downIndex - 1)
             alert("Invalid index: " + downIndex - 1)
         }
     }
 
     const next = () => {
-        console.log("next")
         if (downIndex + 1 <= maxDowns){
             setDownIndex(downIndex+1)
-            console.log("downIndex" + downIndex)
             if (downIndex < maxDowns){
                 setEditMode(true)
                 setInit(false)
@@ -33,13 +36,17 @@ export default function downNavigation(props) {
                 setEditMode(false)
                 setInit(false)
             }
+            //this isnt updated before
+            if (downIndex + 1 === maxDowns){
+                resetDown()
+                setInit(false)
+                setEditMode(false)
+            }
         } else {
-            console.log("Invalid index: " + downIndex + 1)
+            console.error("Invalid index: " + downIndex + 1)
             alert("Invalid index: " + downIndex + 1)
         }
     }
-
-    console.log("down from nav", down)
     
     return (
     <>

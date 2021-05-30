@@ -29,8 +29,6 @@ export default function Game(props) {
     const [game, setGame] = useState(false)
     const [loading, setLoading] = useState(false)
 
-    console.log("<<<<<<<<<<<<<GAME RENDER>>>>>>>>>>>>>>>")
-
     //TODO: investigate what causes multiple render cycles and fix it
     useEffect(()=>{
         setError("") 
@@ -43,8 +41,7 @@ export default function Game(props) {
         }
         if (!init){
             setLoading(true)
-            console.log("load downs")
-            const thisGame = loadGame(props.match.params.id).then((result)=>{setGame(result);setLoading(false)}).catch((e)=>{
+            loadGame(props.match.params.id).then((result)=>{setGame(result);setLoading(false)}).catch((e)=>{
                 setError(e)
                 return alert(e)
             })

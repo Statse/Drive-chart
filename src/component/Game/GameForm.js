@@ -67,7 +67,6 @@ export default function GameForm(props) {
     async function handleSubmit(e){
         e.preventDefault()
         setLoading(true)
-        console.log("Loading...")
         try {
             const thisDown = {
                 homeScore: parseInt(homeScore),
@@ -86,7 +85,6 @@ export default function GameForm(props) {
                 result: result,
             }
 
-            console.log("thisDown", thisDown)
             let _downs;
             if (editMode){
                 _downs = _updateDown(thisDown, downIndex)
@@ -113,6 +111,21 @@ export default function GameForm(props) {
             return alert(error)
         }
         setLoading(false)
+    }
+
+
+    const resetDown = () => {
+        setPossession("")
+        setQuarter("")
+        setDown("")
+        setDistance("")
+        setStartYardline("")
+        setEndYardline("")
+        setHash("")
+        setMotion("")
+        setPlaydirection("")
+        setPersonel("")
+        setResult("")
     }
 
 
@@ -159,8 +172,6 @@ export default function GameForm(props) {
 
 
     const playResultHandler = (downData) => {
-        console.log("playResultHandler")
-        
         //Init form
         setHash(downData.playDirection)
         setPossession(downData.possession)
@@ -201,7 +212,6 @@ export default function GameForm(props) {
                 setPlaytype("KO")
             break;
             case "Touchback":
-                console.log("touchback...")
                 changePossession(downData.possession)
                 setStartYardline(20) 
                 firstDowns()
@@ -266,7 +276,6 @@ export default function GameForm(props) {
 
             break;
             default:
-                console.log("DEFAULT")
             break;
         }
 
@@ -274,14 +283,13 @@ export default function GameForm(props) {
 
     //init based on previous downs
     if (!init && downs.length){ 
-        console.log(">>>>>>>>>INITIALIZE DOWN")
-        console.log("DOWNINDEX", downIndex)
 
         if (downIndex < downs.length && editMode){
-            console.log("EDIT")
+            console.log(">>>>>>>>>>>>>>EDIT")
             mapDownToCurrentState(downs[downIndex])
             setInit(true)
         } else if (!editMode && downs.length>0){
+            console.log(">>>>>>>>>>>>>>INIT")
             //Initialize form first time
             setDownIndex(downs.length)
             // KICKING PLAYS
@@ -320,16 +328,15 @@ export default function GameForm(props) {
 
     }
 
-    console.log("============<GAMEFORM RENDER==============")
-    console.log("init", init)
-    console.log("edit", editMode)
-    console.log("downs.length", downs.length)
-    console.log("downIndex", downIndex)
-    // console.log("downs[downIndex]", downs[downIndex])
+    // console.log("============<GAMEFORM RENDER==============")
+    // console.log("init", init)
+    // console.log("edit", editMode)
+    // console.log("downs.length", downs.length)
+    // console.log("downIndex", downIndex)
 
     return ( 
     <div className={useStyles.wrapper}>
-        <DownNavigation downs={downs} prevDown={downIndex-1} down={downs[downIndex-1]} setEditMode={(bool)=>{setEditMode(bool)}} setInit={(bool)=>{setInit(bool)}}  maxDowns={downs.length} downIndex={downIndex} setDownIndex={(index)=>{setDownIndex(index)}}/>
+        <DownNavigation resetDown={()=>resetDown} downs={downs} prevDown={downIndex-1} down={downs[downIndex-1]} setEditMode={(bool)=>{setEditMode(bool)}} setInit={(bool)=>{setInit(bool)}}  maxDowns={downs.length} downIndex={downIndex} setDownIndex={(index)=>{setDownIndex(index)}}/>
         <form id="game-form" onSubmit={handleSubmit}>
             <Grid container spacing={3}>
              {!loading && ( 
