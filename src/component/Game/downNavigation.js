@@ -2,6 +2,25 @@ import React from 'react'
 
 export default function downNavigation(props) {
     const {down, maxDowns, downIndex, setDownIndex} = props
+    
+
+    const prev = () => {
+        if (downIndex - 1 >= 0){
+            setDownIndex(downIndex-1)
+            console.log("downIndex" + downIndex)
+        } else {
+            alert("Invalid index: " + downIndex - 1)
+        }
+    }
+
+    const next = () => {
+        if (downIndex + 1 <= maxDowns){
+            setDownIndex(downIndex+1)
+            console.log("downIndex" + downIndex)
+        } else {
+            alert("Invalid index: " + downIndex + 1)
+        }
+    }
 
     console.log(props)
     return (
@@ -11,8 +30,8 @@ export default function downNavigation(props) {
                     width: '100%',
                     justifyContent: "space-between"}
                     }>
-                    {0 < downIndex && (<button  onClick={()=>alert("prev func")}>Previous</button>)} 
-                    {maxDowns > downIndex && (<button style={{marginLeft:"auto"}} onClick={()=>alert("Next func")}>Next</button>)} 
+                    {0 < downIndex && (<button  onClick={()=>prev}>Previous</button>)} 
+                    {maxDowns > downIndex && (<button style={{marginLeft:"auto"}} onClick={()=>next}>Next</button>)} 
 
         </div>
         <table style={{width:"100%", marginBottom:"3rem"}}>

@@ -60,7 +60,7 @@ export default function GameForm(props) {
     const [personel, setPersonel] = useState(20)
     const [playType, setPlaytype] = useState("")
     const [result, setResult] = useState("")
-    const [selectedDown, setSelectedDown] = useState(0)
+    const [downIndex, setDownIndex] = useState(0)
 
     async function handleSubmit(e){
         e.preventDefault()
@@ -259,7 +259,7 @@ export default function GameForm(props) {
     //init based on previous downs
     if (!init && downs.length && downs[downs.length-1].playType !== "Game end"){ 
         setInit(true)
-        setSelectedDown(downs.length-1)
+        setDownIndex(downs.length-1)
 
         // KICKING PLAYS
         if (downs[downs.length-1].playType ==="KO" || downs[downs.length-1].playType ==="Punt"){
@@ -294,7 +294,7 @@ export default function GameForm(props) {
     return ( 
     <div className={useStyles.wrapper}>
         {downs.length  > 0 && (
-           <DownNavigation down={downs[downs.length-1]} maxDowns={downs.length} downIndex={selectedDown} setDownIndex={setSelectedDown}/>
+           <DownNavigation down={downs[downs.length-1]} maxDowns={downs.length} downIndex={downIndex} setDownIndex={setDownIndex}/>
         )}
         <form id="game-form" onSubmit={handleSubmit}>
             <Grid container spacing={3}>
