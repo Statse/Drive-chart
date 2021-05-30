@@ -26,6 +26,7 @@ export default function Game(props) {
     const [error, setError] = useState("")
     const [init, setInit] = useState(false)
     const [view, setView] = useState("game")
+    const [game, setGame] = useState({})
 
     console.log("<<<<<<<<<<<<<GAME RENDER>>>>>>>>>>>>>>>")
 
@@ -40,16 +41,23 @@ export default function Game(props) {
             })
         }
         if (!init){
-            loadGame(props.match.params.id).catch((e)=>{
+            const thisGame = loadGame(props.match.params.id).catch((e)=>{
                 setError(e)
                 return alert(e)
             })
+            setGame(thisGame)
             setInit(true)
+            console.log("game")
+            console.log(game)
         }
     }, [error, props.match.params.id, getGame])
     
     console.log("Downs from  game js", downs)
-    
+
+    if (!init){
+        return null
+    }
+
     //reference for values
     // https://www.hudl.com/support/classic/breakdown-stats-reports/hudl-assist/how-hudl-breaks-down-video
     return (

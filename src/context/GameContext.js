@@ -28,6 +28,7 @@ export function GameProvider({children}) {
             console.log(data.downs)
             setDowns(data.downs)
             setLoading(false)
+            return data
         } catch(e) {
             console.log(e)
             setError(e)

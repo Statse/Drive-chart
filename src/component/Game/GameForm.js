@@ -272,15 +272,15 @@ export default function GameForm(props) {
     }
 
     //init based on previous downs
-    if (!init && !editMode){ 
+    if (!init && !editMode && downs.length){ 
         console.log("INITIALIZE DOWN")
-        setInit(true)
         setDownIndex(downs.length)
         console.log("DOWNINDEX", downIndex)
+        console.log("downs", downs)
 
-        // KICKING PLAYS
 
         if (downs.length>0){
+            // KICKING PLAYS
             if (downs[downs.length-1].playType ==="KO" || downs[downs.length-1].playType ==="Punt"){
                 if (downs[downs.length-1].possession ==="Home"){
                     setPossession("Away") 
@@ -305,10 +305,13 @@ export default function GameForm(props) {
                 turnover(downs[downs.length-1]) 
                 firstDowns()
             }
+            setInit(true)
         } else {
+            console.log("ELSE MITÄ?")
             //if there is no downs the first down is kickoff
             setPlaytype("KO")
             setStartYardline(35)
+            setInit(true)
         }
     } else if (editMode && !init){
         console.log("EDIT")
@@ -322,8 +325,8 @@ export default function GameForm(props) {
     console.log(downIndex)
     return ( 
     <div className={useStyles.wrapper}>
-        {downs.length  > 0 && (
-           <DownNavigation down={downs[downIndex-1]} setEditMode={(bool)=>{setEditMode(bool); setInit(!bool)}} maxDowns={downs.length} downIndex={downIndex} setDownIndex={(index)=>setDownIndex(index)}/>
+        {downs.length && (
+           <DownNavigation down={downs[downIndex]} setEditMode={(bool)=>{setEditMode(bool)}} setInit={(bool)=>{setInit(bool)}}  maxDowns={downs.length-1} downIndex={downIndex} setDownIndex={(index)=>setDownIndex(index)}/>
         )}
         <form id="game-form" onSubmit={handleSubmit}>
             <Grid container spacing={3}>
