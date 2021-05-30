@@ -233,10 +233,7 @@ export default function GameForm(props) {
                 // code block
             break;
             case "Fumble turnover":          
-                console.log("fumble turnover")
-                console.log(downData)
                 if (downData.playType === "KO" || downData.playType ==="Punt"){
-                    console.log("Same team continues...")
                     //We set possession after kick just before this function so we have to change possession again...
                     //TODO: make better logic :)
                     changePossession(possession)
