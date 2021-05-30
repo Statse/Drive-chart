@@ -16,6 +16,7 @@ export default function downNavigation(props) {
             setEditMode(true)
             setInit(false)
         } else {
+            console.log("Invalid index: " + downIndex - 1)
             alert("Invalid index: " + downIndex - 1)
         }
     }
@@ -32,6 +33,7 @@ export default function downNavigation(props) {
                 setInit(false)
             }
         } else {
+            console.log("Invalid index: " + downIndex + 1)
             alert("Invalid index: " + downIndex + 1)
         }
     }

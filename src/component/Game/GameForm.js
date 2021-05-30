@@ -60,7 +60,7 @@ export default function GameForm(props) {
     const [personel, setPersonel] = useState(20)
     const [playType, setPlaytype] = useState("")
     const [result, setResult] = useState("")
-    const [downIndex, setDownIndex] = useState(downs.length - 1)
+    const [downIndex, setDownIndex] = useState(downs.length)
     const [editMode,  setEditMode]  = useState(false)
 
     async function handleSubmit(e){
@@ -88,7 +88,7 @@ export default function GameForm(props) {
             console.log("thisDown", thisDown)
             let _downs;
             if (editMode){
-                _downs = _updateDown(thisDown, downIndex-1)
+                _downs = _updateDown(thisDown, downIndex)
             } else {
                 _downs = _setDowns(thisDown)
             }
@@ -273,10 +273,9 @@ export default function GameForm(props) {
 
     //init based on previous downs
     if (!init && downs.length){ 
-        console.log("INITIALIZE DOWN")
-        setDownIndex(downs.length)
+        console.log(">>>>>>>>>INITIALIZE DOWN")
+        // setDownIndex(downs.length - 1)
         console.log("DOWNINDEX", downIndex)
-        console.log("downs", downs)
 
         if (editMode){
             console.log("EDIT")
@@ -284,6 +283,9 @@ export default function GameForm(props) {
             setInit(true)
         } else if (!editMode && downs.length>0){
             // KICKING PLAYS
+            
+            setDownIndex(downs.length-1)
+
             if (downs[downs.length-1].playType ==="KO" || downs[downs.length-1].playType ==="Punt"){
                 if (downs[downs.length-1].possession ==="Home"){
                     setPossession("Away") 
@@ -315,17 +317,19 @@ export default function GameForm(props) {
             setStartYardline(35)
             setInit(true)
         }
-    } 
+    } else {
+
+    }
 
     console.log("============<GAMEFORM RENDER==============")
-    console.log("init", init)
-    console.log("edit", editMode)
-    console.log(downIndex)
-    console.log("downs[downIndex]", downs[downIndex])
+    // console.log("init", init)
+    // console.log("edit", editMode)
+    // console.log(downIndex)
+    // console.log("downs[downIndex]", downs[downIndex])
 
     return ( 
     <div className={useStyles.wrapper}>
-        <DownNavigation down={downs[downIndex-1]} setEditMode={(bool)=>{setEditMode(bool)}} setInit={(bool)=>{setInit(bool)}}  maxDowns={downs.length-1} downIndex={downIndex-1} setDownIndex={(index)=>setDownIndex(index)}/>
+        <DownNavigation down={downs[downIndex]} setEditMode={(bool)=>{setEditMode(bool)}} setInit={(bool)=>{setInit(bool)}}  maxDowns={downs.length-1} downIndex={downIndex} setDownIndex={(index)=>{setDownIndex(index)}}/>
         <form id="game-form" onSubmit={handleSubmit}>
             <Grid container spacing={3}>
              {!loading && ( 
