@@ -29,6 +29,8 @@ export default function Game(props) {
         setError("")
         getGame(props.match.params.id).catch(e=>{
             setError(e)
+            console.log(error)
+            // return alert(error)
         })
     }, [error, props.match.params.id, getGame])
 
