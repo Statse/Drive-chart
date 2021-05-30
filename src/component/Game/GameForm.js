@@ -274,8 +274,7 @@ export default function GameForm(props) {
             console.log("startYardline + distance", startYardline + distance)
             //endyardline or distance might be string sometimes so lets make sure its integer
             if (parseInt(downs[downs.length-1].endYardline) + parseInt(distance) > 100){
-                alert(downs[downs.length-1].endYardline + distance)
-            //     //if close to goal line
+            //if close to goal line
                 setDistance(100-downs[downs.length-1].endYardline)
             }
         } else if (downs > 4) {
