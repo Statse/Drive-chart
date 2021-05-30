@@ -41,7 +41,7 @@ export default function Game(props) {
         }
         if (!init){
             setLoading(true)
-            loadGame(props.match.params.id).then((result)=>{setGame(result);setLoading(false)}).catch((e)=>{
+            loadGame(props.match.params.id).then((result)=>{setLoading(false)}).catch((e)=>{
                 setError(e)
                 return alert(e)
             })
