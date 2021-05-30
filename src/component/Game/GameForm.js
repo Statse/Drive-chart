@@ -86,21 +86,32 @@ export default function GameForm(props) {
                 result: result,
             }
 
-            let _downs;
+            
             if (editMode){
-                _downs = _updateDown(thisDown, downIndex)
+                console.log("updating...")
+                const _downs = _updateDown(thisDown, downIndex)
+                console.log("_downs", _downs)
                 await firebase.firestore()
                 .collection('games')
                 .doc(props.match.params.id)
                 .set(
                     { 
                         downs: _downs
-                    },
-                    { merge: true }
+                    }
                 )
                 console.log("Updated to db.")
+                //go to next down after save
+
+                setDownIndex(downIndex+1)
+
+                //downIndex hasnt updated yet se we need to +1 it...
+                if (downIndex + 1 === downs.length){
+                    resetDown()
+                    setInit(false)
+                    setEditMode(false)
+                }
             } else {
-                _downs = _setDowns(thisDown)        
+                const _downs = _setDowns(thisDown)        
                 console.log("_downs", _downs)  
                 await firebase.firestore()
                 .collection('games')

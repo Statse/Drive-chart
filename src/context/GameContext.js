@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react'
+import downNavigation from '../component/Game/downNavigation'
 import firebase from '../firebase'
 
 const GameContext = React.createContext()
@@ -35,19 +36,20 @@ export function GameProvider({children}) {
     }
 
     function _setDowns(down){
-        const data = downs.concat([down])
+        const newDowns = downs.concat([down])
 
-        setDowns(data)
+        setDowns(newDowns)
 
-        return data
+        return newDowns
     }
 
     function _updateDown(down, index){
-        const data = downs[index] = down
-        
-        setDowns(data)
+        console.log("_updateDown")
+        let newDowns = downs
+        newDowns[index] = down
+        setDowns(newDowns)
 
-        return data
+        return newDowns
     }
 
     async function submitDown(gameId){
@@ -64,6 +66,7 @@ export function GameProvider({children}) {
 
     const value = {
         _setDowns,
+        _updateDown,
         downs,
         getGame,
     }
