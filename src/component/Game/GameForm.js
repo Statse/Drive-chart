@@ -258,6 +258,9 @@ export default function GameForm(props) {
                 }
 
             break;
+            default:
+                console.log("DEFAULT")
+            break;
         }
 
     }
