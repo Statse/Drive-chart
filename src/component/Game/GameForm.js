@@ -61,8 +61,9 @@ export default function GameForm(props) {
     const [playType, setPlaytype] = useState("")
     const [result, setResult] = useState("")
     const [downIndex, setDownIndex] = useState(downs.length)
-    const [previousDownIndex, setPreviousDownIndex] = useState(downs.length-1)
     const [editMode,  setEditMode]  = useState(false)
+
+    console.log("editMode", editMode)
 
     async function handleSubmit(e){
         e.preventDefault()
@@ -88,11 +89,7 @@ export default function GameForm(props) {
             let _downs;
             if (editMode){
                 _downs = _updateDown(thisDown, downIndex)
-            } else {
-                _downs = _setDowns(thisDown)
-            }
-            
-            await firebase.firestore()
+                await firebase.firestore()
                 .collection('games')
                 .doc(props.match.params.id)
                 .set(
@@ -101,7 +98,23 @@ export default function GameForm(props) {
                     },
                     { merge: true }
                 )
-            console.log("Saved to db...")
+                console.log("Updated to db.")
+            } else {
+                _downs = _setDowns(thisDown)        
+                console.log("_downs", _downs)  
+                await firebase.firestore()
+                .collection('games')
+                .doc(props.match.params.id)
+                .set(
+                    { 
+                        downs: _downs
+                    },
+                    { merge: true }
+                )
+                console.log("Saved to db.")
+            }
+            
+  
             setInit(false)
             setLoading(false)
         } catch(e) {
@@ -130,7 +143,6 @@ export default function GameForm(props) {
 
 
     const mapDownToCurrentState = (down) => {
-        console.log("mapDownToCurrentState", down)
         if (!down){
             return false
         }
@@ -324,9 +336,7 @@ export default function GameForm(props) {
             setStartYardline(35)
             setInit(true)
         }
-    } else {
-
-    }
+    } 
 
     // console.log("============<GAMEFORM RENDER==============")
     // console.log("init", init)
