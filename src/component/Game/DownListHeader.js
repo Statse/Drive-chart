@@ -275,7 +275,7 @@ export default function EnhancedTable(props) {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((down, index) => {
                   const isItemSelected = isSelected(down.id);
-                  const labelId = `enhanced-table-checkbox-${index}`;
+                  // const labelId = `enhanced-table-checkbox-${index}`;
                   console.log("render downs")
                   console.log(down)
                   return (
@@ -291,10 +291,10 @@ export default function EnhancedTable(props) {
                       <TableCell padding="checkbox">
                         <Checkbox
                           checked={isItemSelected}
-                          inputProps={{ 'aria-labelledby': labelId }}
+                          // inputProps={{ 'aria-labelledby': labelId }}
                         />
                       </TableCell>
-                      <TableCell component="th" id={labelId} scope="down" padding="none">
+                      <TableCell component="th" scope="down" padding="none">
                         {down.personel}
                       </TableCell>
                       <TableCell align="right">{down.qtr}</TableCell>

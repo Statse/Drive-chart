@@ -19,22 +19,30 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Game(props) {
     const classes = useStyles();
-    const [error, setError] = useState("")
+
     const {getGame} = useGame()
-    const [init, setInit] = useState(false)
     const {downs} = useGame()
+
+    const [error, setError] = useState("")
+    const [init, setInit] = useState(false)
     const [view, setView] = useState("game")
 
     console.log("<<<<<<<<<<<<<GAME RENDER>>>>>>>>>>>>>>>")
-   
 
     //TODO: investigate what causes multiple render cycles and fix it
     useEffect(()=>{
         setError("") 
-        if (!init){
-            getGame(props.match.params.id).catch(e=>{
+        //This is because I don't know any onther way to make async work inside useEffect
+        async function loadGame(id) {
+            await getGame(id).catch(e=>{
                 setError(e)
                 console.log(error)
+            })
+        }
+        if (!init){
+            loadGame(props.match.params.id).catch((e)=>{
+                setError(e)
+                return alert(e)
             })
             setInit(true)
         }

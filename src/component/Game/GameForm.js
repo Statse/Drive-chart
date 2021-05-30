@@ -60,9 +60,8 @@ export default function GameForm(props) {
     const [personel, setPersonel] = useState(20)
     const [playType, setPlaytype] = useState("")
     const [result, setResult] = useState("")
-    const [downIndex, setDownIndex] = useState(0)
-
-    console.log("============<GAMEFORM RENDER==============")
+    const [downIndex, setDownIndex] = useState(downs.length)
+    const [editMode,  setEditMode]  = useState(false)
 
     async function handleSubmit(e){
         e.preventDefault()
@@ -169,7 +168,6 @@ export default function GameForm(props) {
         setEndYardline("")
         setDown(parseInt(downData.down)+1)
         setDistance(downData.distance - (downData.endYardline-downData.startYardline))
-        setDownIndex(downs.length - 1)
 
         if (downData.playType ==="PAT"){
             setStartYardline(35) 
@@ -267,9 +265,10 @@ export default function GameForm(props) {
     }
 
     //init based on previous downs
-    if (!init && downs.length && downs[downs.length-1].playType !== "Game end"){ 
+    if (!init && !editMode){ 
+        console.log("INITIALIZE DOWN")
         setInit(true)
-        setDownIndex(downs.length - 1)
+        setDownIndex(downs.length)
         console.log("DOWNINDEX", downIndex)
 
         // KICKING PLAYS
@@ -297,14 +296,16 @@ export default function GameForm(props) {
             turnover(downs[downs.length-1]) 
             firstDowns()
         }
-    } else {
-        // mapDownToCurrentState(downs[downIndex -1])
+    } else if (editMode && !init){
+        mapDownToCurrentState(downs[downIndex-1])
     }
 
+    console.log("============<GAMEFORM RENDER==============")
+    console.log(downIndex)
     return ( 
     <div className={useStyles.wrapper}>
         {downs.length  > 0 && (
-           <DownNavigation down={downs[downs.length-1]} maxDowns={downs.length} downIndex={downIndex} setDownIndex={setDownIndex}/>
+           <DownNavigation down={downs[downs.length-1]} setEditMode={(bool)=>setEditMode(bool)} maxDowns={downs.length} downIndex={downIndex} setDownIndex={(index)=>setDownIndex(index)}/>
         )}
         <form id="game-form" onSubmit={handleSubmit}>
             <Grid container spacing={3}>

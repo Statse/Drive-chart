@@ -21,11 +21,11 @@ export function GameProvider({children}) {
         try {
             const res = await firebase.firestore().collection('games').doc(id).get();
             const data =  res.data()
-            console.log("getGame", data)
             setHome(data.home)
             setHomeScore(data.homeScore)
             setAway(data.away)
             setAwayScore(data.awayScore)
+            console.log(data.downs)
             setDowns(data.downs)
             setLoading(false)
         } catch(e) {
