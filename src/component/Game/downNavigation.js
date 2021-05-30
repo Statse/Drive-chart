@@ -1,7 +1,9 @@
 import React from 'react'
 
 export default function downNavigation(props) {
-    const {downs} = props
+    const {down, maxDowns, downIndex, setDownIndex} = props
+
+    console.log(props)
     return (
         <div>
         <h3>Previous down</h3>
@@ -9,8 +11,8 @@ export default function downNavigation(props) {
                     width: '100%',
                     justifyContent: "space-between"}
                     }>
-                        <button onClick={()=>alert("prev func")}>Previous</button>
-                        <button onClick={()=>alert("Next func")}>Next</button>
+                    {0 < downIndex && (<button  onClick={()=>alert("prev func")}>Previous</button>)} 
+                    {maxDowns > downIndex && (<button style={{marginLeft:"auto"}} onClick={()=>alert("Next func")}>Next</button>)} 
 
         </div>
         <table style={{width:"100%", marginBottom:"3rem"}}>
@@ -18,23 +20,25 @@ export default function downNavigation(props) {
                         width: '100%',
                         justifyContent: "space-between"}
                         }>
-                <th>Down</th>
+                <th style={{border: "1px solid black"}}>Down</th>
                 <th>Distance</th>
+                <th>Possession</th>
                 <th>Start line</th>
                 <th>End line</th>
-                <th>Possession</th>
+                <th>Play type</th>
                 <th>Result</th>
             </tr>
             <tr style={{display:"flex",
                         width: '100%',
                         justifyContent: "space-between"}
                         }>
-                <td>{downs[downs.length-1].down}</td>
-                <td>{downs[downs.length-1].distance}</td>
-                <td>{downs[downs.length-1].startYardline}</td>
-                <td>{downs[downs.length-1].endYardline}</td>
-                <td>{downs[downs.length-1].possession}</td>
-                <td>{downs[downs.length-1].result}</td>
+                <td>{down.down}</td>
+                <td>{down.distance}</td>
+                <td>{down.possession}</td>
+                <td>{down.startYardline}</td>
+                <td>{down.endYardline}</td>
+                <td>{down.playType}</td>
+                <td>{down.result}</td>
             </tr>
         </table>
     </div>

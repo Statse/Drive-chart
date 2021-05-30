@@ -60,7 +60,7 @@ export default function GameForm(props) {
     const [personel, setPersonel] = useState(20)
     const [playType, setPlaytype] = useState("")
     const [result, setResult] = useState("")
-    const [selectedDown, setSelectedDown] = useState(1)
+    const [selectedDown, setSelectedDown] = useState(0)
 
     async function handleSubmit(e){
         e.preventDefault()
@@ -168,11 +168,12 @@ export default function GameForm(props) {
             setStartYardline(35) 
         }
 
-        if (downData.playType ==="KO" && downData.result !== "Turnover"){
+        if (downData.playType ==="KO" || downData.playType ==="Punt" && downData.result !== "Turnover" && downData.result !== "Fumble turnover"){
             setStartYardline(100-downData.endYardline)
+            changePossession(downData.possession)
         }
 
-
+        //figure out stuff based on previous down result
         switch(downData.result) {
             case "xp good":
                 setPlaytype("KO")
@@ -233,9 +234,18 @@ export default function GameForm(props) {
             break;
             case "Fumble turnover":          
                 console.log("fumble turnover")
-                changePossession(downData.possession)
-                setStartYardline(100-downData.endYardline)
-                firstDowns()
+                console.log(downData)
+                if (downData.playType === "KO" || downData.playType ==="Punt"){
+                    console.log("Same team continues...")
+                    //We set possession after kick just before this function so we have to change possession again...
+                    //TODO: make better logic :)
+                    changePossession(possession)
+                    firstDowns()
+                } else {
+                    changePossession(downData.possession)
+                    setStartYardline(100-downData.endYardline)
+                    firstDowns()
+                }
             break;
             case "Penalty":
                 // code block
@@ -247,9 +257,10 @@ export default function GameForm(props) {
     //init based on previous downs
     if (!init && downs.length){ 
         setInit(true)
+        setSelectedDown(downs.length-1)
 
         // KICKING PLAYS
-        if (downs[downs.length-1].playType ==="KO" || downs[downs.length-1].playType ==="punt"){
+        if (downs[downs.length-1].playType ==="KO" || downs[downs.length-1].playType ==="Punt"){
             if (downs[downs.length-1].possession ==="Home"){
                 setPossession("Away") 
             } else if (downs[downs.length-1].possession ==="Away"){
@@ -260,10 +271,10 @@ export default function GameForm(props) {
         }
 
         playResultHandler(downs[downs.length-1])
+
         if ((downs[downs.length-1].endYardline-downs[downs.length-1].startYardline)>=downs[downs.length-1].distance ){
             firstDowns()
             console.log("startYardline + distance", startYardline + distance)
-
             //endyardline or distance might be string sometimes so lets make sure its integer
             if (parseInt(downs[downs.length-1].endYardline) + parseInt(distance) > 100){
                 alert(downs[downs.length-1].endYardline + distance)
@@ -282,7 +293,7 @@ export default function GameForm(props) {
     return ( 
     <div className={useStyles.wrapper}>
         {downs.length  > 0 && (
-           <DownNavigation downs={downs}/>
+           <DownNavigation down={downs[downs.length-1]} maxDowns={downs.length} downIndex={selectedDown} setDownIndex={setSelectedDown}/>
         )}
         <form id="game-form" onSubmit={handleSubmit}>
             <Grid container spacing={3}>
