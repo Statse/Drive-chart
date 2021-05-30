@@ -90,7 +90,6 @@ export default function GameForm(props) {
             if (editMode){
                 console.log("updating...")
                 const _downs = _updateDown(thisDown, downIndex)
-                console.log("_downs", _downs)
                 await firebase.firestore()
                 .collection('games')
                 .doc(props.match.params.id)
@@ -111,8 +110,7 @@ export default function GameForm(props) {
                     setEditMode(false)
                 }
             } else {
-                const _downs = _setDowns(thisDown)        
-                console.log("_downs", _downs)  
+                const _downs = _setDowns(thisDown)       
                 await firebase.firestore()
                 .collection('games')
                 .doc(props.match.params.id)
