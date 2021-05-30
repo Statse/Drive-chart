@@ -246,6 +246,11 @@ export default function GameForm(props) {
             break;
             case "Penalty":
                 // code block
+                if (downData.playType === "PAT"){
+                    setPlaytype("PAT")
+                    setStartYardline(downData.endYardline)
+                }
+
             break;
         }
 
