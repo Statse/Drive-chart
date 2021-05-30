@@ -35,8 +35,6 @@ export function GameProvider({children}) {
     }
 
     function _setDowns(down){
-        console.log("_setDowns", down)
-        console.log("downs", downs)
         const data = downs.concat([down])
 
         setDowns(data)
@@ -62,8 +60,6 @@ export function GameProvider({children}) {
         getGame,
     }
 
-
-    console.log("Game context", downs)
     return (
         <GameContext.Provider value={value}>
             {!loading && children}

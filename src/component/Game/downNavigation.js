@@ -5,6 +5,7 @@ export default function downNavigation(props) {
     
 
     const prev = () => {
+        console.log("prev")
         if (downIndex - 1 >= 0){
             setDownIndex(downIndex-1)
             console.log("downIndex" + downIndex)
@@ -14,6 +15,7 @@ export default function downNavigation(props) {
     }
 
     const next = () => {
+        console.log("next")
         if (downIndex + 1 <= maxDowns){
             setDownIndex(downIndex+1)
             console.log("downIndex" + downIndex)
@@ -35,30 +37,32 @@ export default function downNavigation(props) {
 
         </div>
         <table style={{width:"100%", marginBottom:"3rem"}}>
-            <tr style={{display:"flex",
-                        width: '100%',
-                        justifyContent: "space-between"}
-                        }>
-                <th style={{border: "1px solid black"}}>Down</th>
-                <th>Distance</th>
-                <th>Possession</th>
-                <th>Start line</th>
-                <th>End line</th>
-                <th>Play type</th>
-                <th>Result</th>
-            </tr>
-            <tr style={{display:"flex",
-                        width: '100%',
-                        justifyContent: "space-between"}
-                        }>
-                <td>{down.down}</td>
-                <td>{down.distance}</td>
-                <td>{down.possession}</td>
-                <td>{down.startYardline}</td>
-                <td>{down.endYardline}</td>
-                <td>{down.playType}</td>
-                <td>{down.result}</td>
-            </tr>
+            <tbody>
+                <tr style={{display:"flex",
+                            width: '100%',
+                            justifyContent: "space-between"}
+                            }>
+                    <th style={{border: "1px solid black"}}>Down</th>
+                    <th>Distance</th>
+                    <th>Possession</th>
+                    <th>Start line</th>
+                    <th>End line</th>
+                    <th>Play type</th>
+                    <th>Result</th>
+                </tr>
+                <tr style={{display:"flex",
+                            width: '100%',
+                            justifyContent: "space-between"}
+                            }>
+                    <td>{down.down}</td>
+                    <td>{down.distance}</td>
+                    <td>{down.possession}</td>
+                    <td>{down.startYardline}</td>
+                    <td>{down.endYardline}</td>
+                    <td>{down.playType}</td>
+                    <td>{down.result}</td>
+                </tr>
+            </tbody>
         </table>
     </div>
     )

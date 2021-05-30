@@ -163,6 +163,7 @@ export default function GameForm(props) {
         setEndYardline("")
         setDown(parseInt(downData.down)+1)
         setDistance(downData.distance - (downData.endYardline-downData.startYardline))
+        setDownIndex(downs.length - 1)
 
         if (downData.playType ==="PAT"){
             setStartYardline(35) 
@@ -298,7 +299,7 @@ export default function GameForm(props) {
         )}
         <form id="game-form" onSubmit={handleSubmit}>
             <Grid container spacing={3}>
-            {playType !== "Game end" && (
+            {/* {downs[downIndex].playType !== "Game end" && ( */}
                 <Grid item xs={12} md={2}>
                         <InputLabel id="QTR-label">QTR</InputLabel>
                         <Select
@@ -580,10 +581,6 @@ export default function GameForm(props) {
                     required />
                 </Grid>
                )}
-                {/* <Grid item xs={12}>
-                    <Button className={classes.button} disabled={loading} variant="contained" type="submit">Save down</Button>
-                    <Button onClick={handleTurnover} className={classes.button} disabled={loading} variant="contained" type="button">Turnover</Button>
-                </Grid> */}
             </Grid>
         </form>
     </div>

@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react'
-// import firebase from '../firebase'
 import {useGame} from '../context/GameContext'
 
 import GameForm from '../component/Game/GameForm'
@@ -23,11 +22,10 @@ export default function Game(props) {
     const [error, setError] = useState("")
     const {getGame} = useGame()
     const {downs} = useGame()
-    console.log("downs", downs)
     const [view, setView] = useState("game")
 
     
-    useEffect(async ()=>{
+    useEffect(()=>{
         setError("")
         getGame(props.match.params.id).catch(e=>{
             setError(e)
