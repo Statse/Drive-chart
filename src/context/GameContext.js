@@ -17,6 +17,7 @@ export function GameProvider({children}) {
     const [loading, setLoading] = useState(false)
 
     async function getGame(id){
+        console.log("getGame",  id)
         try {
             const res = await firebase.firestore().collection('games').doc(id).get();
             const data =  res.data()
@@ -27,10 +28,10 @@ export function GameProvider({children}) {
             setAwayScore(data.awayScore)
             setDowns(data.downs)
             setLoading(false)
-        } catch {
+        } catch(e) {
+            console.log(e)
+            setError(e)
             setLoading(false)
-            console.log(error)
-            setError(error)
         }
     }
 

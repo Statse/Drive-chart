@@ -62,6 +62,8 @@ export default function GameForm(props) {
     const [result, setResult] = useState("")
     const [downIndex, setDownIndex] = useState(0)
 
+    console.log("============<GAMEFORM RENDER==============")
+
     async function handleSubmit(e){
         e.preventDefault()
         setLoading(true)
@@ -110,7 +112,6 @@ export default function GameForm(props) {
 
 
     const mapDownToCurrentState = (down) => {
-        console.log(down)
         if (!down){
             return false
         }
@@ -296,7 +297,7 @@ export default function GameForm(props) {
             firstDowns()
         }
     } else {
-        mapDownToCurrentState(downs[downIndex -1])
+        // mapDownToCurrentState(downs[downIndex -1])
     }
 
     return ( 
@@ -589,7 +590,6 @@ export default function GameForm(props) {
                 </Grid>
                )}
             </Grid>
-            )}
         </form>
     </div>
     )

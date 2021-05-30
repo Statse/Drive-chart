@@ -21,18 +21,24 @@ export default function Game(props) {
     const classes = useStyles();
     const [error, setError] = useState("")
     const {getGame} = useGame()
+    const [init, setInit] = useState(false)
     const {downs} = useGame()
     const [view, setView] = useState("game")
 
-    
+    console.log("<<<<<<<<<<<<<GAME RENDER>>>>>>>>>>>>>>>")
+   
     useEffect(()=>{
-        setError("")
-        getGame(props.match.params.id).catch(e=>{
-            setError(e)
-            console.log(error)
-            // return alert(error)
-        })
+        setError("") 
+        if (!init){
+            getGame(props.match.params.id).catch(e=>{
+                setError(e)
+                console.log(error)
+            })
+            setInit(true)
+        }
     }, [error, props.match.params.id, getGame])
+    
+
 
     //reference for values
     // https://www.hudl.com/support/classic/breakdown-stats-reports/hudl-assist/how-hudl-breaks-down-video
