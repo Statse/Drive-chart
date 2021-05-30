@@ -37,10 +37,13 @@ export default function downNavigation(props) {
     }
 
     console.log("down from nav", down)
+
+    if (!down){
+        return null
+    }
     
     return (
     <>
-        {down && (
         <div>
             <h3>Previous down</h3>
             <div style={{display:"flex",width: '100%',justifyContent: "space-between"}}>
@@ -76,7 +79,6 @@ export default function downNavigation(props) {
                 </tbody>
             </table>
         </div>
-        )}
     </>
     )
 }
