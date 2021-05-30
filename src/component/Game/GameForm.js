@@ -110,17 +110,24 @@ export default function GameForm(props) {
 
 
     const mapDownToCurrentState = (down) => {
-        setPossession(down.possession)
-        setQuarter(down.quarter)
-        setDown(down.down)
-        setDistance(down.distance)
-        setStartYardline(down.startYardline)
-        setEndYardline(down.endYardline)
-        setHash(down.hash)
-        setMotion(down.motion)
-        setPlaydirection(down.playDirection)
-        setPersonel(down.personel)
-        setResult(down.result)
+        console.log(down)
+        if (!down){
+            return false
+        }
+        if (down.result !== "Game end"){
+            setPossession(down.possession)
+            setQuarter(down.quarter)
+            setDown(down.down)
+            setDistance(down.distance)
+            setStartYardline(down.startYardline)
+            setEndYardline(down.endYardline)
+            setHash(down.hash)
+            setMotion(down.motion)
+            setPlaydirection(down.playDirection)
+            setPersonel(down.personel)
+            setResult(down.result)
+        }
+        setPlaytype(down.playType)
     }
 
     //game logic here
@@ -296,7 +303,7 @@ export default function GameForm(props) {
         )}
         <form id="game-form" onSubmit={handleSubmit}>
             <Grid container spacing={3}>
-            {/* {downs[downIndex].playType !== "Game end" && ( */}
+             {!loading && ( 
                 <Grid item xs={12} md={2}>
                         <InputLabel id="QTR-label">QTR</InputLabel>
                         <Select
@@ -579,6 +586,7 @@ export default function GameForm(props) {
                 </Grid>
                )}
             </Grid>
+            )}
         </form>
     </div>
     )
