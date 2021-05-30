@@ -26,7 +26,8 @@ export default function Game(props) {
     const [error, setError] = useState("")
     const [init, setInit] = useState(false)
     const [view, setView] = useState("game")
-    const [game, setGame] = useState({})
+    const [game, setGame] = useState(false)
+    const [loading, setLoading] = useState(false)
 
     console.log("<<<<<<<<<<<<<GAME RENDER>>>>>>>>>>>>>>>")
 
@@ -41,20 +42,18 @@ export default function Game(props) {
             })
         }
         if (!init){
-            const thisGame = loadGame(props.match.params.id).catch((e)=>{
+            setLoading(true)
+            console.log("load downs")
+            const thisGame = loadGame(props.match.params.id).then((result)=>{setGame(result);setLoading(false)}).catch((e)=>{
                 setError(e)
                 return alert(e)
             })
-            setGame(thisGame)
             setInit(true)
-            console.log("game")
-            console.log(game)
         }
     }, [error, props.match.params.id, getGame])
     
-    console.log("Downs from  game js", downs)
 
-    if (!init){
+    if (!init && !loading){
         return null
     }
 

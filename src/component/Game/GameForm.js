@@ -60,7 +60,7 @@ export default function GameForm(props) {
     const [personel, setPersonel] = useState(20)
     const [playType, setPlaytype] = useState("")
     const [result, setResult] = useState("")
-    const [downIndex, setDownIndex] = useState(downs.length)
+    const [downIndex, setDownIndex] = useState(downs.length - 1)
     const [editMode,  setEditMode]  = useState(false)
 
     async function handleSubmit(e){
@@ -325,7 +325,7 @@ export default function GameForm(props) {
 
     return ( 
     <div className={useStyles.wrapper}>
-        <DownNavigation down={downs[downIndex]} setEditMode={(bool)=>{setEditMode(bool)}} setInit={(bool)=>{setInit(bool)}}  maxDowns={downs.length-1} downIndex={downIndex} setDownIndex={(index)=>setDownIndex(index)}/>
+        <DownNavigation down={downs[downIndex-1]} setEditMode={(bool)=>{setEditMode(bool)}} setInit={(bool)=>{setInit(bool)}}  maxDowns={downs.length-1} downIndex={downIndex-1} setDownIndex={(index)=>setDownIndex(index)}/>
         <form id="game-form" onSubmit={handleSubmit}>
             <Grid container spacing={3}>
              {!loading && ( 
