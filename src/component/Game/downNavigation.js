@@ -2,6 +2,8 @@ import React from 'react'
 
 export default function downNavigation(props) {
     const {down, maxDowns, downIndex, setDownIndex} = props
+
+    console.log("DownNavigation", props)
     
 
     const prev = () => {

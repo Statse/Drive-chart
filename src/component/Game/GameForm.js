@@ -269,7 +269,8 @@ export default function GameForm(props) {
     //init based on previous downs
     if (!init && downs.length && downs[downs.length-1].playType !== "Game end"){ 
         setInit(true)
-        setDownIndex(downs.length-1)
+        setDownIndex(downs.length - 1)
+        console.log("DOWNINDEX", downIndex)
 
         // KICKING PLAYS
         if (downs[downs.length-1].playType ==="KO" || downs[downs.length-1].playType ==="Punt"){

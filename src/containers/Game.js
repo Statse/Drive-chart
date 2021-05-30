@@ -40,8 +40,12 @@ export default function Game(props) {
         }
     }, [error, props.match.params.id, getGame])
     
-
-
+    console.log("Downs from  game js", downs)
+    if (downs.length < 1){
+        console.log("dont render form")
+        return null
+    }
+    console.log("render form")
     //reference for values
     // https://www.hudl.com/support/classic/breakdown-stats-reports/hudl-assist/how-hudl-breaks-down-video
     return (
