@@ -67,7 +67,7 @@ export default function GameRecap(props) {
 
     return (
     <div className={useStyles.wrapper}>
-            <div style={{display:"flex",flexFlow:"row"}}>
+            <div style={{display:"flex",flexFlow:"column"}}>
                 <div>{game.home} - {game.homeScore}</div>
                 <div>{game.away} - {game.awayScore}</div>
             </div>
@@ -79,13 +79,13 @@ export default function GameRecap(props) {
                             "id": "home",
                             "label": game.home,
                             "value": homeDowns.length,
-                            "color": "orange"
+                            "color": "blue"
                         },
                         {
                             "id": "away",
                             "label": game.away,
                             "value": awayDowns.length,
-                            "color": "black"
+                            "color": "blue"
                         }]
                     }/> 
                 </div>
