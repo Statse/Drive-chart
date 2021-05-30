@@ -1,7 +1,7 @@
 import React from 'react'
 
 export default function downNavigation(props) {
-    const {down, maxDowns, downIndex, setDownIndex} = props
+    const {down, maxDowns, downIndex, setDownIndex, setEditMode} = props
 
     console.log("DownNavigation")
     console.log("downIndex", downIndex)
@@ -13,6 +13,7 @@ export default function downNavigation(props) {
         if (downIndex - 1 >= 0){
             setDownIndex(downIndex-1)
             console.log("downIndex" + downIndex)
+            setEditMode(true)
         } else {
             alert("Invalid index: " + downIndex - 1)
         }
@@ -23,16 +24,17 @@ export default function downNavigation(props) {
         if (downIndex + 1 <= maxDowns){
             setDownIndex(downIndex+1)
             console.log("downIndex" + downIndex)
+            if (downIndex <= maxDowns){
+                setEditMode(false)
+            } else {
+                setEditMode(true)
+            }
         } else {
             alert("Invalid index: " + downIndex + 1)
         }
     }
 
-    if (downIndex !== maxDowns){
-        setEditMode(false)
-    } else {
-        setEditMode(true)
-    }
+    console.log("down from nav", down)
     
     return (
         <div>
@@ -63,7 +65,7 @@ export default function downNavigation(props) {
                             width: '100%',
                             justifyContent: "space-between"}
                             }>
-                    <td>{down.down}</td>
+                    <td>{down.down || null}</td>
                     <td>{down.distance}</td>
                     <td>{down.possession}</td>
                     <td>{down.startYardline}</td>

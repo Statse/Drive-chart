@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   
 
 export default function GameForm(props) {
-    const {_setDowns, downs} = useGame()
+    const {_setDowns, _updateDown, downs} = useGame()
     const classes = useStyles();
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
@@ -86,7 +86,12 @@ export default function GameForm(props) {
             }
 
             console.log("thisDown", thisDown)
-            const _downs = _setDowns(thisDown)
+            let _downs;
+            if (editMode){
+                _downs = _updateDown(thisDown, downIndex-1)
+            } else {
+                _downs = _setDowns(thisDown)
+            }
             
             await firebase.firestore()
                 .collection('games')
@@ -111,9 +116,11 @@ export default function GameForm(props) {
 
 
     const mapDownToCurrentState = (down) => {
+        console.log("mapDownToCurrentState", down)
         if (!down){
             return false
         }
+
         if (down.result !== "Game end"){
             setPossession(down.possession)
             setQuarter(down.quarter)
@@ -272,40 +279,51 @@ export default function GameForm(props) {
         console.log("DOWNINDEX", downIndex)
 
         // KICKING PLAYS
-        if (downs[downs.length-1].playType ==="KO" || downs[downs.length-1].playType ==="Punt"){
-            if (downs[downs.length-1].possession ==="Home"){
-                setPossession("Away") 
-            } else if (downs[downs.length-1].possession ==="Away"){
-                setPossession("Home") 
-            }
-            if (downs[downs.length-1].result)
-            firstDowns()
-        }
 
-        playResultHandler(downs[downs.length-1])
-
-        if ((downs[downs.length-1].endYardline-downs[downs.length-1].startYardline)>=downs[downs.length-1].distance ){
-            firstDowns()
-            console.log("startYardline + distance", startYardline + distance)
-            //endyardline or distance might be string sometimes so lets make sure its integer
-            if (parseInt(downs[downs.length-1].endYardline) + parseInt(distance) > 100){
-            //if close to goal line
-                setDistance(100-downs[downs.length-1].endYardline)
+        if (downs.length>0){
+            if (downs[downs.length-1].playType ==="KO" || downs[downs.length-1].playType ==="Punt"){
+                if (downs[downs.length-1].possession ==="Home"){
+                    setPossession("Away") 
+                } else if (downs[downs.length-1].possession ==="Away"){
+                    setPossession("Home") 
+                }
+                if (downs[downs.length-1].result)
+                firstDowns()
             }
-        } else if (downs > 4) {
-            turnover(downs[downs.length-1]) 
-            firstDowns()
+
+            playResultHandler(downs[downs.length-1])
+
+            if ((downs[downs.length-1].endYardline-downs[downs.length-1].startYardline)>=downs[downs.length-1].distance ){
+                firstDowns()
+                console.log("startYardline + distance", startYardline + distance)
+                //endyardline or distance might be string sometimes so lets make sure its integer
+                if (parseInt(downs[downs.length-1].endYardline) + parseInt(distance) > 100){
+                //if close to goal line
+                    setDistance(100-downs[downs.length-1].endYardline)
+                }
+            } else if (downs > 4) {
+                turnover(downs[downs.length-1]) 
+                firstDowns()
+            }
+        } else {
+            //if there is no downs the first down is kickoff
+            setPlaytype("KO")
+            setStartYardline(35)
         }
     } else if (editMode && !init){
+        console.log("EDIT")
         mapDownToCurrentState(downs[downIndex-1])
+        setInit(true)
     }
 
     console.log("============<GAMEFORM RENDER==============")
+    console.log("init", init)
+    console.log("edit", editMode)
     console.log(downIndex)
     return ( 
     <div className={useStyles.wrapper}>
         {downs.length  > 0 && (
-           <DownNavigation down={downs[downs.length-1]} setEditMode={(bool)=>setEditMode(bool)} maxDowns={downs.length} downIndex={downIndex} setDownIndex={(index)=>setDownIndex(index)}/>
+           <DownNavigation down={downs[downIndex-1]} setEditMode={(bool)=>{setEditMode(bool); setInit(!bool)}} maxDowns={downs.length} downIndex={downIndex} setDownIndex={(index)=>setDownIndex(index)}/>
         )}
         <form id="game-form" onSubmit={handleSubmit}>
             <Grid container spacing={3}>

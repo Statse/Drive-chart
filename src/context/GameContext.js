@@ -43,6 +43,14 @@ export function GameProvider({children}) {
         return data
     }
 
+    function _updateDown(down, index){
+        const data = downs[index] = down
+        
+        setDowns(data)
+
+        return data
+    }
+
     async function submitDown(gameId){
         await firebase.firestore()
             .collection('games')
