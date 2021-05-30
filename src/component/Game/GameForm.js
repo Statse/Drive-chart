@@ -257,7 +257,7 @@ export default function GameForm(props) {
     }
 
     //init based on previous downs
-    if (!init && downs.length){ 
+    if (!init && downs.length && downs[downs.length-1].playType !== "Game end"){ 
         setInit(true)
         setSelectedDown(downs.length-1)
 
@@ -298,6 +298,7 @@ export default function GameForm(props) {
         )}
         <form id="game-form" onSubmit={handleSubmit}>
             <Grid container spacing={3}>
+            {playType !== "Game end" && (
                 <Grid item xs={12} md={2}>
                         <InputLabel id="QTR-label">QTR</InputLabel>
                         <Select
@@ -315,6 +316,8 @@ export default function GameForm(props) {
                             <MenuItem value={5}>OT</MenuItem>
                         </Select>
                 </Grid>
+                )}
+                {playType !== "Game end" && (
                 <Grid item xs={12} md={2}>
                     <InputLabel id="possession-label">Possession</InputLabel>
                     <Select
@@ -334,6 +337,8 @@ export default function GameForm(props) {
                         <MenuItem value={"Away"}>Away</MenuItem>
                     </Select>
                 </Grid>
+                )}
+                {playType !== "Game end" && (
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="yard-label">Start yard Line</InputLabel>
                     <TextField 
@@ -353,6 +358,8 @@ export default function GameForm(props) {
                     }}
                     required  />
                 </Grid>
+                )}
+                {playType !== "Game end" && (
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="hash-label">Hash</InputLabel>
                     <Select
@@ -368,7 +375,8 @@ export default function GameForm(props) {
                         <MenuItem value={"R"}>R</MenuItem>
                     </Select>
                 </Grid>
-                {playType !=="KO" && playType !=="FG" && (
+                )}
+                {playType !== "Game end" && playType !=="KO" && playType !=="FG" && (
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="personel-label">Personel</InputLabel>
                     <TextField 
@@ -389,7 +397,7 @@ export default function GameForm(props) {
                    opp 50-0 
                    0 === safety/td
                 */}
-                <Grid item xs={12} md={2}>
+                <Grid item xs={12} md={playType !== "Game end" ? 2 : 12}>
                     <InputLabel className={classes.bottomMargin} id="playtype-label">Play type</InputLabel>
                     <Select
                         labelId="playtype-label"
@@ -409,10 +417,11 @@ export default function GameForm(props) {
                         <MenuItem value={"Punt"}>Punt</MenuItem>
                         <MenuItem value={"FG"}>FG</MenuItem>
                         <MenuItem value={"PAT"}>PAT</MenuItem>
+                        <MenuItem value={"Game end"}>Game end</MenuItem>
                     </Select>
                 </Grid>
                 {/*not in Kickoff, PAT */}
-                {playType !=="KO" && playType !=="FG" && (
+                {playType !=="KO" && playType !=="FG" && playType !== "Game end" && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="motion-label">Motion direction</InputLabel>
                         <Select
@@ -428,7 +437,7 @@ export default function GameForm(props) {
                         </Select>
                     </Grid>
                 )}
-                {result !=="Penalty" && (
+                {result !=="Penalty" && playType !== "Game end" && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="playdirection-label">Play direction</InputLabel>
                         <Select
@@ -443,6 +452,7 @@ export default function GameForm(props) {
                         </Select>
                     </Grid>
                 )}
+                {playType !== "Game end" && (
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="result-label">Play result</InputLabel>
                     <Select
@@ -493,6 +503,9 @@ export default function GameForm(props) {
                         <MenuItem value={"Turnover"}>Turnover</MenuItem>
                     </Select>
                 </Grid>
+                )}
+                
+                {playType !== "Game end" && (
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="yard-label">End yard Line</InputLabel>
                     <TextField 
@@ -511,8 +524,9 @@ export default function GameForm(props) {
                     }}
                     required  />
                 </Grid>
+                )}
                 {/*not in Kickoff, PAT */}
-                {playType !=="PAT" && playType !=="KO" && (
+                {playType !== "Game end" && playType !=="PAT" && playType !=="KO" && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="down-label">Down</InputLabel>
                         <TextField  
@@ -526,7 +540,7 @@ export default function GameForm(props) {
                     </Grid>
                 )}
                 {/*not in Kickoff, PAT */}
-                {playType !=="PAT" && playType !=="KO" && (
+                {playType !== "Game end" && playType !=="PAT" && playType !=="KO" && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="distance-label">Distance</InputLabel>
                         <TextField 
@@ -540,7 +554,7 @@ export default function GameForm(props) {
                         />
                     </Grid>
                 )}
-               
+               {playType !== "Game end" && (
                  <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="down-label">Home score</InputLabel>
                     <TextField  
@@ -552,6 +566,8 @@ export default function GameForm(props) {
                     value={homeScore}
                     required />
                 </Grid>
+               )}
+               {playType !== "Game end" && (
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="down-label">Away score</InputLabel>
                     <TextField  
@@ -563,6 +579,7 @@ export default function GameForm(props) {
                     value={awayScore}
                     required />
                 </Grid>
+               )}
                 {/* <Grid item xs={12}>
                     <Button className={classes.button} disabled={loading} variant="contained" type="submit">Save down</Button>
                     <Button onClick={handleTurnover} className={classes.button} disabled={loading} variant="contained" type="button">Turnover</Button>
