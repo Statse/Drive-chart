@@ -1,4 +1,4 @@
-import React, { useState, useRef} from 'react'
+import React from 'react'
 
 //components
 import GamesList from '../component/GamesList'

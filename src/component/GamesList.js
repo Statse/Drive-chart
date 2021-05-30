@@ -31,7 +31,7 @@ export default function GamesList() {
             }
           };
         getGames();
-    }, [error])
+    }, [error, userId])
 
     return (
         <>

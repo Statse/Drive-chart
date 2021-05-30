@@ -200,7 +200,7 @@ export default function EnhancedTable(props) {
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(true);
-  const [selectedQTR, setSelectedQTR] = React.useState(5);
+  // const [selectedQTR, setSelectedQTR] = React.useState(5);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleRequestSort = (event, property) => {
@@ -245,10 +245,6 @@ export default function EnhancedTable(props) {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
-  };
-
-  const handleChangeDense = (event) => {
-    setDense(event.target.checked);
   };
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
@@ -327,10 +323,6 @@ export default function EnhancedTable(props) {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      {/* <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      /> */}
     </div>
   );
 }

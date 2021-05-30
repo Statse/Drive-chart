@@ -30,7 +30,7 @@ export default function Game(props) {
         getGame(props.match.params.id).catch(e=>{
             setError(e)
         })
-    }, [error])
+    }, [error, props.match.params.id, getGame])
 
     //reference for values
     // https://www.hudl.com/support/classic/breakdown-stats-reports/hudl-assist/how-hudl-breaks-down-video

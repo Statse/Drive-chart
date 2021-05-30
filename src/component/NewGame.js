@@ -1,7 +1,5 @@
 import React, { useState, useRef} from 'react'
-import { Alert} from 'react-bootstrap'
-import { Link, useHistory } from "react-router-dom"
-import { useAuth } from '../context/AuthContext'
+import { useHistory } from "react-router-dom"
 
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -32,7 +30,6 @@ export default function NewGame() {
     const classes = useStyles();
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
-    const {currentUser, logout} = useAuth()
     const history = useHistory()
     const homeRef = useRef()
     const awayRef = useRef()
@@ -40,6 +37,7 @@ export default function NewGame() {
 
     //uus juttu
     async function newGame() {
+        setLoading(true)
         setError("")
         console.log(awayRef.current.value)
         console.log(homeRef.current.value)
@@ -59,10 +57,11 @@ export default function NewGame() {
         try {
             const res = await firebase.firestore().collection('games').add(data);
             history.push(`/game/${res.id}`)
-        } catch(error) {
+        } catch(e) {
+            setError(e)
             console.log(error)
             setLoading(false)
-            return setError(error)
+            return alert(error)
         }
     }
 
@@ -76,7 +75,7 @@ export default function NewGame() {
                     <TextField className={classes.fullWidth} id="standard-basic" type="text" required inputRef={awayRef} label="Away" />   
                 </div> 
                 <CardActions className={classes.center}>
-                    <Button onClick={newGame} variant="contained" color="secondary">
+                    <Button disabled={loading} onClick={newGame} variant="contained" color="secondary">
                         New game
                     </Button>
                 </CardActions>

@@ -39,10 +39,11 @@ export default function Navbar() {
       try {
           await logout()
           history.push("/login")
-      } catch(error) {
+      } catch(e) {
+          setError(e)
           console.log(error)
           setLoading(false)
-          return setError("Logout failed")
+          return alert(error)
       }
   } 
 
@@ -57,7 +58,7 @@ export default function Navbar() {
             Drive chart
           </Typography>
           {currentUser ? (
-            <Button onClick={handleLogout} color="inherit">Logout</Button>
+            <Button disabled={loading} onClick={handleLogout} color="inherit">Logout</Button>
           ) : (
             null
             // <Button color="inherit">Login</Button>

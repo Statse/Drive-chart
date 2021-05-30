@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import firebase from '../../firebase'
 
 import {useGame} from '../../context/GameContext'
@@ -99,13 +99,11 @@ export default function GameForm(props) {
             console.log("Saved to db...")
             setInit(false)
             setLoading(false)
-            console.log("Done!")
-        } catch(error) {
-            alert(error)
+        } catch(e) {
+            setError(e)
             console.log(error)
             setLoading(false)
-            console.log("Done!")
-            return setError("Submit failed")
+            return alert(error)
         }
         setLoading(false)
     }
@@ -169,7 +167,7 @@ export default function GameForm(props) {
             setStartYardline(35) 
         }
 
-        if (downData.playType ==="KO" || downData.playType ==="Punt" && downData.result !== "Turnover" && downData.result !== "Fumble turnover"){
+        if ((downData.playType ==="KO" || downData.playType ==="Punt") && downData.result !== "Turnover" && downData.result !== "Fumble turnover"){
             setStartYardline(100-downData.endYardline)
             changePossession(downData.possession)
         }
@@ -287,9 +285,8 @@ export default function GameForm(props) {
             turnover(downs[downs.length-1]) 
             firstDowns()
         }
-
-
-
+    } else {
+        mapDownToCurrentState(downs[downIndex -1])
     }
 
     return ( 
@@ -480,18 +477,18 @@ export default function GameForm(props) {
                         {(playType ==="PAT") && (<MenuItem value={"xp good"}>XP good</MenuItem>)}
                         {(playType ==="PAT") && (<MenuItem value={"2pt good"}>2pt good</MenuItem>)}
 
-                        {(playType=="FG") && (<MenuItem value={"Good"}>Good</MenuItem>)}
-                        {(playType=="FG" || playType ==="PAT") && (<MenuItem value={"No good"}>No Good</MenuItem>)}
+                        {(playType==="FG") && (<MenuItem value={"Good"}>Good</MenuItem>)}
+                        {(playType==="FG" || playType ==="PAT") && (<MenuItem value={"No good"}>No Good</MenuItem>)}
 
                         
-                        {(playType==="KO" || playType === "Punt") && (
+                        {(playType  ==="KO" || playType === "Punt") && (
                           <MenuItem value={"Touchback"}>Touchback</MenuItem>
                         )}
 
                         {/* pass */}
-                        {playType=="Pass" && (<MenuItem value={"Complete"}>Complete</MenuItem>)}
-                        {playType=="Pass" && (<MenuItem value={"Incomplete"}>Incomplete</MenuItem>)}
-                        {playType=="Pass" && (<MenuItem value={"Interception"}>Interception</MenuItem>)}
+                        {playType==="Pass" && (<MenuItem value={"Complete"}>Complete</MenuItem>)}
+                        {playType==="Pass" && (<MenuItem value={"Incomplete"}>Incomplete</MenuItem>)}
+                        {playType==="Pass" && (<MenuItem value={"Interception"}>Interception</MenuItem>)}
 
                         {/* Other */}
                         <MenuItem value={"Rush"}>Rush</MenuItem>
