@@ -27,6 +27,8 @@ export default function Game(props) {
 
     console.log("<<<<<<<<<<<<<GAME RENDER>>>>>>>>>>>>>>>")
    
+
+    //TODO: investigate what causes multiple render cycles and fix it
     useEffect(()=>{
         setError("") 
         if (!init){
