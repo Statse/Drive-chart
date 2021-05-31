@@ -1,63 +1,27 @@
-import { ResponsivePie } from '@nivo/pie'
+import Chart from 'react-apexcharts'
 
-export default function MyResponsivePie(props){
+export default function PieChart(props){
     const {data} = props
 
-
-    return (
-    <ResponsivePie
-        
-        data={data}
-        margin={{ top: 40, right: 80, bottom: 80, left: 80 }}
-        sortByValue={true}
-        innerRadius={0.3}
-        activeOuterRadiusOffset={8}
-        // colors={{ scheme: 'set1' }}
-        borderColor={{ from: 'color', modifiers: [ [ 'darker', 0.2 ] ] }}
-        arcLinkLabelsSkipAngle={10}
-        arcLinkLabelsTextColor="#333333"
-        arcLinkLabelsThickness={2}
-        arcLinkLabelsColor={{ from: 'color' }}
-        arcLabelsSkipAngle={10}
-        arcLabelsTextColor={{ from: 'color', modifiers: [ [ 'darker', 2 ] ] }}
-        fill={[
-            {
-                match: {
-                    id: 'home'
-                },
-                id: 'home'
-            },
-            {
-                match: {
-                    id: 'away'
-                },
-                id: 'away'
-            },
-        ]}
-        legends={[
-            {
-                anchor: 'bottom',
-                direction: 'row',
-                justify: false,
-                translateX: 0,
-                translateY: 56,
-                itemsSpacing: 0,
-                itemWidth: 100,
-                itemHeight: 18,
-                itemTextColor: '#999',
-                itemDirection: 'left-to-right',
-                itemOpacity: 1,
-                symbolSize: 18,
-                symbolShape: 'circle',
-                effects: [
-                    {
-                        on: 'hover',
-                        style: {
-                            itemTextColor: '#000'
-                        }
-                    }
-                ]
-            }
-        ]}
-    />
-)}
+    const series= [{
+          name: 'series-1',
+          data: [30, 40, 35, 50, 49, 60, 70, 91, 125]
+        },
+        {
+            name: 'series-1',
+            data: [30, 10, 25, 10, 99, 40, 90, 11, 15]
+        }]
+    
+      const options = {
+        chart: {
+          id: 'apexchart-example',
+          type: 'pie',
+        },
+        xaxis: {
+          categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999]
+        }
+      }
+    return( 
+        <Chart options={options} series={series} type="bar" width={500} height={320} />
+    )
+}

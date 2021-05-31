@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import {useGame} from '../context/GameContext'
 import Pie from '../component/Charts/Pie'
+import Possession from '../component/Recap/Possession'
 
 //ui
 import { makeStyles } from '@material-ui/core/styles';
@@ -66,34 +67,21 @@ export default function GameRecap(props) {
 
 
     return (
-    <div className={useStyles.wrapper}>  
-            <Grid container spacing={3}>
-                <Grid item xs={6}>
-                        <div style={{display:"flex",flexFlow:"column"}}>
-                            <div>{game.home} - {game.homeScore}</div>
-                            <div>{game.away} - {game.awayScore}</div>
-                        </div>
-                </Grid>
-            {game.downs && (
-                <Grid item xs={6}>
-                    <h3>Possession</h3>
-                    <Pie data={
-                        [{
-                            "id": "home",
-                            "label": game.home,
-                            "value": homeDowns.length,
-                            "color": "blue"
-                        },
-                        {
-                            "id": "away",
-                            "label": game.away,
-                            "value": awayDowns.length,
-                            "color": "blue"
-                        }]
-                    }/> 
-                </Grid>
-            )}
+    <div className={useStyles.wrapper}>
+        <Grid container spacing={3}>
+            <Grid item xs={12} md={12}>
+                <div style={{display:"flex",flexFlow:"column"}}>
+                    <div>{game.home} - {game.homeScore}</div>
+                    <div>{game.away} - {game.awayScore}</div>
+                </div>
             </Grid>
-        </div>
+            {game.downs && (
+            <Grid item xs={12} md={12}>
+                <Possession game={game}/>
+            </Grid>
+            )}
+        </Grid>
+    </div>
+        
     )
 }
