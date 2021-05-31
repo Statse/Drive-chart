@@ -66,13 +66,16 @@ export default function GameRecap(props) {
 
 
     return (
-    <div className={useStyles.wrapper}>
-            <div style={{display:"flex",flexFlow:"column"}}>
-                <div>{game.home} - {game.homeScore}</div>
-                <div>{game.away} - {game.awayScore}</div>
-            </div>
+    <div className={useStyles.wrapper}>  
+            <Grid container spacing={3}>
+                <Grid item xs={6}>
+                        <div style={{display:"flex",flexFlow:"column"}}>
+                            <div>{game.home} - {game.homeScore}</div>
+                            <div>{game.away} - {game.awayScore}</div>
+                        </div>
+                </Grid>
             {game.downs && (
-                <div style={{width: '500px', height:'500px' }}>
+                <Grid item xs={6}>
                     <h3>Possession</h3>
                     <Pie data={
                         [{
@@ -88,8 +91,9 @@ export default function GameRecap(props) {
                             "color": "blue"
                         }]
                     }/> 
-                </div>
+                </Grid>
             )}
+            </Grid>
         </div>
     )
 }

@@ -96,7 +96,8 @@ export default function GameForm(props) {
                 .set(
                     { 
                         downs: _downs
-                    }
+                    },
+                    { merge: true }
                 )
                 console.log("Updated to db.")
                 //go to next down after save
