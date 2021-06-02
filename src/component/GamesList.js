@@ -24,10 +24,12 @@ export default function GamesList() {
                 });
             setGames(data)
             setLoading(false)
-            } catch {
+            } catch (e) {
+                alert(e)
+                console.error(e)
+                setError(e)
                 setLoading(false)
-                console.log(error)
-                setError(error)
+                return e
             }
           };
         getGames();

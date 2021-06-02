@@ -47,7 +47,7 @@ function App() {
               <PrivateRoute exact path="/" component={Dashboard}/>
               <PrivateRoute exact path="/new-game" component={NewGame}/>
               <PrivateRoute exact path="/game/:id" component={GameWrapper}/>
-              <Route exact path="/recap/:id" component={GameRecapWrapper}/>
+              <Route path="/recap/:id" component={GameRecapWrapper}/>
               <Route path="/login" component={Login}/>
               <Route path="/signup" component={Signup}/>
               <Route path="/forgot" component={ForgotPassword}/>

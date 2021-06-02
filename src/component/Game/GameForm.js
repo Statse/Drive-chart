@@ -295,7 +295,6 @@ export default function GameForm(props) {
                     setPlaytype("PAT")
                     setStartYardline(downData.endYardline)
                 }
-
             break;
             default:
             break;
