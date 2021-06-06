@@ -64,9 +64,8 @@ export default function GameForm(props) {
     const [editMode,  setEditMode]  = useState(false)
     const [Qb, setQb] = useState(0)
     const [carrier, setCarrier] = useState(0)
-    const [receiver, setReceiver] = useState(0)
     const [tackler, setTackler] = useState(0)
-    const [tackleAssist, setTackleAssist] = useState(0)
+    // const [tackleAssist, setTackleAssist] = useState(0)
 
     console.log("editMode", editMode)
 
@@ -89,6 +88,11 @@ export default function GameForm(props) {
                 personel: parseInt(personel),
                 playType: playType,
                 result: result,
+                qb: Qb,
+                tackler: tackler,
+                carrier: carrier,
+                // tackleAssist: tackleAssist,
+
             }
 
             
@@ -590,9 +594,9 @@ export default function GameForm(props) {
                         required  />
                     </Grid>
                 )}
-                {playType === "Run" && (
+                {playType === "Run" || playType === "Pass" && (
                     <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="yard-label">Rusher</InputLabel>
+                        <InputLabel className={classes.bottomMargin} id="yard-label">{playType === "Run" ? "Rusher" : "Receiver"}</InputLabel>
                         <TextField 
                         labelId="yard-label"
                         className={classes.fullWidth} 
