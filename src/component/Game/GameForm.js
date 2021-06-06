@@ -578,17 +578,17 @@ export default function GameForm(props) {
                 {/* Receiver can be from defence if it is interception. */}
                 {playType === "Pass" && (
                     <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="yard-label">Receiver</InputLabel>
+                        <InputLabel className={classes.bottomMargin} id="qb-label">QB</InputLabel>
                         <TextField 
-                        labelId="yard-label"
+                        labelId="qb-label"
                         className={classes.fullWidth} 
                         id="standard-basic" 
                         type="number" 
                         value={endYardline}
-                        onChange={(e)=>setReceiver(e.target.value)}
+                        onChange={(e)=>setQb(e.target.value)}
                         onBlur={(e) => {
                             if (e.target.value > 99){
-                                setReceiver(99)
+                                setQb(99)
                             } 
                         }}
                         required  />
@@ -596,9 +596,9 @@ export default function GameForm(props) {
                 )}
                 {playType === "Run" || playType === "Pass" && (
                     <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="yard-label">{playType === "Run" ? "Rusher" : "Receiver"}</InputLabel>
+                        <InputLabel className={classes.bottomMargin} id="carrier-label">{playType === "Run" ? "Rusher" : "Receiver"}</InputLabel>
                         <TextField 
-                        labelId="yard-label"
+                        labelId="carrier-label"
                         className={classes.fullWidth} 
                         id="standard-basic" 
                         type="number" 
