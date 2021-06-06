@@ -62,6 +62,11 @@ export default function GameForm(props) {
     const [result, setResult] = useState("")
     const [downIndex, setDownIndex] = useState(downs.length)
     const [editMode,  setEditMode]  = useState(false)
+    const [Qb, setQb] = useState(0)
+    const [carrier, setCarrier] = useState(0)
+    const [receiver, setReceiver] = useState(0)
+    const [tackler, setTackler] = useState(0)
+    const [tackleAssist, setTackleAssist] = useState(0)
 
     console.log("editMode", editMode)
 
@@ -177,6 +182,7 @@ export default function GameForm(props) {
     const turnover = (thisDown) => {
         changePossession(thisDown.possession)
         setStartYardline(100-thisDown.endYardline)
+        setQb(0)
     }
   
     const changePossession = (possession) => {
@@ -209,6 +215,7 @@ export default function GameForm(props) {
         setEndYardline("")
         setDown(parseInt(downData.down)+1)
         setDistance(downData.distance - (downData.endYardline-downData.startYardline))
+        setQb(downData.Qb)
 
         if (downData.playType ==="PAT"){
             setStartYardline(35) 
@@ -563,6 +570,43 @@ export default function GameForm(props) {
                         <MenuItem value={"Turnover"}>Turnover</MenuItem>
                     </Select>
                 </Grid>
+                )}
+                {/* Receiver can be from defence if it is interception. */}
+                {playType === "Pass" && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="yard-label">Receiver</InputLabel>
+                        <TextField 
+                        labelId="yard-label"
+                        className={classes.fullWidth} 
+                        id="standard-basic" 
+                        type="number" 
+                        value={endYardline}
+                        onChange={(e)=>setReceiver(e.target.value)}
+                        onBlur={(e) => {
+                            if (e.target.value > 99){
+                                setReceiver(99)
+                            } 
+                        }}
+                        required  />
+                    </Grid>
+                )}
+                {playType === "Run" && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="yard-label">Rusher</InputLabel>
+                        <TextField 
+                        labelId="yard-label"
+                        className={classes.fullWidth} 
+                        id="standard-basic" 
+                        type="number" 
+                        value={endYardline}
+                        onChange={(e)=>setCarrier(e.target.value)}
+                        onBlur={(e) => {
+                            if (e.target.value > 99){
+                                setCarrier(99)
+                            } 
+                        }}
+                        required  />
+                    </Grid>
                 )}
                 
                 {playType !== "Game end" && (
