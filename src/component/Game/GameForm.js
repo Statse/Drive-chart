@@ -65,7 +65,8 @@ export default function GameForm(props) {
     const [Qb, setQb] = useState(0)
     const [carrier, setCarrier] = useState(0)
     const [tackler, setTackler] = useState(0)
-    // const [tackleAssist, setTackleAssist] = useState(0)
+    const [catchYardLine, setCatchYardLine] = useState(0)
+    const [tackleAssist, setTackleAssist] = useState(0)
 
     console.log("editMode", editMode)
 
@@ -91,7 +92,8 @@ export default function GameForm(props) {
                 qb: Qb,
                 tackler: tackler,
                 carrier: carrier,
-                // tackleAssist: tackleAssist,
+                catchYardLine: catchYardLine,
+                tackleAssist: tackleAssist,
 
             }
 
@@ -220,6 +222,10 @@ export default function GameForm(props) {
         setDown(parseInt(downData.down)+1)
         setDistance(downData.distance - (downData.endYardline-downData.startYardline))
         setQb(downData.Qb)
+        setTackler(0)
+        setTackleAssist(0)
+        setCarrier(0)
+        setCatchYardLine(downData.endYardline)
 
         if (downData.playType ==="PAT"){
             setStartYardline(35) 
@@ -263,6 +269,12 @@ export default function GameForm(props) {
                 firstDowns()
             break;
             case "Rush":
+                // code block
+            break;
+            case "Out of bounds":
+                // code block
+            break;
+            case "In bounds":
                 // code block
             break;
             case "TD":
@@ -317,11 +329,9 @@ export default function GameForm(props) {
     if (!init && downs.length){ 
 
         if (downIndex < downs.length && editMode){
-            console.log(">>>>>>>>>>>>>>EDIT")
             mapDownToCurrentState(downs[downIndex])
             setInit(true)
         } else if (!editMode && downs.length>0){
-            console.log(">>>>>>>>>>>>>>INIT")
             //Initialize form first time
             setDownIndex(downs.length)
             // KICKING PLAYS
@@ -357,12 +367,6 @@ export default function GameForm(props) {
             setInit(true)
         }
     } 
-
-    // console.log("============<GAMEFORM RENDER==============")
-    // console.log("init", init)
-    // console.log("edit", editMode)
-    // console.log("downs.length", downs.length)
-    // console.log("downIndex", downIndex)
 
     return ( 
     <div className={useStyles.wrapper}>
@@ -461,13 +465,6 @@ export default function GameForm(props) {
                 </Grid>
                 )}
                 
-                {/*         
-                   Always show from offensives perspective
-
-                   own 0-50 
-                   opp 50-0 
-                   0 === safety/td
-                */}
                 <Grid item xs={12} md={playType !== "Game end" ? 2 : 12}>
                     <InputLabel className={classes.bottomMargin} id="playtype-label">Play type</InputLabel>
                     <Select
@@ -578,7 +575,8 @@ export default function GameForm(props) {
                     </Select>
                 </Grid>
                 )}
-                {result === "Oob" || result === "Ib" && (
+                {playType === "Pass" || playType === "Run" && (
+                <>
                      <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="tackler-label">Tackler</InputLabel>
                         <TextField 
@@ -587,14 +585,35 @@ export default function GameForm(props) {
                             id="standard-basic" 
                             type="number" 
                             value={endYardline}
-                            onChange={(e)=>setQb(e.target.value)}
+                            onChange={(e)=>setTackler(e.target.value)}
                             onBlur={(e) => {
                                 if (e.target.value > 99){
                                     setTackler(99)
-                                } 
+                                } else if (e.target.value < 0){
+                                    setTackler(0)
+                                }
                         }}
                         required  />
                     </Grid>
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="tackle-assist-label">Tackle assist</InputLabel>
+                        <TextField 
+                            labelId="tackle-assist-label"
+                            className={classes.fullWidth} 
+                            id="standard-basic" 
+                            type="number" 
+                            value={endYardline}
+                            onChange={(e)=>setTackleAssist(e.target.value)}
+                            onBlur={(e) => {
+                                if (e.target.value > 99){
+                                    setTackleAssist(99)
+                                } else if (e.target.value < 0){
+                                    setTackleAssist(0)
+                                }
+                        }}
+                        required  />
+                    </Grid>
+                </>
                 )}
                 {/* Receiver can be from defence if it is interception. */}
                 {playType === "Pass" && (
@@ -632,6 +651,26 @@ export default function GameForm(props) {
                         }}
                         required  />
                     </Grid>
+                )}
+                {playType === "Pass" && (
+                     <Grid item xs={12} md={2}>
+                     <InputLabel className={classes.bottomMargin} id="catch-yard-label">Catch yard line</InputLabel>
+                     <TextField 
+                     labelId="catch-yard-label"
+                     className={classes.fullWidth} 
+                     id="standard-basic" 
+                     type="number" 
+                     value={endYardline}
+                     onChange={(e)=>setCatchYardLine(e.target.value)}
+                     onBlur={(e) => {
+                         if (e.target.value > 100){
+                             setCatchYardLine(100)
+                         } else if (e.target.value < 0){
+                            setCatchYardLine(0)
+                        }
+                     }}
+                     required  />
+                 </Grid>
                 )}
                 
                 {playType !== "Game end" && (
