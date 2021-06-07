@@ -641,7 +641,7 @@ export default function GameForm(props) {
                         className={classes.fullWidth} 
                         id="standard-basic" 
                         type="number" 
-                        value={endYardline}
+                        value={carrier}
                         onChange={(e)=>setCarrier(e.target.value)}
                         onBlur={(e) => {
                             if (e.target.value > 99){
@@ -659,7 +659,7 @@ export default function GameForm(props) {
                      className={classes.fullWidth} 
                      id="standard-basic" 
                      type="number" 
-                     value={endYardline}
+                     value={catchYardLine}
                      onChange={(e)=>setCatchYardLine(e.target.value)}
                      onBlur={(e) => {
                          if (e.target.value > 100){
