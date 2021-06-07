@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     },
     formControl: {
       margin: theme.spacing(1),
-      maxWidth: 300,
+    //   maxWidth: 300,
       width: 'auto'
     },
     button: {
@@ -565,6 +565,9 @@ export default function GameForm(props) {
 
                         {/* Other */}
                         <MenuItem value={"Rush"}>Rush</MenuItem>
+                        <MenuItem value={"Catch"}>Catch</MenuItem>
+                        <MenuItem value={"Oob"}>Out of bounds</MenuItem>
+                        <MenuItem value={"Ib"}>In-bounds</MenuItem>
                         <MenuItem value={"TD"}>Touchdown</MenuItem>
                         <MenuItem value={"Fumble recover"}>Fumble recover</MenuItem>
                         <MenuItem value={"Fumble turnover"}>Fumble turnover</MenuItem>
