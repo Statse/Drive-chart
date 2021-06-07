@@ -578,6 +578,24 @@ export default function GameForm(props) {
                     </Select>
                 </Grid>
                 )}
+                {result === "Oob" || result === "Ib" && (
+                     <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="tackler-label">Tackler</InputLabel>
+                        <TextField 
+                            labelId="tackler-label"
+                            className={classes.fullWidth} 
+                            id="standard-basic" 
+                            type="number" 
+                            value={endYardline}
+                            onChange={(e)=>setQb(e.target.value)}
+                            onBlur={(e) => {
+                                if (e.target.value > 99){
+                                    setTackler(99)
+                                } 
+                        }}
+                        required  />
+                    </Grid>
+                )}
                 {/* Receiver can be from defence if it is interception. */}
                 {playType === "Pass" && (
                     <Grid item xs={12} md={2}>
