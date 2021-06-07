@@ -560,8 +560,8 @@ export default function GameForm(props) {
                         {playType==="Pass" && (<MenuItem value={"Interception"}>Interception</MenuItem>)}
 
                         {/* Other */}
-                        <MenuItem value={"Rush"}>Rush</MenuItem>
-                        <MenuItem value={"Catch"}>Catch</MenuItem>
+                        {/* <MenuItem value={"Rush"}>Rush</MenuItem>
+                        <MenuItem value={"Catch"}>Catch</MenuItem> */}
                         <MenuItem value={"Oob"}>Out of bounds</MenuItem>
                         <MenuItem value={"Ib"}>In-bounds</MenuItem>
                         <MenuItem value={"TD"}>Touchdown</MenuItem>
@@ -583,7 +583,7 @@ export default function GameForm(props) {
                             className={classes.fullWidth} 
                             id="standard-basic" 
                             type="number" 
-                            value={endYardline}
+                            value={tackler}
                             onChange={(e)=>setTackler(e.target.value)}
                             onBlur={(e) => {
                                 if (e.target.value > 99){
@@ -601,7 +601,7 @@ export default function GameForm(props) {
                             className={classes.fullWidth} 
                             id="standard-basic" 
                             type="number" 
-                            value={endYardline}
+                            value={tackleAssist}
                             onChange={(e)=>setTackleAssist(e.target.value)}
                             onBlur={(e) => {
                                 if (e.target.value > 99){
