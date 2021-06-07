@@ -90,11 +90,10 @@ export default function GameForm(props) {
                 playType: playType,
                 result: result,
                 qb: Qb,
-                tackler: tackler,
                 carrier: carrier,
                 catchYardLine: catchYardLine,
+                tackler: tackler,
                 tackleAssist: tackleAssist,
-
             }
 
             
@@ -575,7 +574,7 @@ export default function GameForm(props) {
                     </Select>
                 </Grid>
                 )}
-                {playType === "Pass" || playType === "Run" && (
+                {playType !== "Game end" && (
                 <>
                      <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="tackler-label">Tackler</InputLabel>
