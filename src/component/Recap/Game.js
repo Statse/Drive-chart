@@ -1,6 +1,6 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid';
-import Possession from '../component/Recap/Possession'
+import Possession from './Possession'
 
 export default function Game(props) {
     const {game} = props
