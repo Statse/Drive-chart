@@ -68,8 +68,6 @@ export default function GameForm(props) {
     const [catchYardLine, setCatchYardLine] = useState(0)
     const [tackleAssist, setTackleAssist] = useState(0)
 
-    console.log("editMode", editMode)
-
     async function handleSubmit(e){
         e.preventDefault()
         setLoading(true)
