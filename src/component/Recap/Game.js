@@ -14,9 +14,7 @@ export default function Game(props) {
                <Score game={game}/>
             </Grid> */}
             {game.downs && (
-                <Grid item md={12}>
-                   <Possession game={game}/>
-                </Grid>
+                <Possession game={game}/>
             )}
         </>
     )

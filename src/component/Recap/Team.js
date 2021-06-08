@@ -11,9 +11,7 @@ export default function Team(props) {
     return (
         <>
             {game.downs && (
-                <Grid item md={12}>
-                    <OffenseType game={game} team={team} />
-                </Grid>
+                <OffenseType game={game} team={team} />
             )}
         </>
     )

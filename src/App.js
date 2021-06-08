@@ -19,12 +19,10 @@ import Navbar from './component/Navbar'
 import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
-
 const useStyles = makeStyles({
-  appGrid: {
-    minHeight: "100vh",
-    // paddingTop: "70px"
-  },
+  appContainer: {
+    paddingTop: "90px"
+  }
 });
 
 
@@ -36,6 +34,7 @@ function App() {
     <>
       {/* <AuthProvider> */}
         <Navbar></Navbar>
+        <div  className={classes.appContainer}>
           <Router> 
             <Switch>
               <PrivateRoute exact path="/" component={Dashboard}/>
@@ -51,6 +50,7 @@ function App() {
           // <BottomNav className={classes.BottomNav}></BottomNav>
           ) : null}
           </Router>
+        </div>
         {/* </AuthProvider> */}
       </>
   );

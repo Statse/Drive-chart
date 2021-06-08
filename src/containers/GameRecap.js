@@ -13,10 +13,7 @@ import Team from '../component/Recap/Team'
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        padding: "15px",
-        marginTop: "75px",
-        marginBottom: "75px",
-        // maxWidth: '1300px',
+        padding: "25px",
         width: "100%",
         minHeight: "100vh"
     },
@@ -61,26 +58,21 @@ export default function GameRecap(props) {
     console.log(game)
 
     return (
-        <Grid container
-        direction="column"
-        justify="center"
-        alignItems="center"
-        spacing={3}
-        className={useStyles.container}>
-        <div className={useStyles.mb}>
-            <Select
-                labelId="view-label"
-                id="view"
-                // className={classes.fullWidth + " " + classes.selectEmpty}
-                onChange={(e) =>  setView(e.target.value)}
-                label="QTR"
-                value={view}
-                >
-                <MenuItem value={"game"}>Game</MenuItem>
-                <MenuItem value={"home"}>Home</MenuItem>
-                <MenuItem value={"away"}>Away</MenuItem>
-            </Select>
-        </div>
+        <div className={useStyles.container}>
+            <div>
+                <Select
+                    labelId="view-label"
+                    id="view"
+                    // className={classes.fullWidth + " " + classes.selectEmpty}
+                    onChange={(e) =>  setView(e.target.value)}
+                    label="QTR"
+                    value={view}
+                    >
+                    <MenuItem value={"game"}>Game</MenuItem>
+                    <MenuItem value={"home"}>Home</MenuItem>
+                    <MenuItem value={"away"}>Away</MenuItem>
+                </Select>
+            </div>
         
         {view === "game" && (
             <Game game={game}/>
@@ -89,7 +81,7 @@ export default function GameRecap(props) {
         {view !== "game" && (
             <Team game={game} team={view} />
         )}
-    </Grid>
+    </div>
         
     )
 }
