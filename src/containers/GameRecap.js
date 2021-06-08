@@ -9,14 +9,19 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import Game from '../component/Recap/Game'
-
+import Team from '../component/Recap/Team'
 
 const useStyles = makeStyles((theme) => ({
     container: {
         padding: "15px",
         marginTop: "75px",
         marginBottom: "75px",
-        maxWidth: '1300px',
+        // maxWidth: '1300px',
+        width: "100%",
+        minHeight: "100vh"
+    },
+    mb: {
+        marginBottom: "2rem",
     }
 }));
   
@@ -26,7 +31,7 @@ export default function GameRecap(props) {
     const [error, setError] = useState("")
     const [init, setInit] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [view, setView] =  useState("Game") //Game, Home, Away
+    const [view, setView] =  useState("game") //Game, Home, Away
 
     //TODO: investigate what causes multiple render cycles and fix it
     useEffect(()=>{
@@ -56,33 +61,35 @@ export default function GameRecap(props) {
     console.log(game)
 
     return (
-    <div className={useStyles.wrapper}>
-        <Grid item xs={12} md={2}>
-                    <InputLabel id="view-label">view</InputLabel>
-                    <Select
-                        labelId="view-label"
-                        id="view"
-                        // className={classes.fullWidth + " " + classes.selectEmpty}
-                        onChange={(e) =>  setView(e.target.value)}
-                        label="QTR"
-                        value={view}
-                        >
-                        <MenuItem value={"Game"}>Game</MenuItem>
-                        <MenuItem value={"Home"}>Home</MenuItem>
-                        <MenuItem value={"Away"}>Away</MenuItem>
-                    </Select>
-                    {view === "Game" && (
-                        <Game game={game}/>
-                    )}
-                     {view === "Home" && (
-                       <div>Kotijoukkueen tilastot</div>
-                    )}
-                     {view === "Away" && (
-                       <div>Vierasjoukkueen tilastot</div>
-                    )}
-        </Grid>
-       
-    </div>
+        <Grid container
+        direction="column"
+        justify="center"
+        alignItems="center"
+        spacing={3}
+        className={useStyles.container}>
+        <div className={useStyles.mb}>
+            <Select
+                labelId="view-label"
+                id="view"
+                // className={classes.fullWidth + " " + classes.selectEmpty}
+                onChange={(e) =>  setView(e.target.value)}
+                label="QTR"
+                value={view}
+                >
+                <MenuItem value={"game"}>Game</MenuItem>
+                <MenuItem value={"home"}>Home</MenuItem>
+                <MenuItem value={"away"}>Away</MenuItem>
+            </Select>
+        </div>
+        
+        {view === "game" && (
+            <Game game={game}/>
+        )}
+
+        {view !== "game" && (
+            <Team game={game} team={view} />
+        )}
+    </Grid>
         
     )
 }

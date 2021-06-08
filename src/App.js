@@ -23,6 +23,7 @@ import { makeStyles } from '@material-ui/core/styles';
 const useStyles = makeStyles({
   appGrid: {
     minHeight: "100vh",
+    // paddingTop: "70px"
   },
 });
 
@@ -35,14 +36,7 @@ function App() {
     <>
       {/* <AuthProvider> */}
         <Navbar></Navbar>
-         
-          <Router> <Grid
-          container
-          className={classes.appGrid}
-          direction="column"
-          justify="center"
-          alignItems="center"
-          >
+          <Router> 
             <Switch>
               <PrivateRoute exact path="/" component={Dashboard}/>
               <PrivateRoute exact path="/new-game" component={NewGame}/>
@@ -53,7 +47,6 @@ function App() {
               <Route path="/forgot" component={ForgotPassword}/>
               <Route path="/settings" component={UpdateProfile}/>
             </Switch>
-          </Grid>
               {currentUser ? (null
           // <BottomNav className={classes.BottomNav}></BottomNav>
           ) : null}

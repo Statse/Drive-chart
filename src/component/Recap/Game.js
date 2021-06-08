@@ -1,23 +1,23 @@
 import React from 'react'
 import Grid from '@material-ui/core/Grid';
+
+//Charts
+import Score from './Score'
 import Possession from './Possession'
 
 export default function Game(props) {
     const {game} = props
 
     return (
-        <Grid container spacing={3}>
-            <Grid item xs={12} md={12}>
-                <div style={{display:"flex",flexFlow:"column"}}>
-                    <div>{game.home} - {game.homeScore}</div>
-                    <div>{game.away} - {game.awayScore}</div>
-                </div>
-            </Grid>
+        <>
+            {/* <Grid item md={12}>
+               <Score game={game}/>
+            </Grid> */}
             {game.downs && (
-            <Grid item xs={12} md={12}>
-                <Possession game={game}/>
-            </Grid>
+                <Grid item md={12}>
+                   <Possession game={game}/>
+                </Grid>
             )}
-        </Grid>
+        </>
     )
 }

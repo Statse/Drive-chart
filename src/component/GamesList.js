@@ -1,6 +1,7 @@
 import React, { useState, useEffect} from 'react'
 import firebase from '../firebase'
 import GameCard from './GameCard'
+import Grid from '@material-ui/core/Grid';
 
 export default function GamesList() {
     const [games, setGames] = useState([]);
@@ -36,9 +37,14 @@ export default function GamesList() {
     }, [error, userId])
 
     return (
-        <>
+        <Grid 
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+        >
             {!loading && games && (
-                <div>
+                <Grid>
                     <h3>Pelit</h3>
                     {games.map(game=>{
                         return <GameCard 
@@ -49,8 +55,8 @@ export default function GamesList() {
                             id={game.id}
                         />
                     })}
-                </div>
+                </Grid>
             )}
-        </>
+        </Grid>
     )
 }

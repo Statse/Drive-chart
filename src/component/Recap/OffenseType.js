@@ -11,34 +11,34 @@ const useStyles = makeStyles({
     },
 });
 
-export default function Possession(props) {
+export default function OffenseType(props) {
     const classes = useStyles(); 
-    const {game} = props
+    const {game, team} = props
     const {downs} = game
 
-    const homeDowns = downs.filter((down)=>{
-            if (down.possession === "Home"){
+    const passingDowns = downs.filter((down)=>{
+            if (down.possession.toLowerCase() === team && down.playType === "Pass"){
                 return down
             }
         }) 
     
-    const awayDowns = downs.filter((down)=>{
-            if (down.possession === "Away"){
+    const runningDowns = downs.filter((down)=>{
+            if (down.possession.toLowerCase() === team && down.playType === "Run"){
                 return down
             }
         }) 
 
-    const awayPossessionPrecentage = Math.round(awayDowns.length / (homeDowns.length + awayDowns.length) * 100)
-    const homePossessionPrecentage = Math.round(homeDowns.length / (homeDowns.length + awayDowns.length) * 100)
+    const runPrecentage = Math.round(passingDowns.length / (passingDowns.length + runningDowns.length) * 100)
+    const passPrecentage = Math.round(runningDowns.length / (passingDowns.length + runningDowns.length) * 100)
 
-    const series = [homePossessionPrecentage, awayPossessionPrecentage]
+    const series = [runPrecentage, passPrecentage]
 
     const options = {
             chart: {
             width: 380,
             type: 'pie',
             },
-            labels: [game.home, game.away],
+            labels: ["Run", "Pass"],
             responsive: [{
             breakpoint: 480,
             options: {
@@ -46,7 +46,7 @@ export default function Possession(props) {
                 width: 200
                 },
                 legend: {
-                position: 'bottom'
+                    position: 'bottom'
                 }
             }
             }]
@@ -55,7 +55,7 @@ export default function Possession(props) {
     return (
         <Card className={classes.root}>
             <CardContent>
-                <Typography variant="h5" component="h2">Possession</Typography>
+                <Typography variant="h5" component="h2">Run/Pass precentage</Typography>
                 <Chart type="pie" options={options} series={series} width={500} height={320} />
             </CardContent>
         </Card>
