@@ -83,26 +83,28 @@ export default function GameRecap(props) {
         <div style={{padding: "15px"}}>
                   <Card>
                     <CardContent>
-                        <div style={{display: "flex", flexFlow: "row", justifyContent: "center", marginBottom: "1rem"}}>
+                        {/* <div style={{display: "flex", flexFlow: "row", justifyContent: "center", marginBottom: "1rem"}}>
                             <Button className={classes.btn} variant="contained" onClick={()=>setType("game")} color={type ==="game" ? "primary" : ""}>Game</Button>
                             <Button className={classes.btn} variant="contained" onClick={()=>setType("pass")} color={type ==="pass" ? "primary" : ""}>Pass</Button>
                             <Button className={classes.btn} variant="contained" onClick={()=>setType("run")} color={type ==="run" ? "primary" : ""}>Run</Button>
-                        </div>
+                        </div> */}
                         <div style={{display: "flex", flexFlow: "row", justifyContent: "center", marginBottom: "1rem"}}>
                             <Button className={classes.btn} variant="contained" onClick={()=>setTeam("both")} color={team ==="both" ? "primary" : ""}>Compare</Button>
                             <Button className={classes.btn} variant="contained" onClick={()=>setTeam("home")} color={team ==="home" ? "primary" : ""}>Home</Button>
                             <Button className={classes.btn} variant="contained" onClick={()=>setTeam("away")} color={team ==="away" ? "primary" : ""}>Away</Button>
                         </div>
                     </CardContent>
-                    {type === "game" && team === "both"  && (<Game game={game} team={team}/>)}
-                    {type === "pass"  && (<Pass game={game} team={team}/>)}
-                    {type === "run"  &&  (<Run game={game} team={team}/>)}
+                    {team === "both"  && (<Game game={game} team={team}/>)}
+
+                    {/* {type === "pass"  && (<Pass game={game} team={team}/>)}
+                    {type === "run"  &&  (<Run game={game} team={team}/>)} */}
+
+                    {team !== "both" && (
+                        <Team game={game} team={team} />
+                    )}
                 </Card>
         
-        {/* 
-        {view !== "game" && (
-            <Team game={game} team={view} />
-        )} */}
+    
     </div>
         
     )
