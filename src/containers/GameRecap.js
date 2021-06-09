@@ -8,6 +8,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import Stats from '../component/Recap/Stats/Stats'
+
 import Game from '../component/Recap/Game'
 import Team from '../component/Recap/Team'
 
@@ -59,7 +61,7 @@ export default function GameRecap(props) {
 
     return (
         <div className={useStyles.container}>
-            <div>
+            {/* <div>
                 <Select
                     labelId="view-label"
                     id="view"
@@ -72,15 +74,17 @@ export default function GameRecap(props) {
                     <MenuItem value={"home"}>Home</MenuItem>
                     <MenuItem value={"away"}>Away</MenuItem>
                 </Select>
-            </div>
+            </div> */}
+
+        <Stats game={game}/>
         
-        {view === "game" && (
+        {/* {view === "game" && (
             <Game game={game}/>
         )}
 
         {view !== "game" && (
             <Team game={game} team={view} />
-        )}
+        )} */}
     </div>
         
     )
