@@ -4,14 +4,22 @@ import {useGame} from '../context/GameContext'
 //ui
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
+//custom components
 import Stats from '../component/Recap/Stats/Stats'
-
 import Game from '../component/Recap/Game'
 import Team from '../component/Recap/Team'
+import Pass from '../component/Recap/Stats/Pass'
+import Run from '../component/Recap/Stats/Run'
+
+
+
+
 
 const useStyles = makeStyles((theme) => ({
     container: {
@@ -21,6 +29,10 @@ const useStyles = makeStyles((theme) => ({
     },
     mb: {
         marginBottom: "2rem",
+    },
+    btn: {
+        marginLeft: '0.5rem',
+        marginRight: '0.5rem',
     }
 }));
   
@@ -30,7 +42,15 @@ export default function GameRecap(props) {
     const [error, setError] = useState("")
     const [init, setInit] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [view, setView] =  useState("game") //Game, Home, Away
+    const [type, setType] =  useState("game")//game, run, pass
+    const [team, setTeam] =  useState("both")//both, home, away
+    const typeOptions = [
+        "pass",
+        "run",
+        "game"
+    ]
+
+    const classes = useStyles()
 
     //TODO: investigate what causes multiple render cycles and fix it
     useEffect(()=>{
@@ -60,28 +80,26 @@ export default function GameRecap(props) {
     console.log(game)
 
     return (
-        <div className={useStyles.container}>
-            {/* <div>
-                <Select
-                    labelId="view-label"
-                    id="view"
-                    // className={classes.fullWidth + " " + classes.selectEmpty}
-                    onChange={(e) =>  setView(e.target.value)}
-                    label="QTR"
-                    value={view}
-                    >
-                    <MenuItem value={"game"}>Game</MenuItem>
-                    <MenuItem value={"home"}>Home</MenuItem>
-                    <MenuItem value={"away"}>Away</MenuItem>
-                </Select>
-            </div> */}
-
-        <Stats game={game}/>
+        <div style={{padding: "15px"}}>
+                  <Card>
+                    <CardContent>
+                        <div style={{display: "flex", flexFlow: "row", justifyContent: "center", marginBottom: "1rem"}}>
+                            <Button className={classes.btn} variant="contained" onClick={()=>setType("game")} color={type ==="game" ? "primary" : ""}>Game</Button>
+                            <Button className={classes.btn} variant="contained" onClick={()=>setType("pass")} color={type ==="pass" ? "primary" : ""}>Pass</Button>
+                            <Button className={classes.btn} variant="contained" onClick={()=>setType("run")} color={type ==="run" ? "primary" : ""}>Run</Button>
+                        </div>
+                        <div style={{display: "flex", flexFlow: "row", justifyContent: "center", marginBottom: "1rem"}}>
+                            <Button className={classes.btn} variant="contained" onClick={()=>setTeam("both")} color={team ==="both" ? "primary" : ""}>Compare</Button>
+                            <Button className={classes.btn} variant="contained" onClick={()=>setTeam("home")} color={team ==="home" ? "primary" : ""}>Home</Button>
+                            <Button className={classes.btn} variant="contained" onClick={()=>setTeam("away")} color={team ==="away" ? "primary" : ""}>Away</Button>
+                        </div>
+                    </CardContent>
+                    {type === "game" && team === "both"  && (<Game game={game} team={team}/>)}
+                    {type === "pass"  && (<Pass game={game} team={team}/>)}
+                    {type === "run"  &&  (<Run game={game} team={team}/>)}
+                </Card>
         
-        {/* {view === "game" && (
-            <Game game={game}/>
-        )}
-
+        {/* 
         {view !== "game" && (
             <Team game={game} team={view} />
         )} */}
