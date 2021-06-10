@@ -2,7 +2,7 @@ import React from 'react'
 import Grid from '@material-ui/core/Grid';
 
 //Charts
-import OffenseType from './OffenseType'
+import OffenseType from './Team/OffenseType'
 import TouchdownTurnoverRatio from './Team/TouchdownTurnoverRatio'
 import CompletionPrecentage from './Team/CompletionPrecentage'
 import PassAvarageGain from './Team/PassAvarageGain'
