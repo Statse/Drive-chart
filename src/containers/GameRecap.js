@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 //custom components
+import Score from '../component/Recap/Score'
 import Stats from '../component/Recap/Stats/Stats'
 import Game from '../component/Recap/Game'
 import Team from '../component/Recap/Team'
@@ -82,6 +83,9 @@ export default function GameRecap(props) {
     return (
         <div style={{padding: "15px"}}>
                   <Card>
+                    <CardContent>
+                        <Score game={game}/>
+                    </CardContent>
                     <CardContent>
                         {/* <div style={{display: "flex", flexFlow: "row", justifyContent: "center", marginBottom: "1rem"}}>
                             <Button className={classes.btn} variant="contained" onClick={()=>setType("game")} color={type ==="game" ? "primary" : ""}>Game</Button>

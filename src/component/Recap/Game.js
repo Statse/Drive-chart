@@ -4,15 +4,19 @@ import React from 'react'
 import Score from './Score'
 import Possession from './Possession'
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 
 export default function Game(props) {
     const {game, team} = props
     return (
-        <div>
-            <Score game={game}/>
+        <Grid container spacing={3}>
             {game.downs && (
-                <Possession game={game}/>
+                <>
+                    <Grid item xs={12} md={6} lg={4}>
+                        <Possession game={game}/>
+                    </Grid>
+                </>
             )}
-        </div>
+        </Grid>
     )
 }
