@@ -42,7 +42,8 @@ export default function GameCard(props) {
         </Typography>
       </CardContent>
       <CardActions className={classes.flexCenter}>
-        <Button onClick={()=>history.push(`/game/${props.id}`)}color="primary" size="small">Go to game</Button>
+        <Button onClick={()=>history.push(`/game/${props.id}`)} variant="contained" color="primary" size="small">Log game</Button>
+        <Button onClick={()=>history.push(`/recap/${props.id}`)} variant="contained" color="secondary" size="small">Recap</Button>
       </CardActions>
     </Card>
   );
