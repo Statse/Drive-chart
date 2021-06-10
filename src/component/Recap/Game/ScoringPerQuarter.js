@@ -21,9 +21,6 @@ export default function Possession(props) {
     const {game} = props
     const {downs} = game
 
-    console.log(downs)
-
-
     let homeScores = []
     let awayScores = []
     let quarters = []

@@ -39,6 +39,7 @@ export default function CompletionPrecentage(props) {
             return down
         }
     }) 
+    
 
     const completePrecentage = Math.round(completions.length / (completions.length + incompletions.length + interceptions.length) * 100)
     const incompletePrecentage = Math.round(incompletions.length / (completions.length + incompletions.length + interceptions.length) * 100)

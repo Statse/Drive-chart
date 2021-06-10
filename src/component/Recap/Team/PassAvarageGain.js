@@ -23,9 +23,14 @@ export default function PassAvarageGain(props) {
 
 
     let passingYards = 0
+    let interceptions = 0
 
     const passes = downs.filter((down)=>{
         if (down.possession.toLowerCase() === team && down.playType === "Pass" && down.result !== "Penalty"){
+            if (down.result ===  "Interception"){
+                interceptions += 1
+            }
+            console.log(down.endYardline - down.startYardline)
             passingYards += down.endYardline - down.startYardline
             return down
         }
@@ -42,6 +47,8 @@ export default function PassAvarageGain(props) {
                 <Typography variant="h4" component="p">{passes.length}</Typography>
                 <Typography variant="h5" component="h2">Pass yards per attempt</Typography>
                 <Typography variant="h4" component="p">{avaragePassYards}</Typography>
+                <Typography variant="h5" component="h2">Interceptions</Typography>
+                <Typography variant="h4" component="p">{interceptions}</Typography>
             </CardContent>
         </Card>
     )

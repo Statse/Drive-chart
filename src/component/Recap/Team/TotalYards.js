@@ -23,12 +23,31 @@ export default function PassAvarageGain(props) {
 
 
     let totalYards = 0
+    let turnovers = 0
 
     const plays = downs.filter((down)=>{
-        if (down.possession.toLowerCase() === team && (down.playType === "Run" || down.playType === "Pass")){
+        if (down.possession.toLowerCase() !== team ){
+            return
+        }
+
+        if (
+            down.possession.toLowerCase() === team 
+        && (down.playType === "Run" || down.playType === "Pass") 
+        && down.result !== "Turnover"
+        && down.result !== "Fumble turnover"
+        && down.result !== "Interception"
+        ){
             totalYards += down.endYardline - down.startYardline
             return down
-        }
+        } else if (
+            down.result === "Turnover"
+         || down.result === "Fumble turnover"
+         || down.result === "Interception"
+        && (down.playType === "Run" || down.playType === "Pass") 
+         ){
+             console.log("Turnover", down)
+             turnovers += 1
+         }
     }) 
     
     const avarageYards =  Math.round((totalYards / plays.length) * 10) / 10
@@ -42,6 +61,8 @@ export default function PassAvarageGain(props) {
                 <Typography variant="h4" component="p">{plays.length}</Typography>
                 <Typography variant="h5" component="h2">Pass yards per play</Typography>
                 <Typography variant="h4" component="p">{avarageYards}</Typography>
+                <Typography variant="h5" component="h2">Turnovers</Typography>
+                <Typography variant="h4" component="p">{turnovers}</Typography>
             </CardContent>
         </Card>
     )
