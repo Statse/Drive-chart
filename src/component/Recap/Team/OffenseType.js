@@ -44,6 +44,10 @@ export default function OffenseType(props) {
             type: 'pie',
             },
             labels: ["Run", "Pass"],
+            title: {
+                text: 'Run/Pass ratio',
+                align: 'left'
+            },
             responsive: [{
             breakpoint: 480,
             options: {
@@ -60,7 +64,6 @@ export default function OffenseType(props) {
     return (
         <Card className={classes.root}>
             <CardContent>
-                <Typography variant="h5" component="h2">Run/Pass precentage</Typography>
                 <Chart type="pie" options={options} series={series} width={500} height={320} />
             </CardContent>
         </Card>

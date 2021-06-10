@@ -114,7 +114,6 @@ export default function Possession(props) {
     return (
         <Card className={classes.root}>
             <CardContent>
-                <Typography variant="h5" component="h2">Scoring per quarter</Typography>
                 <Chart type="line" options={options} series={series} width={500} height={320} />
             </CardContent>
         </Card>
