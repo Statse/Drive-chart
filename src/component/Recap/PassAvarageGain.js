@@ -1,5 +1,4 @@
 import React from 'react'
-import Chart  from 'react-apexcharts'
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
@@ -31,10 +30,8 @@ export default function PassAvarageGain(props) {
             return down
         }
     }) 
-
-    console.log(passes)
     
-    const avaragePassYards =  Math.round((passingYards / passes.length)*10) / 10
+    const avaragePassYards =  Math.round((passingYards / passes.length) * 10) / 10
 
     return (
         <Card className={classes.root}>

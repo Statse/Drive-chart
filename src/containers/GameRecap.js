@@ -78,8 +78,6 @@ export default function GameRecap(props) {
         return null
     }
 
-    console.log(game)
-
     return (
     <div style={{padding: "15px"}}>
         <Score game={game}/>

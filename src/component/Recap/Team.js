@@ -6,7 +6,6 @@ import OffenseType from './OffenseType'
 import CompletionPrecentage from './CompletionPrecentage'
 import PassAvarageGain from './PassAvarageGain'
 
-
 export default function Team(props) {
     const {game, team} = props
 
