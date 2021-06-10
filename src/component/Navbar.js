@@ -12,6 +12,8 @@ import MenuIcon from '@material-ui/icons/Menu';
 
 import { useAuth } from '../context/AuthContext'
 
+import SidebarMenu from '../component/SidebarMenu';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -47,13 +49,28 @@ export default function Navbar() {
       }
   } 
 
+
+  const [open, setOpen] = React.useState(false);
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setOpen(false);
+  }
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+        <SidebarMenu
+          open={open}
+          handleDrawerClose={handleDrawerClose}
+          />
+          {/*<IconButton edge="start" onClick={handleDrawerOpen} className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
+          */}
           <Typography variant="h6" className={classes.title}>
             Drive chart
           </Typography>
@@ -63,8 +80,12 @@ export default function Navbar() {
             null
             // <Button color="inherit">Login</Button>
           )}
+
         </Toolbar>
+
       </AppBar>
+      
+
     </div>
   );
 }
