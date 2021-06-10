@@ -33,16 +33,23 @@ export default function CompletionPrecentage(props) {
             }
         }) 
 
-    const completePrecentage = Math.round(completions.length / (completions.length + incompletions.length) * 100)
-    const incompletePrecentage = Math.round(incompletions.length / (completions.length + incompletions.length) * 100)
-    const series = [completePrecentage, incompletePrecentage]
+    const interceptions = downs.filter((down)=>{
+        if (down.possession.toLowerCase() === team && down.playType === "Pass"  && (down.result.toLowerCase() === "interception")){
+            return down
+        }
+    }) 
+
+    const completePrecentage = Math.round(completions.length / (completions.length + incompletions.length + interceptions.length) * 100)
+    const incompletePrecentage = Math.round(incompletions.length / (completions.length + incompletions.length + interceptions.length) * 100)
+    const interceptionPrecentage = Math.round(interceptions.length / (completions.length + incompletions.length + interceptions.length) * 100)
+    const series = [completePrecentage, incompletePrecentage, interceptionPrecentage]
 
     const options = {
             chart: {
             width: 380,
             type: 'pie',
             },
-            labels: ["Complete", "Incomplete"],
+            labels: ["Complete", "Incomplete", "Interceptions"],
             responsive: [{
             breakpoint: 480,
             options: {
