@@ -6,6 +6,7 @@ import OffenseType from './OffenseType'
 import TouchdownTurnoverRatio from './TouchdownTurnoverRatio'
 import CompletionPrecentage from './CompletionPrecentage'
 import PassAvarageGain from './PassAvarageGain'
+import RunAvarageGain from './RunAvarageGain'
 
 export default function Team(props) {
     const {game, team} = props
@@ -25,6 +26,9 @@ export default function Team(props) {
                     </Grid> 
                     <Grid item xs={12} md={6} lg={4}>
                         <PassAvarageGain game={game} team={team}/>  
+                    </Grid> 
+                    <Grid item xs={12} md={6} lg={4}>
+                        <RunAvarageGain game={game} team={team}/>  
                     </Grid> 
                 </>
             )}

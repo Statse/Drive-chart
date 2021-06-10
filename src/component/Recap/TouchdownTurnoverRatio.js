@@ -59,7 +59,7 @@ export default function TouchdownTurnoverRatio(props) {
     return (
         <Card className={classes.root}>
             <CardContent>
-                <Typography variant="h5" component="h2">TD/Turnover ratio</Typography>
+                <Typography className={classes.center} variant="h5" component="h2">TD/Turnover ratio</Typography>
                 <Chart type="pie" options={options} series={series} width={500} height={320} />
             </CardContent>
         </Card>
