@@ -37,6 +37,8 @@ export default function Possession(props) {
         quarters[4] = "OT"
     }
 
+    const biggestScore = homeScores[quarters.length-1] > awayScores[quarters.length-1] ? homeScores[quarters.length-1] : awayScores[quarters.length-1]
+
     const series =[{
         name: 'Home',
         data: homeScores
@@ -70,6 +72,7 @@ export default function Possession(props) {
         },
         yaxis: {
             min: 0,
+            max: biggestScore+7,
         }
     }
 
