@@ -16,13 +16,17 @@ const useStyles = makeStyles({
 export default function Score(props) {
     const classes = useStyles(); 
     const {game} = props
+    const {downs} = game
+
 
     return (
         <Card className={classes.root}>
-            <CardContent className={classes.card}>
-                <div>{game.home} - {game.homeScore}</div>
-                <div>{game.away} - {game.awayScore}</div>
-            </CardContent>
+            {downs && (
+                <CardContent className={classes.card}>
+                    <div>{game.home} - {downs[downs.length-1].homeScore}</div>
+                    <div>{game.away} - {downs[downs.length-1].awayScore}</div>
+                </CardContent>
+            )}
         </Card>
     )
 }
