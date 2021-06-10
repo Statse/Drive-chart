@@ -3,10 +3,10 @@ import Grid from '@material-ui/core/Grid';
 
 //Charts
 import OffenseType from './OffenseType'
-import TouchdownTurnoverRatio from './TouchdownTurnoverRatio'
-import CompletionPrecentage from './CompletionPrecentage'
-import PassAvarageGain from './PassAvarageGain'
-import RunAvarageGain from './RunAvarageGain'
+import TouchdownTurnoverRatio from './Team/TouchdownTurnoverRatio'
+import CompletionPrecentage from './Team/CompletionPrecentage'
+import PassAvarageGain from './Team/PassAvarageGain'
+import RunAvarageGain from './Team/RunAvarageGain'
 
 export default function Team(props) {
     const {game, team} = props
