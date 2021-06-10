@@ -21,13 +21,13 @@ export default function TouchdownTurnoverRatio(props) {
     const {downs} = game
 
     const touchdowns = downs.filter((down)=>{
-        if (down.possession.toLowerCase() === team && down.playType === "Pass"){
+        if (down.possession.toLowerCase() === team && down.result === "TD"){
             return down
         }
     }) 
     
     const turnovers = downs.filter((down)=>{
-        if (down.possession.toLowerCase() === team && down.playType === "Run"){
+        if (down.possession.toLowerCase() === team && (down.result === "Turnover" || down.result === "Interception" || down.result === "Fumble turnover")){
             return down
         }
     }) 
@@ -59,7 +59,7 @@ export default function TouchdownTurnoverRatio(props) {
     return (
         <Card className={classes.root}>
             <CardContent>
-                <Typography variant="h5" component="h2">Run/Pass precentage</Typography>
+                <Typography variant="h5" component="h2">TD/Turnover ratio</Typography>
                 <Chart type="pie" options={options} series={series} width={500} height={320} />
             </CardContent>
         </Card>

@@ -87,9 +87,9 @@ export default function GameRecap(props) {
             <Button className={classes.btn} variant="contained" onClick={()=>setType("run")} color={type ==="run" ? "primary" : ""}>Run</Button>
         </div> */}
         <div style={{display: "flex", flexFlow: "row", justifyContent: "center", marginBottom: "1rem", marginTop: "1rem"}}>
-            <Button className={classes.btn} variant="contained" onClick={()=>setTeam("both")} color={team ==="both" ? "primary" : ""}>Compare</Button>
-            <Button className={classes.btn} variant="contained" onClick={()=>setTeam("home")} color={team ==="home" ? "primary" : ""}>Home</Button>
-            <Button className={classes.btn} variant="contained" onClick={()=>setTeam("away")} color={team ==="away" ? "primary" : ""}>Away</Button>
+            <Button className={classes.btn} variant="contained" onClick={()=>setTeam("both")} color={team ==="both" ? "primary" : "default"}>Compare</Button>
+            <Button className={classes.btn} variant="contained" onClick={()=>setTeam("home")} color={team ==="home" ? "primary" : "default"}>Home</Button>
+            <Button className={classes.btn} variant="contained" onClick={()=>setTeam("away")} color={team ==="away" ? "primary" : "default"}>Away</Button>
         </div>
         {team === "both"  && (<Game game={game} team={team}/>)}
 
