@@ -37,11 +37,11 @@ export default function PassAvarageGain(props) {
         <Card className={classes.root}>
             <CardContent>
                 <Typography variant="h5" component="h2">Total running yards</Typography>
-                <Typography variant="h3" component="p">{runningYards}</Typography>
+                <Typography variant="h4" component="p">{runningYards}</Typography>
                 <Typography variant="h5" component="h2">Run attempts</Typography>
-                <Typography variant="h3" component="p">{runningPlays.length}</Typography>
+                <Typography variant="h4" component="p">{runningPlays.length}</Typography>
                 <Typography variant="h5" component="h2">Run yards per attempt</Typography>
-                <Typography variant="h3" component="p">{avarageRunYards}</Typography>
+                <Typography variant="h4" component="p">{avarageRunYards}</Typography>
             </CardContent>
         </Card>
     )

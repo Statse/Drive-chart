@@ -74,7 +74,41 @@ export default function Possession(props) {
         yaxis: {
             min: 0,
             max: biggestScore+7,
-        }
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                chart: {
+                width: 350
+              },
+                legend: {
+                position: 'bottom'
+              }
+            }
+          },
+          {
+            breakpoint: 400,
+            options: {
+                chart: {
+                width: 300
+              },
+                legend: {
+                position: 'bottom'
+              }
+            }
+          },
+          {
+            breakpoint: 350,
+            options: {
+              chart: {
+              width: 280
+            },
+              legend: {
+              position: 'bottom'
+            }
+          }
+          }
+        ]
     }
 
     return (
