@@ -94,6 +94,8 @@ export default function GameForm(props) {
                 tackleAssist: tackleAssist,
             }
 
+            console.log("thisDown", thisDown)
+
             
             if (editMode){
                 console.log("updating...")
@@ -218,7 +220,7 @@ export default function GameForm(props) {
         setEndYardline("")
         setDown(parseInt(downData.down)+1)
         setDistance(downData.distance - (downData.endYardline-downData.startYardline))
-        setQb(downData.Qb)
+        setQb(downData.Qb || 0)
         setTackler(0)
         setTackleAssist(0)
         setCarrier(0)
