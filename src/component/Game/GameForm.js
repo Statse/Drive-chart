@@ -5,9 +5,13 @@ import {useGame} from '../../context/GameContext'
 //ui
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-// import Slider from '@material-ui/core/Slider';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 
 // import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -67,6 +71,7 @@ export default function GameForm(props) {
     const [tackler, setTackler] = useState(0)
     const [catchYardLine, setCatchYardLine] = useState(0)
     const [tackleAssist, setTackleAssist] = useState(0)
+    const [runGap, setRunGap] = useState("")
 
     async function handleSubmit(e){
         e.preventDefault()
@@ -92,6 +97,7 @@ export default function GameForm(props) {
                 catchYardLine: catchYardLine,
                 tackler: tackler,
                 tackleAssist: tackleAssist,
+                runGap: runGap,
             }
 
             console.log("thisDown", thisDown)
@@ -487,6 +493,38 @@ export default function GameForm(props) {
                         <MenuItem value={"Game end"}>Game end</MenuItem>
                     </Select>
                 </Grid>
+
+                {playType === "Run" && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="rungap-label">Run gap</InputLabel>
+                        {/* <RadioGroup row aria-label="rungap-label" name="rungap" value={runGap} onChange={(e)=>setRunGap(e.target.value)}>
+                            <FormControlLabel labelPlacement="top" value="LD" control={<Radio />} label="Left D" />
+                            <FormControlLabel labelPlacement="top" value="LC" control={<Radio />} label="Left C" />
+                            <FormControlLabel labelPlacement="top" value="LB" control={<Radio />} label="Left B" />
+                            <FormControlLabel labelPlacement="top" value="LA" control={<Radio />} label="Left A" />
+                            <FormControlLabel labelPlacement="top" value="RA" control={<Radio />} label="Right A" />
+                            <FormControlLabel labelPlacement="top" value="RB" control={<Radio />} label="Right B" />
+                            <FormControlLabel labelPlacement="top" value="RC" control={<Radio />} label="Right C" />
+                            <FormControlLabel labelPlacement="top" value="RD" control={<Radio />} label="Right D" />
+                        </RadioGroup> */}
+                        <Select
+                            labelId="rungap-label"
+                            className={classes.fullWidth}
+                            value={runGap} 
+                            onChange={(e)=>setRunGap(e.target.value)}
+                            >
+                            <MenuItem value={"LD"}>Left D</MenuItem>
+                            <MenuItem value={"LC"}>Left C</MenuItem>
+                            <MenuItem value={"LB"}>Left B</MenuItem>
+                            <MenuItem value={"LA"}>Left A</MenuItem>
+                            <MenuItem value={"RA"}>Right A</MenuItem>
+                            <MenuItem value={"RB"}>Right B</MenuItem>
+                            <MenuItem value={"RC"}>Right C</MenuItem>
+                            <MenuItem value={"RD"}>Right D</MenuItem>
+                        </Select>
+                    </Grid>
+                )}
+
                 {/*not in Kickoff, PAT */}
                 {playType !=="KO" && playType !=="FG" && playType !== "Game end" && (
                     <Grid item xs={12} md={2}>
