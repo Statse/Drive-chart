@@ -43,9 +43,10 @@ export default function GameForm(props) {
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
     const [init, setInit] = useState(false)
+    const [live, setLive] = useState(true)
+
     const [homeScore, setHomeScore] = useState(0)
     const [awayScore, setAwayScore] = useState(0)
-    const [gameEnded, setGameEnded] = useState(false)
     const [possession, setPossession] = useState("")
     const [quarter, setQuarter] = useState(1)
     const [down, setDown] = useState(1)
@@ -65,8 +66,9 @@ export default function GameForm(props) {
     const [catchYardLine, setCatchYardLine] = useState(0)
     const [tackleAssist, setTackleAssist] = useState(0)
     const [runGap, setRunGap] = useState("")
-    const [passLenght, setPassLenght] = useState(0)
+    const [passLength, setPassLength] = useState(0)
     const [passField, setPassField] = useState("")
+    const [blitzing, setBlitzing] = useState(false)
 
     async function handleSubmit(e){
         e.preventDefault()
@@ -93,8 +95,9 @@ export default function GameForm(props) {
                 tackler: tackler,
                 tackleAssist: tackleAssist,
                 runGap: runGap,
-                passLenght: passLenght,
+                passLength: passLength,
                 passField: passField,
+                blitzing: blitzing
             }
 
             console.log("thisDown", thisDown)
@@ -139,6 +142,7 @@ export default function GameForm(props) {
   
             setInit(false)
             setLoading(false)
+            scrollTop()
         } catch(e) {
             setError(e)
             console.log(error)
@@ -148,6 +152,9 @@ export default function GameForm(props) {
         setLoading(false)
     }
 
+    const scrollTop = () =>{
+        window.scrollTo({top: 0, behavior: 'smooth'});
+    };
 
     const resetDown = () => {
         setPossession("")
@@ -227,8 +234,9 @@ export default function GameForm(props) {
         setCarrier(0)
         setCatchYardLine(0)    
         setRunGap("")
-        setPassLenght(0)    
-        setPassField(0)    
+        setPassLength(0)    
+        setPassField(0) 
+        setBlitzing(false)   
 
         if (downData.playType ==="PAT"){
             setStartYardline(35) 
@@ -416,27 +424,6 @@ export default function GameForm(props) {
                 )}
                 {playType !== "Game end" && (
                 <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="yard-label">Start yard Line</InputLabel>
-                    <TextField 
-                    labelId="yard-label"
-                    className={classes.fullWidth} 
-                    id="standard-basic" 
-                    type="number" 
-                    value={startYardline}
-                    onChange={(e) => setStartYardline(e.target.value)}
-                    onBlur={(e) => {
-                        //limit values
-                        if (e.target.value >= 100){
-                            setStartYardline(99)
-                        } else if (e.target.value < 0){
-                            setStartYardline(0)
-                        }
-                    }}
-                    required  />
-                </Grid>
-                )}
-                {playType !== "Game end" && (
-                <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="hash-label">Hash</InputLabel>
                     <Select
                         labelId="hash-label"
@@ -452,7 +439,7 @@ export default function GameForm(props) {
                     </Select>
                 </Grid>
                 )}
-                {playType !== "Game end" && playType !=="KO" && playType !=="FG" && (
+                {playType !== "Game end" && playType !=="KO" && playType !=="FG" && !live &&(
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="personel-label">Personel</InputLabel>
                     <TextField 
@@ -490,7 +477,7 @@ export default function GameForm(props) {
                     </Select>
                 </Grid>
 
-                {playType === "Run" && (
+                {playType === "Run" && !live && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="rungap-label">Run gap</InputLabel>
                         <Select
@@ -511,24 +498,24 @@ export default function GameForm(props) {
                     </Grid>
                 )}
 
-                {playType === "Pass" && (
+                {playType === "Pass" && !live &&(
                 <>
                     <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="personel-label">Pass lenght</InputLabel>
+                        <InputLabel className={classes.bottomMargin} id="personel-label">Pass length</InputLabel>
                         <TextField 
                         labelId="personel-label" 
                         className={classes.fullWidth} 
                         id="standard-basic" 
                         type="number" 
-                        value={passLenght}
+                        value={passLength}
                         onChange={(e)=>{
-                            setPassLenght(e.target.value)
+                            setPassLength(e.target.value)
                             setCatchYardLine(parseInt(e.target.value)+ parseInt(startYardline))
                         }
                         }
                         />
                     </Grid>
-                    <Grid item xs={12} md={2}>
+                    <Grid item xs={12} md={2} >
                         <InputLabel className={classes.bottomMargin} id="hash-label">Pass field position</InputLabel>
                         <Select
                             labelId="hash-label"
@@ -547,7 +534,7 @@ export default function GameForm(props) {
                 )}
 
                 {/*not in Kickoff, PAT */}
-                {playType !=="KO" && playType !=="FG" && playType !== "Game end" && (
+                {playType !=="KO" && playType !=="FG" && playType !== "Game end" && !live &&(
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="motion-label">Motion direction</InputLabel>
                         <Select
@@ -633,7 +620,25 @@ export default function GameForm(props) {
                     </Select>
                 </Grid>
                 )}
-                {playType !== "Game end" && (
+        
+                {/*not in Kickoff, PAT */}
+                {playType !=="KO" && playType !=="FG" && playType !== "Game end" && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="blitzing-label">Blitzing</InputLabel>
+                        <Select
+                                labelId="blitzing-label"
+                                id="demo-simple-select"
+                                className={classes.fullWidth}
+                                onChange={(e)=>setBlitzing(e.target.value)}
+                                value={blitzing}
+                            >
+                            <MenuItem value={false}>No</MenuItem>
+                            <MenuItem value={true}>Yes</MenuItem>
+                        </Select>
+                    </Grid>
+                )}
+
+                {playType !== "Game end" && !live && (
                 <>
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="tackler-label">Tackler</InputLabel>
@@ -730,7 +735,27 @@ export default function GameForm(props) {
                     required  />
                 </Grid>
                 )}
-                
+                {playType !== "Game end" && (
+                <Grid item xs={12} md={2}>
+                    <InputLabel className={classes.bottomMargin} id="yard-label">Start yard Line</InputLabel>
+                    <TextField 
+                    labelId="yard-label"
+                    className={classes.fullWidth} 
+                    id="standard-basic" 
+                    type="number" 
+                    value={startYardline}
+                    onChange={(e) => setStartYardline(e.target.value)}
+                    onBlur={(e) => {
+                        //limit values
+                        if (e.target.value >= 100){
+                            setStartYardline(99)
+                        } else if (e.target.value < 0){
+                            setStartYardline(0)
+                        }
+                    }}
+                    required  />
+                </Grid>
+                )}
                 {playType !== "Game end" && (
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="yard-label">End yard Line</InputLabel>
