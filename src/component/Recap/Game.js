@@ -11,6 +11,9 @@ import FirstDownsComparison from './Game/FirstDownsComparison'
 import OffenseYards from './Game/OffenseYards'
 import PassingYardsComparison from './Game/PassingYardsComparison'
 import RunningYardsComparison from './Game/RunningYardsComparison'
+import AvarageGain from './Game/AvarageGain'
+import AvaragePassingGain from './Game/AvaragePassingGain'
+import AvarageRunningGain from './Game/AvarageRunningGain'
 
 
 
@@ -33,10 +36,19 @@ export default function Game(props) {
                         <OffenseYards game={game} team={team}/>  
                     </Grid> 
                     <Grid item xs={12} md={6}>
+                        <AvarageGain game={game}/>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
                         <PassingYardsComparison game={game}/>
                     </Grid>
                     <Grid item xs={12} md={6}>
+                        <AvaragePassingGain game={game}/>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
                         <RunningYardsComparison game={game}/>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <AvarageRunningGain game={game}/>
                     </Grid>
                 </>
             )}
