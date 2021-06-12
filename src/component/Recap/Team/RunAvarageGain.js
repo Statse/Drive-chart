@@ -26,25 +26,16 @@ export default function PassAvarageGain(props) {
     let turnovers = 0
 
     const runningPlays = downs.filter((down)=>{
-        if (
-            down.playType.toLowerCase() !== "run" 
-         || down.result === "Penalty"
-            ){
-            return
-        }
 
-        if (
-        down.possession.toLowerCase() === team 
-        && down.result !== "Turnover"
-        && down.result !== "Fumble turnover"
-        ){
-            runningYards += down.endYardline - down.startYardline
-            return down
-        } else if (
-           down.result === "Turnover"
-        || down.result === "Fumble turnover"
-        ){
-            turnovers += 1
+    if (down.possession.toLowerCase() === team){
+        if (down.result !== "Penalty" && down.playType === "Run") {
+                if (down.result !== "Turnover" && down.result !== "Fumble turnover"){
+                    runningYards += down.endYardline - down.startYardline
+                } else {
+                    return turnovers += 1
+                }
+                return down
+            }  
         }
     }) 
     

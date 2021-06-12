@@ -21,33 +21,20 @@ export default function PassAvarageGain(props) {
     const {game, team} = props
     const {downs} = game
 
-
     let totalYards = 0
     let turnovers = 0
 
     const plays = downs.filter((down)=>{
-        if (down.possession.toLowerCase() !== team ){
-            return
+        if (down.possession.toLowerCase() === team ){
+            if (down.result !== "Penalty" && (down.playType === "Run" || down.playType === "Pass")){
+                if (down.result !== "Turnover" && down.result !== "Fumble turnover" && down.result !== "Interception"){
+                    totalYards += down.endYardline - down.startYardline
+                } else {
+                    turnovers += 1
+                }
+                return down
+            } 
         }
-
-        if (
-            down.possession.toLowerCase() === team 
-        && (down.playType === "Run" || down.playType === "Pass") 
-        && down.result !== "Turnover"
-        && down.result !== "Fumble turnover"
-        && down.result !== "Interception"
-        ){
-            totalYards += down.endYardline - down.startYardline
-            return down
-        } else if (
-            down.result === "Turnover"
-         || down.result === "Fumble turnover"
-         || down.result === "Interception"
-        && (down.playType === "Run" || down.playType === "Pass") 
-         ){
-             console.log("Turnover", down)
-             turnovers += 1
-         }
     }) 
     
     const avarageYards =  Math.round((totalYards / plays.length) * 10) / 10

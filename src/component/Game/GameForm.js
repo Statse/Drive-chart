@@ -45,10 +45,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GameForm(props) {
     const {_setDowns, _updateDown, downs} = useGame()
+    const [downIndex, setDownIndex] = useState(downs.length)
     const classes = useStyles();
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
-    
     const [init, setInit] = useState(false)
     const [homeScore, setHomeScore] = useState(0)
     const [awayScore, setAwayScore] = useState(0)
@@ -64,7 +64,6 @@ export default function GameForm(props) {
     const [personel, setPersonel] = useState(20)
     const [playType, setPlaytype] = useState("")
     const [result, setResult] = useState("")
-    const [downIndex, setDownIndex] = useState(downs.length)
     const [editMode,  setEditMode]  = useState(false)
     const [Qb, setQb] = useState(0)
     const [carrier, setCarrier] = useState(0)
@@ -661,7 +660,7 @@ export default function GameForm(props) {
                         className={classes.fullWidth} 
                         id="standard-basic" 
                         type="number" 
-                        value={endYardline}
+                        value={Qb}
                         onChange={(e)=>setQb(e.target.value)}
                         onBlur={(e) => {
                             if (e.target.value > 99){
