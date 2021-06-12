@@ -9,6 +9,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 
 import DownNavigation from './DownNavigation'
 
@@ -381,6 +382,10 @@ export default function GameForm(props) {
 
     return (
     <div className={useStyles.wrapper}>
+        <div style={{display: "flex", flexFlow: "row", justifyContent: "flex-end", marginBottom: "1rem", marginTop: "1rem"}}>
+            <Button className={classes.btn} variant="contained" onClick={()=>setLive(false)} color={live ? "default" : "primary"}>Video</Button>
+            <Button className={classes.btn} variant="contained" onClick={()=>setLive(true)} color={live ? "primary" : "default"}>Live</Button>
+        </div>
         <DownNavigation resetDown={()=>resetDown} downs={downs} prevDown={downIndex-1} down={downs[downIndex]} setEditMode={(bool)=>{setEditMode(bool)}} setInit={(bool)=>{setInit(bool)}}  maxDowns={downs.length} downIndex={downIndex} setDownIndex={(index)=>{setDownIndex(index)}}/>
         <form id="game-form" onSubmit={handleSubmit}>
             <Grid container spacing={3}>
@@ -679,7 +684,7 @@ export default function GameForm(props) {
                 </>
                 )}
                 {/* Receiver can be from defence if it is interception. */}
-                {playType === "Pass" && (
+                {playType === "Pass" && !live && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="qb-label">QB</InputLabel>
                         <TextField 
@@ -697,9 +702,9 @@ export default function GameForm(props) {
                         required  />
                     </Grid>
                 )}
-                {playType === "Run" || playType === "Pass" && (
+                {playType === "Pass" &&  !live && (
                     <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="carrier-label">{playType === "Run" ? "Rusher" : "Receiver"}</InputLabel>
+                        <InputLabel className={classes.bottomMargin} id="carrier-label">Receiver</InputLabel>
                         <TextField 
                         labelId="carrier-label"
                         className={classes.fullWidth} 
@@ -715,7 +720,25 @@ export default function GameForm(props) {
                         required  />
                     </Grid>
                 )}
-                {playType === "Pass" && result !== "Incomplete" && (
+                {playType === "Run" &&  !live && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="carrier-label">Rusher</InputLabel>
+                        <TextField 
+                        labelId="carrier-label"
+                        className={classes.fullWidth} 
+                        id="standard-basic" 
+                        type="number" 
+                        value={carrier}
+                        onChange={(e)=>setCarrier(e.target.value)}
+                        onBlur={(e) => {
+                            if (e.target.value > 99){
+                                setCarrier(99)
+                            } 
+                        }}
+                        required  />
+                    </Grid>
+                )}
+                {playType === "Pass" && result !== "Incomplete" &&  !live && (
                     <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="catch-yard-label">Catch yard line</InputLabel>
                     <TextField 
