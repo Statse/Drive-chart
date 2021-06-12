@@ -12,9 +12,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import Grid from '@material-ui/core/Grid';
-
 import firebase from '../firebase'
-import { Height } from '@material-ui/icons';
 
 const useStyles = makeStyles({
     fullWidth: {
