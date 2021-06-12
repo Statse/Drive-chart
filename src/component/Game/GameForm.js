@@ -71,6 +71,8 @@ export default function GameForm(props) {
     const [catchYardLine, setCatchYardLine] = useState(0)
     const [tackleAssist, setTackleAssist] = useState(0)
     const [runGap, setRunGap] = useState("")
+    const [passLenght, setPassLenght] = useState(0)
+    const [passField, setPassField] = useState("")
 
     async function handleSubmit(e){
         e.preventDefault()
@@ -97,6 +99,8 @@ export default function GameForm(props) {
                 tackler: tackler,
                 tackleAssist: tackleAssist,
                 runGap: runGap,
+                passLenght: passLenght,
+                passField: passField,
             }
 
             console.log("thisDown", thisDown)
@@ -524,6 +528,37 @@ export default function GameForm(props) {
                     </Grid>
                 )}
 
+                {playType === "Pass" && (
+                <>
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="personel-label">Pass lenght</InputLabel>
+                        <TextField 
+                        labelId="personel-label" 
+                        className={classes.fullWidth} 
+                        id="standard-basic" 
+                        type="number" 
+                        value={passLenght}
+                        onChange={(e)=>setPassLenght(e.target.value)}
+                        />
+                    </Grid>
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="hash-label">Pass field position</InputLabel>
+                        <Select
+                            labelId="hash-label"
+                            id="demo-simple-select"
+                            className={classes.fullWidth}
+                            value={passField}
+                            onChange={(e)=>setPassField(e.target.value)}
+                            required
+                            >
+                            <MenuItem value={"L"}>L</MenuItem>
+                            <MenuItem value={"M"}>M</MenuItem>
+                            <MenuItem value={"R"}>R</MenuItem>
+                        </Select>
+                    </Grid>
+                </>
+                )}
+
                 {/*not in Kickoff, PAT */}
                 {playType !=="KO" && playType !=="FG" && playType !== "Game end" && (
                     <Grid item xs={12} md={2}>
@@ -599,8 +634,8 @@ export default function GameForm(props) {
                         {/* Other */}
                         {/* <MenuItem value={"Rush"}>Rush</MenuItem>
                         <MenuItem value={"Catch"}>Catch</MenuItem> */}
-                        <MenuItem value={"Oob"}>Out of bounds</MenuItem>
-                        <MenuItem value={"Ib"}>In-bounds</MenuItem>
+                        <MenuItem value={"OOB"}>Out of bounds</MenuItem>
+                        <MenuItem value={"IB"}>In-bounds</MenuItem>
                         <MenuItem value={"TD"}>Touchdown</MenuItem>
                         <MenuItem value={"Fumble recover"}>Fumble recover</MenuItem>
                         <MenuItem value={"Fumble turnover"}>Fumble turnover</MenuItem>
