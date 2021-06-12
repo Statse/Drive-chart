@@ -59,17 +59,20 @@ export default function DownNavigation(props) {
     
     return (
         <>
+        
+            <div style={{display:"flex",width: '100%',justifyContent: "space-between", marginBottom: "2rem"}}>
+                {0 < downIndex && ( <Typography variant="h5" component="h1">Previous down: {prevDown + 1}</Typography>)}
+                {maxDowns > downIndex && (<Typography style={{marginLeft:"auto"}} variant="h5" component="h1">Current down: {downIndex + 1}</Typography>)}
+            </div>
             {downs[prevDown] ? (
                 <div>
-                    <Typography variant="h5" component="h1">Current down: {downIndex}</Typography>
-                    <Typography variant="h5" component="h1">Previous down: {prevDown}</Typography>
                     {downs[prevDown] && (
                         <div>
                             <DownNavTable previousDown={downs[prevDown]}/>
                         </div>
                     )}
                 </div>
-            ) : (<h3>No previous down</h3>)}
+            ) : (<Typography variant="h5" component="h1">No previous down</Typography>)}
             <div style={{display:"flex",width: '100%',justifyContent: "space-between", marginBottom: "2rem"}}>
                 {0 < downIndex && (
                     <Tooltip title="prev" aria-label="previous play">
