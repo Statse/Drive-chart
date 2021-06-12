@@ -15,17 +15,11 @@ export default function Penalties(props) {
     const penalties = downs.filter((down)=>{
         if (down.possession.toLowerCase() === team){
             if (down.result === "Penalty" && (down.endYardline - down.startYardline < 0) ) {
-                console.log("o penalty")
-                console.log((down.endYardline - down.startYardline) * -1)
-                console.log(down)
                 offensePenaltyYards += (down.endYardline - down.startYardline) * -1
                 return offensivePenalties += 1
             }
         } else {
             if (down.result === "Penalty" && (down.endYardline - down.startYardline > 0)) { 
-                console.log("d penalty")
-                console.log((down.endYardline - down.startYardline))
-                console.log(down)
                 defensePenaltyYards += (down.endYardline - down.startYardline)
                 return defensivePenalties += 1
             }

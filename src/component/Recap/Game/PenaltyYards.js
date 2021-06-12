@@ -19,17 +19,30 @@ export default function PenaltyYards(props) {
     let awayPenaltyYards = 0
 
     const plays = downs.filter((down)=>{
-        if (down.result !== "Penalty" && (down.playType === "Run" || down.playType === "Pass")){
-            if (down.result !== "Turnover" && down.result !== "Fumble turnover" && down.result !== "Interception"){
-                if (down.possession === "Home" ){
-                  homePenaltyYards += down.endYardline - down.startYardline
-                }
-                if (down.possession === "Away" ){
-                  awayPenaltyYards += down.endYardline - down.startYardline
-                }
-                return totalPenaltyYards += down.endYardline - down.startYardline
+        if (down.result === "Penalty"){
+            let penaltyYards = 0
+            if (down.endYardline - down.startYardline < 0) {
+              //offensive penalty
+              penaltyYards += (down.endYardline - down.startYardline) * -1
+              if (down.possession === "Home"){
+                homePenaltyYards += penaltyYards
+              }
+              if (down.possession === "Away" ){
+                awayPenaltyYards += penaltyYards
+              }
+
+            } else if  (down.endYardline - down.startYardline > 0){
+              //defensive penalty
+              penaltyYards += (down.endYardline - down.startYardline)
+              if (down.possession === "Home"){
+                awayPenaltyYards += penaltyYards
+              }
+              if (down.possession === "Away" ){
+                homePenaltyYards += penaltyYards
+              }
             }
-        } 
+              return totalPenaltyYards += penaltyYards
+          }
     }) 
 
     const  series = [{
@@ -49,7 +62,7 @@ export default function PenaltyYards(props) {
         }
       }],
       title: {
-        text: 'Total yards',
+        text: 'Penalty yards',
         align: 'left'
       },
       chart: {

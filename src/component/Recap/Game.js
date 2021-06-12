@@ -14,6 +14,7 @@ import RunningYardsComparison from './Game/RunningYardsComparison'
 import AvarageGain from './Game/AvarageGain'
 import AvaragePassingGain from './Game/AvaragePassingGain'
 import AvarageRunningGain from './Game/AvarageRunningGain'
+import PenaltyYards from './Game/PenaltyYards'
 
 
 
@@ -49,6 +50,9 @@ export default function Game(props) {
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <AvarageRunningGain game={game}/>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <PenaltyYards game={game}/>
                     </Grid>
                 </>
             )}
