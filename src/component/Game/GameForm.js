@@ -663,6 +663,7 @@ export default function GameForm(props) {
                         }}
                         required  />
                     </Grid>
+                    {tackler > 0 && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="tackle-assist-label">Tackle assist</InputLabel>
                         <TextField 
@@ -681,6 +682,7 @@ export default function GameForm(props) {
                         }}
                         required  />
                     </Grid>
+                    )}
                 </>
                 )}
                 {/* Receiver can be from defence if it is interception. */}
