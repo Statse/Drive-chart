@@ -33,24 +33,24 @@ function App() {
   return (
     <>
       {/* <AuthProvider> */}
-        <Navbar></Navbar>
-        <div  className={classes.appContainer}>
-          <Router> 
-            <Switch>
-              <PrivateRoute exact path="/" component={Dashboard}/>
-              <PrivateRoute exact path="/new-game" component={NewGame}/>
-              <PrivateRoute exact path="/game/:id" component={GameWrapper}/>
-              <Route path="/recap/:id" component={GameRecapWrapper}/>
-              <Route path="/login" component={Login}/>
-              <Route path="/signup" component={Signup}/>
-              <Route path="/forgot" component={ForgotPassword}/>
-              <Route path="/settings" component={UpdateProfile}/>
-            </Switch>
-              {currentUser ? (null
-          // <BottomNav className={classes.BottomNav}></BottomNav>
-          ) : null}
-          </Router>
-        </div>
+        <Router> 
+          <Navbar></Navbar>
+            <div  className={classes.appContainer}>
+                <Switch>
+                  <PrivateRoute exact path="/" component={Dashboard}/>
+                  <PrivateRoute exact path="/new-game" component={NewGame}/>
+                  <PrivateRoute exact path="/game/:id" component={GameWrapper}/>
+                  <Route path="/recap/:id" component={GameRecapWrapper}/>
+                  <Route path="/login" component={Login}/>
+                  <Route path="/signup" component={Signup}/>
+                  <Route path="/forgot" component={ForgotPassword}/>
+                  <Route path="/settings" component={UpdateProfile}/>
+                </Switch>
+                  {currentUser ? (null
+              // <BottomNav className={classes.BottomNav}></BottomNav>
+              ) : null}
+            </div>
+        </Router>
         {/* </AuthProvider> */}
       </>
   );

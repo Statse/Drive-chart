@@ -1,6 +1,12 @@
 import React from 'react'
 import DownNavTable from './DownNavTable'
 
+import Typography from '@material-ui/core/Typography';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import Tooltip from '@material-ui/core/Tooltip';
+import Fab from '@material-ui/core/Fab';
+
+
 export default function DownNavigation(props) {
     const {
         resetDown, 
@@ -50,19 +56,38 @@ export default function DownNavigation(props) {
     }
     
     return (
-    <>
-        <div>
+        <>
             {down ? (
                 <div>
-                    <h3>Previous down</h3>
-                    <DownNavTable previousDown={downs[prevDown]}/>
+                    <Typography variant="h5" component="h1">Previous down: {downIndex}</Typography>
+                    <div>
+                        <DownNavTable previousDown={downs[prevDown]}/>
+                    </div>
+                   
                 </div>
             ) : (<h3>No previous down</h3>)}
             <div style={{display:"flex",width: '100%',justifyContent: "space-between", marginBottom: "2rem"}}>
-                {0 < downIndex && (<button  onClick={prev}>Previous</button>)} 
-                {maxDowns > downIndex && (<button style={{marginLeft:"auto"}} onClick={next}>Next</button>)}
+                {0 < downIndex && (
+                    <Tooltip title="prev" aria-label="previous play">
+                        <button onClick={prev} style={{background: "none", border: "none",}}>
+                        <Fab color="primary">
+                            <ArrowForwardIosIcon  style={{transform: "rotate(180deg)"}}/>
+                        </Fab>
+                        </button>
+                    </Tooltip>
+                )}
+
+                
+                {maxDowns > downIndex && ( 
+                    <Tooltip title="prev" aria-label="previous play">
+                        <button onClick={next} style={{background: "none", border: "none",}}>
+                            <Fab color="primary">
+                                <ArrowForwardIosIcon />
+                            </Fab>
+                        </button>
+                    </Tooltip>
+                )}
             </div>
-        </div>
-    </>
+        </>
     )
 }
