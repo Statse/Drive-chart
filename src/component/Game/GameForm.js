@@ -383,8 +383,8 @@ export default function GameForm(props) {
     return (
     <div className={useStyles.wrapper}>
         <div style={{display: "flex", flexFlow: "row", justifyContent: "flex-end", marginBottom: "1rem", marginTop: "1rem"}}>
-            <Button className={classes.btn} variant="contained" onClick={()=>setLive(false)} color={live ? "default" : "primary"}>Video</Button>
-            <Button className={classes.btn} variant="contained" onClick={()=>setLive(true)} color={live ? "primary" : "default"}>Live</Button>
+            <Button className={classes.button} variant="contained" onClick={()=>setLive(false)} color={live ? "default" : "primary"}>Video</Button>
+            <Button className={classes.button} variant="contained" onClick={()=>setLive(true)} color={live ? "primary" : "default"}>Live</Button>
         </div>
         <DownNavigation resetDown={()=>resetDown} downs={downs} prevDown={downIndex-1} down={downs[downIndex]} setEditMode={(bool)=>{setEditMode(bool)}} setInit={(bool)=>{setInit(bool)}}  maxDowns={downs.length} downIndex={downIndex} setDownIndex={(index)=>{setDownIndex(index)}}/>
         <form id="game-form" onSubmit={handleSubmit}>
