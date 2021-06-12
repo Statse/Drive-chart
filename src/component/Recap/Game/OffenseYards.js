@@ -16,7 +16,7 @@ const useStyles = makeStyles({
     },
 });
 
-export default function FirstDownsComparison(props) {
+export default function OffenseYards(props) {
     const classes = useStyles(); 
     const {game} = props
     const {downs} = game
@@ -26,15 +26,27 @@ export default function FirstDownsComparison(props) {
             return down
         }
     }) 
+    
+    let totalYards = 0
+    let totalHomeYards = 0
+    let totalAwayYards = 0
 
-    const awayFirstDowns = downs.filter((down)=>{
-        if (down.possession === "Away" && down.down === 1){
-            return down
-        }
+    const plays = downs.filter((down)=>{
+        if (down.result !== "Penalty" && (down.playType === "Run" || down.playType === "Pass")){
+            if (down.result !== "Turnover" && down.result !== "Fumble turnover" && down.result !== "Interception"){
+                if (down.possession === "Home" ){
+                  totalHomeYards += down.endYardline - down.startYardline
+                }
+                if (down.possession === "Away" ){
+                  totalAwayYards += down.endYardline - down.startYardline
+                }
+                return totalYards += down.endYardline - down.startYardline
+            }
+        } 
     }) 
 
     const  series = [{
-      data: [homeFirstDowns.length, awayFirstDowns.length]
+      data: [totalHomeYards, totalAwayYards]
     }]
 
     const options = {
@@ -50,7 +62,7 @@ export default function FirstDownsComparison(props) {
         }
       }],
       title: {
-        text: 'First downs',
+        text: 'Total yards',
         align: 'left'
       },
       chart: {

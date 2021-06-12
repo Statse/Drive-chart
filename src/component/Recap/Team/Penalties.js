@@ -23,15 +23,24 @@ export default function Penalties(props) {
 
 
     let offensivePenalties = 0
+    let offensePenaltyYards = 0
     let defensivePenalties = 0
-
+    let defensePenaltyYards = 0
     const penalties = downs.filter((down)=>{
         if (down.possession.toLowerCase() === team){
             if (down.result === "Penalty" && (down.endYardline - down.startYardline < 0) ) {
+                console.log("o penalty")
+                console.log((down.endYardline - down.startYardline) * -1)
+                console.log(down)
+                offensePenaltyYards += (down.endYardline - down.startYardline) * -1
                 return offensivePenalties += 1
             }
         } else {
-            if (down.result === "Penalty" && (down.endYardline - down.startYardline > 0)) {
+            if (down.result === "Penalty" && (down.endYardline - down.startYardline > 0)) { 
+                console.log("d penalty")
+                console.log((down.endYardline - down.startYardline))
+                console.log(down)
+                defensePenaltyYards += (down.endYardline - down.startYardline)
                 return defensivePenalties += 1
             }
         }
@@ -41,6 +50,8 @@ export default function Penalties(props) {
     return (
         <Card className={classes.root}>
             <CardContent>
+                <Typography variant="h5" component="h2">Total penalty yards</Typography>
+                <Typography variant="h4" component="p">{defensePenaltyYards + offensePenaltyYards}</Typography>
                 <Typography variant="h5" component="h2">Total penalties</Typography>
                 <Typography variant="h4" component="p">{penalties.length}</Typography>
                 <Typography variant="h5" component="h2">Offense penalties</Typography>
