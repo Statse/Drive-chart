@@ -1,23 +1,8 @@
 import React from 'react'
 import Chart  from 'react-apexcharts'
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles({
-    root: {
-      width: "100%",
-      height: "100%",
-      flexFlow: "column",
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center"
-    },
-});
+import StatCard from '../Wrappers/StatCard'
 
 export default function OffenseYards(props) {
-    const classes = useStyles(); 
     const {game} = props
     const {downs} = game
 
@@ -99,10 +84,9 @@ export default function OffenseYards(props) {
     }
 
     return (
-        <Card className={classes.root}>
-            <CardContent>
+     
+      <StatCard>
                <Chart type="bar" options={options} series={series} width={500} height={320} /> 
-            </CardContent>
-        </Card>
+      </StatCard>
     )
 }

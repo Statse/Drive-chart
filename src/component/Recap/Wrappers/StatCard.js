@@ -19,6 +19,7 @@ export default function StatCard(props) {
     return (
         <Card className={classes.root}>
             <CardContent> 
+                {props.children}
             </CardContent>
         </Card>
     )
