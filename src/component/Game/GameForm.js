@@ -7,13 +7,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-
-// import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import Grid from '@material-ui/core/Grid';
 
@@ -334,7 +327,7 @@ export default function GameForm(props) {
     }
 
     //init based on previous downs
-    if (!init && downs.length){ 
+    if (!init){ 
 
         if (downIndex < downs.length && editMode){
             mapDownToCurrentState(downs[downIndex])
@@ -368,7 +361,7 @@ export default function GameForm(props) {
                 firstDowns()
             }
             setInit(true)
-        } else if (!editMode) {
+        } else {
             //if there is no downs the first down is kickoff
             setPlaytype("KO")
             setStartYardline(35)
