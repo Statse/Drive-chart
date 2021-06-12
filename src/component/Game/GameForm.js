@@ -37,8 +37,8 @@ const useStyles = makeStyles((theme) => ({
   
 
 export default function GameForm(props) {
-    const {_setDowns, _updateDown, downs} = useGame()
-    const [downIndex, setDownIndex] = useState(downs.length)
+    const {_setDowns, _updateDown, _loading, downs} = useGame()
+    const [downIndex, setDownIndex] = useState(0)
     const classes = useStyles();
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
@@ -330,12 +330,11 @@ export default function GameForm(props) {
     }
 
     //init based on previous downs
-    if (!init){ 
-
+    if (!init){
         if (downIndex < downs.length && editMode){
             mapDownToCurrentState(downs[downIndex])
             setInit(true)
-        } else if (!editMode && downs.length>0){
+        } else if (!editMode && downs.length > 0){
             //Initialize form first time
             setDownIndex(downs.length)
             // KICKING PLAYS
@@ -364,181 +363,89 @@ export default function GameForm(props) {
                 firstDowns()
             }
             setInit(true)
-        } else {
+        } 
+        // else {
             //if there is no downs the first down is kickoff
-            setPlaytype("KO")
-            setStartYardline(35)
-            setInit(true)
-        }
+            // setPlaytype("KO")
+            // setStartYardline(35)
+            // setInit(true)
+        // }
     } 
 
-    return ( 
+    return (
     <div className={useStyles.wrapper}>
-        <DownNavigation resetDown={()=>resetDown} downs={downs} prevDown={downIndex-1} down={downs[downIndex-1]} setEditMode={(bool)=>{setEditMode(bool)}} setInit={(bool)=>{setInit(bool)}}  maxDowns={downs.length} downIndex={downIndex} setDownIndex={(index)=>{setDownIndex(index)}}/>
-        <form id="game-form" onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
-             {!loading && ( 
-                <Grid item xs={12} md={2}>
-                        <InputLabel id="QTR-label">QTR</InputLabel>
+        <>
+            <DownNavigation resetDown={()=>resetDown} downs={downs} prevDown={downIndex-1} down={downs[downIndex]} setEditMode={(bool)=>{setEditMode(bool)}} setInit={(bool)=>{setInit(bool)}}  maxDowns={downs.length} downIndex={downIndex} setDownIndex={(index)=>{setDownIndex(index)}}/>
+            <form id="game-form" onSubmit={handleSubmit}>
+                <Grid container spacing={3}>
+                    <Grid item xs={12} md={2}>
+                            <InputLabel id="QTR-label">QTR</InputLabel>
+                            <Select
+                                labelId="QTR-label"
+                                id="demo-simple-select"
+                                className={classes.fullWidth + " " + classes.selectEmpty}
+                                onChange={(e) =>  setQuarter(e.target.value)}
+                                label="QTR"
+                                value={quarter}
+                                >
+                                <MenuItem value={1}>1</MenuItem>
+                                <MenuItem value={2}>2</MenuItem>
+                                <MenuItem value={3}>3</MenuItem>
+                                <MenuItem value={4}>4</MenuItem>
+                                <MenuItem value={5}>OT</MenuItem>
+                            </Select>
+                    </Grid>
+                    {playType !== "Game end" && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel id="possession-label">Possession</InputLabel>
                         <Select
-                            labelId="QTR-label"
+                            labelId="possession-label"
                             id="demo-simple-select"
                             className={classes.fullWidth + " " + classes.selectEmpty}
-                            onChange={(e) =>  setQuarter(e.target.value)}
-                            label="QTR"
-                            value={quarter}
+                            onChange={(e) => {
+                                setPossession(e.target.value)
+                                if (playType ==="KO"){
+                                    setStartYardline(35) 
+                                }
+                            }}
+                            value={possession}
+                            label="Possession"
                             >
-                            <MenuItem value={1}>1</MenuItem>
-                            <MenuItem value={2}>2</MenuItem>
-                            <MenuItem value={3}>3</MenuItem>
-                            <MenuItem value={4}>4</MenuItem>
-                            <MenuItem value={5}>OT</MenuItem>
-                        </Select>
-                </Grid>
-                )}
-                {playType !== "Game end" && (
-                <Grid item xs={12} md={2}>
-                    <InputLabel id="possession-label">Possession</InputLabel>
-                    <Select
-                        labelId="possession-label"
-                        id="demo-simple-select"
-                        className={classes.fullWidth + " " + classes.selectEmpty}
-                        onChange={(e) => {
-                            setPossession(e.target.value)
-                            if (playType ==="KO"){
-                                setStartYardline(35) 
-                            }
-                        }}
-                        value={possession}
-                        label="Possession"
-                        >
-                        <MenuItem value={"Home"}>Home</MenuItem>
-                        <MenuItem value={"Away"}>Away</MenuItem>
-                    </Select>
-                </Grid>
-                )}
-                {playType !== "Game end" && (
-                <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="yard-label">Start yard Line</InputLabel>
-                    <TextField 
-                    labelId="yard-label"
-                    className={classes.fullWidth} 
-                    id="standard-basic" 
-                    type="number" 
-                    value={startYardline}
-                    onChange={(e) => setStartYardline(e.target.value)}
-                    onBlur={(e) => {
-                        //limit values
-                        if (e.target.value >= 100){
-                            setStartYardline(99)
-                        } else if (e.target.value < 0){
-                            setStartYardline(0)
-                        }
-                    }}
-                    required  />
-                </Grid>
-                )}
-                {playType !== "Game end" && (
-                <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="hash-label">Hash</InputLabel>
-                    <Select
-                        labelId="hash-label"
-                        id="demo-simple-select"
-                        className={classes.fullWidth}
-                        value={hash}
-                        onChange={(e)=>setHash(e.target.value)}
-                        required
-                        >
-                        <MenuItem value={"L"}>L</MenuItem>
-                        <MenuItem value={"M"}>M</MenuItem>
-                        <MenuItem value={"R"}>R</MenuItem>
-                    </Select>
-                </Grid>
-                )}
-                {playType !== "Game end" && playType !=="KO" && playType !=="FG" && (
-                <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="personel-label">Personel</InputLabel>
-                    <TextField 
-                    labelId="personel-label" 
-                    className={classes.fullWidth} 
-                    id="standard-basic" 
-                    type="number" 
-                    value={personel}
-                    onChange={(e)=>setPersonel(e.target.value)}
-                    />
-                </Grid>
-                )}
-                
-                <Grid item xs={12} md={playType !== "Game end" ? 2 : 12}>
-                    <InputLabel className={classes.bottomMargin} id="playtype-label">Play type</InputLabel>
-                    <Select
-                        labelId="playtype-label"
-                        id="demo-simple-select"
-                        className={classes.fullWidth}
-                        onChange={(e) => {
-                            setPlaytype(e.target.value)
-                            if (e.target.value==="KO"){
-                                setStartYardline(35) 
-                            }
-                        }}
-                        value={playType}
-                        >
-                        <MenuItem value={"KO"}>KO</MenuItem>
-                        <MenuItem value={"Run"}>Run</MenuItem>
-                        <MenuItem value={"Pass"}>Pass</MenuItem>
-                        <MenuItem value={"Punt"}>Punt</MenuItem>
-                        <MenuItem value={"FG"}>FG</MenuItem>
-                        <MenuItem value={"PAT"}>PAT</MenuItem>
-                        <MenuItem value={"Game end"}>Game end</MenuItem>
-                    </Select>
-                </Grid>
-
-                {playType === "Run" && (
-                    <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="rungap-label">Run gap</InputLabel>
-                        <Select
-                            labelId="rungap-label"
-                            className={classes.fullWidth}
-                            value={runGap} 
-                            onChange={(e)=>setRunGap(e.target.value)}
-                            >
-                            <MenuItem value={"LD"}>Left D</MenuItem>
-                            <MenuItem value={"LC"}>Left C</MenuItem>
-                            <MenuItem value={"LB"}>Left B</MenuItem>
-                            <MenuItem value={"LA"}>Left A</MenuItem>
-                            <MenuItem value={"RA"}>Right A</MenuItem>
-                            <MenuItem value={"RB"}>Right B</MenuItem>
-                            <MenuItem value={"RC"}>Right C</MenuItem>
-                            <MenuItem value={"RD"}>Right D</MenuItem>
+                            <MenuItem value={"Home"}>Home</MenuItem>
+                            <MenuItem value={"Away"}>Away</MenuItem>
                         </Select>
                     </Grid>
-                )}
-
-                {playType === "Pass" && (
-                <>
+                    )}
+                    {playType !== "Game end" && (
                     <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="personel-label">Pass lenght</InputLabel>
+                        <InputLabel className={classes.bottomMargin} id="yard-label">Start yard Line</InputLabel>
                         <TextField 
-                        labelId="personel-label" 
+                        labelId="yard-label"
                         className={classes.fullWidth} 
                         id="standard-basic" 
                         type="number" 
-                        value={passLenght}
-                        onChange={(e)=>{
-                            setPassLenght(e.target.value)
-                            setCatchYardLine(parseInt(e.target.value)+ parseInt(startYardline))
-                        }
-                        }
-                        />
+                        value={startYardline}
+                        onChange={(e) => setStartYardline(e.target.value)}
+                        onBlur={(e) => {
+                            //limit values
+                            if (e.target.value >= 100){
+                                setStartYardline(99)
+                            } else if (e.target.value < 0){
+                                setStartYardline(0)
+                            }
+                        }}
+                        required  />
                     </Grid>
+                    )}
+                    {playType !== "Game end" && (
                     <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="hash-label">Pass field position</InputLabel>
+                        <InputLabel className={classes.bottomMargin} id="hash-label">Hash</InputLabel>
                         <Select
                             labelId="hash-label"
                             id="demo-simple-select"
                             className={classes.fullWidth}
-                            value={passField}
-                            onChange={(e)=>setPassField(e.target.value)}
+                            value={hash}
+                            onChange={(e)=>setHash(e.target.value)}
                             required
                             >
                             <MenuItem value={"L"}>L</MenuItem>
@@ -546,271 +453,364 @@ export default function GameForm(props) {
                             <MenuItem value={"R"}>R</MenuItem>
                         </Select>
                     </Grid>
-                </>
-                )}
+                    )}
+                    {playType !== "Game end" && playType !=="KO" && playType !=="FG" && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="personel-label">Personel</InputLabel>
+                        <TextField 
+                        labelId="personel-label" 
+                        className={classes.fullWidth} 
+                        id="standard-basic" 
+                        type="number" 
+                        value={personel}
+                        onChange={(e)=>setPersonel(e.target.value)}
+                        />
+                    </Grid>
+                    )}
+                    
+                    <Grid item xs={12} md={playType !== "Game end" ? 2 : 12}>
+                        <InputLabel className={classes.bottomMargin} id="playtype-label">Play type</InputLabel>
+                        <Select
+                            labelId="playtype-label"
+                            id="demo-simple-select"
+                            className={classes.fullWidth}
+                            onChange={(e) => {
+                                setPlaytype(e.target.value)
+                                if (e.target.value==="KO"){
+                                    setStartYardline(35) 
+                                }
+                            }}
+                            value={playType}
+                            >
+                            <MenuItem value={"KO"}>KO</MenuItem>
+                            <MenuItem value={"Run"}>Run</MenuItem>
+                            <MenuItem value={"Pass"}>Pass</MenuItem>
+                            <MenuItem value={"Punt"}>Punt</MenuItem>
+                            <MenuItem value={"FG"}>FG</MenuItem>
+                            <MenuItem value={"PAT"}>PAT</MenuItem>
+                            <MenuItem value={"Game end"}>Game end</MenuItem>
+                        </Select>
+                    </Grid>
 
-                {/*not in Kickoff, PAT */}
-                {playType !=="KO" && playType !=="FG" && playType !== "Game end" && (
-                    <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="motion-label">Motion direction</InputLabel>
-                        <Select
-                            labelId="motion-label"
-                            id="demo-simple-select"
-                            className={classes.fullWidth}
-                            onChange={(e)=>setMotion(e.target.value)}
-                            value={motion}
-                            >
-                            <MenuItem value={null}>No motion</MenuItem>
-                            <MenuItem value={"L"}>L</MenuItem>
-                            <MenuItem value={"R"}>R</MenuItem>
-                        </Select>
-                    </Grid>
-                )}
-                {result !=="Penalty" && playType !== "Game end" && (
-                    <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="playdirection-label">Play direction</InputLabel>
-                        <Select
-                            labelId="playdirection-label"
-                            id="demo-simple-select"
-                            className={classes.fullWidth}
-                            onChange={(e)=>setPlaydirection(e.target.value)}
-                            value={playDirection}
-                            >
-                            <MenuItem value={"L"}>L</MenuItem>
-                            <MenuItem value={"R"}>R</MenuItem>
-                        </Select>
-                    </Grid>
-                )}
-                {playType !== "Game end" && (
-                <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="result-label">Play result</InputLabel>
-                    <Select
-                        labelId="result-label"
-                        id="demo-simple-select"
-                        className={classes.fullWidth}
-                        onChange={(e)=>{
-                            setResult(e.target.value)
-                            if (e.target.value === "Incomplete"){
-                                setEndYardline(startYardline)
+                    {playType === "Run" && (
+                        <Grid item xs={12} md={2}>
+                            <InputLabel className={classes.bottomMargin} id="rungap-label">Run gap</InputLabel>
+                            <Select
+                                labelId="rungap-label"
+                                className={classes.fullWidth}
+                                value={runGap} 
+                                onChange={(e)=>setRunGap(e.target.value)}
+                                >
+                                <MenuItem value={"LD"}>Left D</MenuItem>
+                                <MenuItem value={"LC"}>Left C</MenuItem>
+                                <MenuItem value={"LB"}>Left B</MenuItem>
+                                <MenuItem value={"LA"}>Left A</MenuItem>
+                                <MenuItem value={"RA"}>Right A</MenuItem>
+                                <MenuItem value={"RB"}>Right B</MenuItem>
+                                <MenuItem value={"RC"}>Right C</MenuItem>
+                                <MenuItem value={"RD"}>Right D</MenuItem>
+                            </Select>
+                        </Grid>
+                    )}
+
+                    {playType === "Pass" && (
+                    <>
+                        <Grid item xs={12} md={2}>
+                            <InputLabel className={classes.bottomMargin} id="personel-label">Pass lenght</InputLabel>
+                            <TextField 
+                            labelId="personel-label" 
+                            className={classes.fullWidth} 
+                            id="standard-basic" 
+                            type="number" 
+                            value={passLenght}
+                            onChange={(e)=>{
+                                setPassLenght(e.target.value)
+                                setCatchYardLine(parseInt(e.target.value)+ parseInt(startYardline))
                             }
-                            if (e.target.value === "TD"){
+                            }
+                            />
+                        </Grid>
+                        <Grid item xs={12} md={2}>
+                            <InputLabel className={classes.bottomMargin} id="hash-label">Pass field position</InputLabel>
+                            <Select
+                                labelId="hash-label"
+                                id="demo-simple-select"
+                                className={classes.fullWidth}
+                                value={passField}
+                                onChange={(e)=>setPassField(e.target.value)}
+                                required
+                                >
+                                <MenuItem value={"L"}>L</MenuItem>
+                                <MenuItem value={"M"}>M</MenuItem>
+                                <MenuItem value={"R"}>R</MenuItem>
+                            </Select>
+                        </Grid>
+                    </>
+                    )}
+
+                    {/*not in Kickoff, PAT */}
+                    {playType !=="KO" && playType !=="FG" && playType !== "Game end" && (
+                        <Grid item xs={12} md={2}>
+                            <InputLabel className={classes.bottomMargin} id="motion-label">Motion direction</InputLabel>
+                            <Select
+                                labelId="motion-label"
+                                id="demo-simple-select"
+                                className={classes.fullWidth}
+                                onChange={(e)=>setMotion(e.target.value)}
+                                value={motion}
+                                >
+                                <MenuItem value={null}>No motion</MenuItem>
+                                <MenuItem value={"L"}>L</MenuItem>
+                                <MenuItem value={"R"}>R</MenuItem>
+                            </Select>
+                        </Grid>
+                    )}
+                    {result !=="Penalty" && playType !== "Game end" && (
+                        <Grid item xs={12} md={2}>
+                            <InputLabel className={classes.bottomMargin} id="playdirection-label">Play direction</InputLabel>
+                            <Select
+                                labelId="playdirection-label"
+                                id="demo-simple-select"
+                                className={classes.fullWidth}
+                                onChange={(e)=>setPlaydirection(e.target.value)}
+                                value={playDirection}
+                                >
+                                <MenuItem value={"L"}>L</MenuItem>
+                                <MenuItem value={"R"}>R</MenuItem>
+                            </Select>
+                        </Grid>
+                    )}
+                    {playType !== "Game end" && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="result-label">Play result</InputLabel>
+                        <Select
+                            labelId="result-label"
+                            id="demo-simple-select"
+                            className={classes.fullWidth}
+                            onChange={(e)=>{
+                                setResult(e.target.value)
+                                if (e.target.value === "Incomplete"){
+                                    setEndYardline(startYardline)
+                                }
+                                if (e.target.value === "TD"){
+                                    setEndYardline(100)
+                                }
+                                if (e.target.value === "No good"){
+                                    setEndYardline(startYardline)
+                                }
+                            }}
+                            value={result}
+                            required
+                            >
+                            
+                            {/* FG, XP */}
+                            {(playType ==="PAT") && (<MenuItem value={"xp good"}>XP good</MenuItem>)}
+                            {(playType ==="PAT") && (<MenuItem value={"2pt good"}>2pt good</MenuItem>)}
+
+                            {(playType==="FG") && (<MenuItem value={"Good"}>Good</MenuItem>)}
+                            {(playType==="FG" || playType ==="PAT") && (<MenuItem value={"No good"}>No Good</MenuItem>)}
+
+                            
+                            {(playType  ==="KO" || playType === "Punt") && (
+                            <MenuItem value={"Touchback"}>Touchback</MenuItem>
+                            )}
+
+                            {/* pass */}
+                            {/* {playType==="Pass" && (<MenuItem value={"Complete"}>Complete</MenuItem>)} */}
+                            {playType==="Pass" && (<MenuItem value={"Incomplete"}>Incomplete</MenuItem>)}
+                            {playType==="Pass" && (<MenuItem value={"Interception"}>Interception</MenuItem>)}
+
+                            {/* Other */}
+                            {/* <MenuItem value={"Rush"}>Rush</MenuItem>
+                            <MenuItem value={"Catch"}>Catch</MenuItem> */}
+                            <MenuItem value={"OOB"}>Out of bounds</MenuItem>
+                            <MenuItem value={"IB"}>In-bounds</MenuItem>
+                            <MenuItem value={"TD"}>Touchdown</MenuItem>
+                            <MenuItem value={"Fumble recover"}>Fumble recover</MenuItem>
+                            <MenuItem value={"Fumble turnover"}>Fumble turnover</MenuItem>
+                            <MenuItem value={"Sack"}>Sack</MenuItem>
+                            <MenuItem value={"Safety"}>Safety</MenuItem>
+                            <MenuItem value={"Penalty"}>Penalty</MenuItem>
+                            <MenuItem value={"Turnover"}>Turnover</MenuItem>
+                        </Select>
+                    </Grid>
+                    )}
+                    {playType !== "Game end" && (
+                    <>
+                        <Grid item xs={12} md={2}>
+                            <InputLabel className={classes.bottomMargin} id="tackler-label">Tackler</InputLabel>
+                            <TextField 
+                                labelId="tackler-label"
+                                className={classes.fullWidth} 
+                                id="standard-basic" 
+                                type="number" 
+                                value={tackler}
+                                onChange={(e)=>setTackler(e.target.value)}
+                                onBlur={(e) => {
+                                    if (e.target.value > 99){
+                                        setTackler(99)
+                                    } else if (e.target.value < 0){
+                                        setTackler(0)
+                                    }
+                            }}
+                            required  />
+                        </Grid>
+                        <Grid item xs={12} md={2}>
+                            <InputLabel className={classes.bottomMargin} id="tackle-assist-label">Tackle assist</InputLabel>
+                            <TextField 
+                                labelId="tackle-assist-label"
+                                className={classes.fullWidth} 
+                                id="standard-basic" 
+                                type="number" 
+                                value={tackleAssist}
+                                onChange={(e)=>setTackleAssist(e.target.value)}
+                                onBlur={(e) => {
+                                    if (e.target.value > 99){
+                                        setTackleAssist(99)
+                                    } else if (e.target.value < 0){
+                                        setTackleAssist(0)
+                                    }
+                            }}
+                            required  />
+                        </Grid>
+                    </>
+                    )}
+                    {/* Receiver can be from defence if it is interception. */}
+                    {playType === "Pass" && (
+                        <Grid item xs={12} md={2}>
+                            <InputLabel className={classes.bottomMargin} id="qb-label">QB</InputLabel>
+                            <TextField 
+                            labelId="qb-label"
+                            className={classes.fullWidth} 
+                            id="standard-basic" 
+                            type="number" 
+                            value={Qb}
+                            onChange={(e)=>setQb(e.target.value)}
+                            onBlur={(e) => {
+                                if (e.target.value > 99){
+                                    setQb(99)
+                                } 
+                            }}
+                            required  />
+                        </Grid>
+                    )}
+                    {playType === "Run" || playType === "Pass" && (
+                        <Grid item xs={12} md={2}>
+                            <InputLabel className={classes.bottomMargin} id="carrier-label">{playType === "Run" ? "Rusher" : "Receiver"}</InputLabel>
+                            <TextField 
+                            labelId="carrier-label"
+                            className={classes.fullWidth} 
+                            id="standard-basic" 
+                            type="number" 
+                            value={carrier}
+                            onChange={(e)=>setCarrier(e.target.value)}
+                            onBlur={(e) => {
+                                if (e.target.value > 99){
+                                    setCarrier(99)
+                                } 
+                            }}
+                            required  />
+                        </Grid>
+                    )}
+                    {playType === "Pass" && result !== "Incomplete" && (
+                        <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="catch-yard-label">Catch yard line</InputLabel>
+                        <TextField 
+                        labelId="catch-yard-label"
+                        className={classes.fullWidth} 
+                        id="standard-basic" 
+                        type="number" 
+                        value={catchYardLine}
+                        onChange={(e)=>setCatchYardLine(e.target.value)}
+                        onBlur={(e) => {
+                            if (e.target.value > 100){
+                                setCatchYardLine(100)
+                            } else if (e.target.value < 0){
+                                setCatchYardLine(0)
+                            }
+                        }}
+                        required  />
+                    </Grid>
+                    )}
+                    
+                    {playType !== "Game end" && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="yard-label">End yard Line</InputLabel>
+                        <TextField 
+                        labelId="yard-label"
+                        className={classes.fullWidth} 
+                        id="standard-basic" 
+                        type="number" 
+                        value={endYardline}
+                        onChange={(e)=>setEndYardline(e.target.value)}
+                        onBlur={(e) => {
+                            if (e.target.value > 100){
                                 setEndYardline(100)
-                            }
-                            if (e.target.value === "No good"){
-                                setEndYardline(startYardline)
+                            } else if (e.target.value < 0){
+                                setEndYardline(0)
                             }
                         }}
-                        value={result}
-                        required
-                        >
-                        
-                        {/* FG, XP */}
-                        {(playType ==="PAT") && (<MenuItem value={"xp good"}>XP good</MenuItem>)}
-                        {(playType ==="PAT") && (<MenuItem value={"2pt good"}>2pt good</MenuItem>)}
-
-                        {(playType==="FG") && (<MenuItem value={"Good"}>Good</MenuItem>)}
-                        {(playType==="FG" || playType ==="PAT") && (<MenuItem value={"No good"}>No Good</MenuItem>)}
-
-                        
-                        {(playType  ==="KO" || playType === "Punt") && (
-                          <MenuItem value={"Touchback"}>Touchback</MenuItem>
-                        )}
-
-                        {/* pass */}
-                        {/* {playType==="Pass" && (<MenuItem value={"Complete"}>Complete</MenuItem>)} */}
-                        {playType==="Pass" && (<MenuItem value={"Incomplete"}>Incomplete</MenuItem>)}
-                        {playType==="Pass" && (<MenuItem value={"Interception"}>Interception</MenuItem>)}
-
-                        {/* Other */}
-                        {/* <MenuItem value={"Rush"}>Rush</MenuItem>
-                        <MenuItem value={"Catch"}>Catch</MenuItem> */}
-                        <MenuItem value={"OOB"}>Out of bounds</MenuItem>
-                        <MenuItem value={"IB"}>In-bounds</MenuItem>
-                        <MenuItem value={"TD"}>Touchdown</MenuItem>
-                        <MenuItem value={"Fumble recover"}>Fumble recover</MenuItem>
-                        <MenuItem value={"Fumble turnover"}>Fumble turnover</MenuItem>
-                        <MenuItem value={"Sack"}>Sack</MenuItem>
-                        <MenuItem value={"Safety"}>Safety</MenuItem>
-                        <MenuItem value={"Penalty"}>Penalty</MenuItem>
-                        <MenuItem value={"Turnover"}>Turnover</MenuItem>
-                    </Select>
-                </Grid>
-                )}
-                {playType !== "Game end" && (
-                <>
-                     <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="tackler-label">Tackler</InputLabel>
-                        <TextField 
-                            labelId="tackler-label"
+                        required  />
+                    </Grid>
+                    )}
+                    {/*not in Kickoff, PAT */}
+                    {playType !== "Game end" && playType !=="PAT" && playType !=="KO" && (
+                        <Grid item xs={12} md={2}>
+                            <InputLabel className={classes.bottomMargin} id="down-label">Down</InputLabel>
+                            <TextField  
+                            labelId="down-label" 
                             className={classes.fullWidth} 
+                            id="standard-basic"
+                            type="number" 
+                            onChange={(e)=>setDown(e.target.value)}
+                            value={down}
+                            required />
+                        </Grid>
+                    )}
+                    {/*not in Kickoff, PAT */}
+                    {playType !== "Game end" && playType !=="PAT" && playType !=="KO" && (
+                        <Grid item xs={12} md={2}>
+                            <InputLabel className={classes.bottomMargin} id="distance-label">Distance</InputLabel>
+                            <TextField 
+                            labelId="distance-label" 
+                            className={classes.fullWidth}
                             id="standard-basic" 
                             type="number" 
-                            value={tackler}
-                            onChange={(e)=>setTackler(e.target.value)}
-                            onBlur={(e) => {
-                                if (e.target.value > 99){
-                                    setTackler(99)
-                                } else if (e.target.value < 0){
-                                    setTackler(0)
-                                }
-                        }}
-                        required  />
-                    </Grid>
-                    <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="tackle-assist-label">Tackle assist</InputLabel>
-                        <TextField 
-                            labelId="tackle-assist-label"
-                            className={classes.fullWidth} 
-                            id="standard-basic" 
-                            type="number" 
-                            value={tackleAssist}
-                            onChange={(e)=>setTackleAssist(e.target.value)}
-                            onBlur={(e) => {
-                                if (e.target.value > 99){
-                                    setTackleAssist(99)
-                                } else if (e.target.value < 0){
-                                    setTackleAssist(0)
-                                }
-                        }}
-                        required  />
-                    </Grid>
-                </>
-                )}
-                {/* Receiver can be from defence if it is interception. */}
-                {playType === "Pass" && (
-                    <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="qb-label">QB</InputLabel>
-                        <TextField 
-                        labelId="qb-label"
-                        className={classes.fullWidth} 
-                        id="standard-basic" 
-                        type="number" 
-                        value={Qb}
-                        onChange={(e)=>setQb(e.target.value)}
-                        onBlur={(e) => {
-                            if (e.target.value > 99){
-                                setQb(99)
-                            } 
-                        }}
-                        required  />
-                    </Grid>
-                )}
-                {playType === "Run" || playType === "Pass" && (
-                    <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="carrier-label">{playType === "Run" ? "Rusher" : "Receiver"}</InputLabel>
-                        <TextField 
-                        labelId="carrier-label"
-                        className={classes.fullWidth} 
-                        id="standard-basic" 
-                        type="number" 
-                        value={carrier}
-                        onChange={(e)=>setCarrier(e.target.value)}
-                        onBlur={(e) => {
-                            if (e.target.value > 99){
-                                setCarrier(99)
-                            } 
-                        }}
-                        required  />
-                    </Grid>
-                )}
-                {playType === "Pass" && result !== "Incomplete" && (
-                     <Grid item xs={12} md={2}>
-                     <InputLabel className={classes.bottomMargin} id="catch-yard-label">Catch yard line</InputLabel>
-                     <TextField 
-                     labelId="catch-yard-label"
-                     className={classes.fullWidth} 
-                     id="standard-basic" 
-                     type="number" 
-                     value={catchYardLine}
-                     onChange={(e)=>setCatchYardLine(e.target.value)}
-                     onBlur={(e) => {
-                         if (e.target.value > 100){
-                             setCatchYardLine(100)
-                         } else if (e.target.value < 0){
-                            setCatchYardLine(0)
-                        }
-                     }}
-                     required  />
-                 </Grid>
-                )}
-                
+                            required 
+                            onChange={(e)=>setDistance(e.target.value)}
+                            value={distance}
+                            />
+                        </Grid>
+                    )}
                 {playType !== "Game end" && (
-                <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="yard-label">End yard Line</InputLabel>
-                    <TextField 
-                    labelId="yard-label"
-                    className={classes.fullWidth} 
-                    id="standard-basic" 
-                    type="number" 
-                    value={endYardline}
-                    onChange={(e)=>setEndYardline(e.target.value)}
-                    onBlur={(e) => {
-                        if (e.target.value > 100){
-                            setEndYardline(100)
-                        } else if (e.target.value < 0){
-                            setEndYardline(0)
-                        }
-                    }}
-                    required  />
-                </Grid>
-                )}
-                {/*not in Kickoff, PAT */}
-                {playType !== "Game end" && playType !=="PAT" && playType !=="KO" && (
                     <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="down-label">Down</InputLabel>
+                        <InputLabel className={classes.bottomMargin} id="down-label">Home score</InputLabel>
                         <TextField  
                         labelId="down-label" 
                         className={classes.fullWidth} 
                         id="standard-basic"
                         type="number" 
-                        onChange={(e)=>setDown(e.target.value)}
-                        value={down}
+                        onChange={(e)=>setHomeScore(e.target.value)}
+                        value={homeScore}
                         required />
                     </Grid>
                 )}
-                {/*not in Kickoff, PAT */}
-                {playType !== "Game end" && playType !=="PAT" && playType !=="KO" && (
+                {playType !== "Game end" && (
                     <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="distance-label">Distance</InputLabel>
-                        <TextField 
-                        labelId="distance-label" 
-                        className={classes.fullWidth}
-                        id="standard-basic" 
+                        <InputLabel className={classes.bottomMargin} id="down-label">Away score</InputLabel>
+                        <TextField  
+                        labelId="down-label" 
+                        className={classes.fullWidth} 
+                        id="standard-basic"
                         type="number" 
-                        required 
-                        onChange={(e)=>setDistance(e.target.value)}
-                        value={distance}
-                        />
+                        onChange={(e)=>setAwayScore(e.target.value)}
+                        value={awayScore}
+                        required />
                     </Grid>
                 )}
-               {playType !== "Game end" && (
-                 <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="down-label">Home score</InputLabel>
-                    <TextField  
-                    labelId="down-label" 
-                    className={classes.fullWidth} 
-                    id="standard-basic"
-                    type="number" 
-                    onChange={(e)=>setHomeScore(e.target.value)}
-                    value={homeScore}
-                    required />
                 </Grid>
-               )}
-               {playType !== "Game end" && (
-                <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="down-label">Away score</InputLabel>
-                    <TextField  
-                    labelId="down-label" 
-                    className={classes.fullWidth} 
-                    id="standard-basic"
-                    type="number" 
-                    onChange={(e)=>setAwayScore(e.target.value)}
-                    value={awayScore}
-                    required />
-                </Grid>
-               )}
-            </Grid>
-        </form>
+            </form>
+        </>
     </div>
     )
 }

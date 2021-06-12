@@ -14,7 +14,7 @@ export function GameProvider({children}) {
     const [away, setAway] = useState("")
     const [awayScore, setAwayScore] = useState("")
     const [downs, setDowns] = useState([])
-    const [loading, setLoading] = useState(false)
+    const [_loading, setLoading] = useState(false)
     const [game, setGame] = useState(false)
 
     async function getGame(id){
@@ -68,6 +68,7 @@ export function GameProvider({children}) {
     const value = {
         _setDowns,
         _updateDown,
+        _loading,
         downs,
         getGame,
         game
@@ -75,7 +76,7 @@ export function GameProvider({children}) {
 
     return (
         <GameContext.Provider value={value}>
-            {!loading && children}
+            {!_loading && children}
         </GameContext.Provider>
     )
 }

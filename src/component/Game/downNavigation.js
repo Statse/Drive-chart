@@ -54,22 +54,26 @@ export default function DownNavigation(props) {
             alert("Invalid index: " + downIndex + 1)
         }
     }
+
+    console.log("downs[prevDown]", downs[prevDown])
     
     return (
         <>
-            {down ? (
+            {downs[prevDown] ? (
                 <div>
-                    <Typography variant="h5" component="h1">Previous down: {downIndex}</Typography>
-                    <div>
-                        <DownNavTable previousDown={downs[prevDown]}/>
-                    </div>
-                   
+                    <Typography variant="h5" component="h1">Current down: {downIndex}</Typography>
+                    <Typography variant="h5" component="h1">Previous down: {prevDown}</Typography>
+                    {downs[prevDown] && (
+                        <div>
+                            <DownNavTable previousDown={downs[prevDown]}/>
+                        </div>
+                    )}
                 </div>
             ) : (<h3>No previous down</h3>)}
             <div style={{display:"flex",width: '100%',justifyContent: "space-between", marginBottom: "2rem"}}>
                 {0 < downIndex && (
                     <Tooltip title="prev" aria-label="previous play">
-                        <button onClick={prev} style={{background: "none", border: "none",}}>
+                        <button onClick={prev} style={{background: "none", border: "none", marginRight:"auto"}}>
                         <Fab color="primary">
                             <ArrowForwardIosIcon  style={{transform: "rotate(180deg)"}}/>
                         </Fab>
@@ -80,7 +84,7 @@ export default function DownNavigation(props) {
                 
                 {maxDowns > downIndex && ( 
                     <Tooltip title="prev" aria-label="previous play">
-                        <button onClick={next} style={{background: "none", border: "none",}}>
+                        <button onClick={next} style={{background: "none", border: "none", marginLeft:"auto"}}>
                             <Fab color="primary">
                                 <ArrowForwardIosIcon />
                             </Fab>
