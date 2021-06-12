@@ -2,30 +2,30 @@ import React from 'react'
 import Chart  from 'react-apexcharts'
 import StatCard from '../Wrappers/StatCard'
 
-export default function OffenseYards(props) {
+export default function PassingYardsComparison(props) {
     const {game} = props
     const {downs} = game
     
-    let totalYards = 0
-    let totalHomeYards = 0
-    let totalAwayYards = 0
+    let totalPassingYards = 0
+    let totalHomePassingYards = 0
+    let totalAwayPassingYards = 0
 
     const plays = downs.filter((down)=>{
-        if (down.result !== "Penalty" && (down.playType === "Run" || down.playType === "Pass")){
+        if (down.result !== "Penalty" && (down.playType === "Pass")){
             if (down.result !== "Turnover" && down.result !== "Fumble turnover" && down.result !== "Interception"){
                 if (down.possession === "Home" ){
-                  totalHomeYards += down.endYardline - down.startYardline
+                  totalHomePassingYards += down.endYardline - down.startYardline
                 }
                 if (down.possession === "Away" ){
-                  totalAwayYards += down.endYardline - down.startYardline
+                  totalAwayPassingYards += down.endYardline - down.startYardline
                 }
-                return totalYards += down.endYardline - down.startYardline
+                return totalPassingYards += down.endYardline - down.startYardline
             }
         } 
     }) 
 
     const  series = [{
-      data: [totalHomeYards, totalAwayYards]
+      data: [totalHomePassingYards, totalAwayPassingYards]
     }]
 
     const options = {
@@ -41,7 +41,7 @@ export default function OffenseYards(props) {
         }
       }],
       title: {
-        text: 'Total yards',
+        text: 'Passing yards',
         align: 'left'
       },
       chart: {
@@ -80,7 +80,7 @@ export default function OffenseYards(props) {
     return (
      
       <StatCard>
-               <Chart type="bar" options={options} series={series} width={500} height={320} /> 
+        <Chart type="bar" options={options} series={series} width={500} height={320} /> 
       </StatCard>
     )
 }

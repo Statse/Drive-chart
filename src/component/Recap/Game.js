@@ -9,6 +9,9 @@ import Possession from './Game/Possession'
 import ScoringPerQuarter from './Game/ScoringPerQuarter'
 import FirstDownsComparison from './Game/FirstDownsComparison'
 import OffenseYards from './Game/OffenseYards'
+import PassingYardsComparison from './Game/PassingYardsComparison'
+import RunningYardsComparison from './Game/RunningYardsComparison'
+
 
 
 export default function Game(props) {
@@ -21,13 +24,19 @@ export default function Game(props) {
                         <ScoringPerQuarter game={game}/>
                     </Grid>
                     <Grid item xs={12} md={6}>
-                        <OffenseYards game={game} team={team}/>  
-                    </Grid> 
-                    <Grid item xs={12} md={6}>
                         <Possession game={game}/>
                     </Grid>
                     <Grid item xs={12} md={6}>
                         <FirstDownsComparison game={game}/>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <OffenseYards game={game} team={team}/>  
+                    </Grid> 
+                    <Grid item xs={12} md={6}>
+                        <PassingYardsComparison game={game}/>
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <RunningYardsComparison game={game}/>
                     </Grid>
                 </>
             )}
