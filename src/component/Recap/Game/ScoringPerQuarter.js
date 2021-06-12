@@ -38,10 +38,10 @@ export default function Possession(props) {
     const biggestScore = homeScores[quarters.length-1] > awayScores[quarters.length-1] ? homeScores[quarters.length-1] : awayScores[quarters.length-1]
 
     const series =[{
-        name: 'Home',
+        name: game.home,
         data: homeScores
       }, {
-        name: 'Away',
+        name: game.away,
         data: awayScores
       }]
 

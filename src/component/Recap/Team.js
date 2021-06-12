@@ -9,6 +9,7 @@ import PassAvarageGain from './Team/PassAvarageGain'
 import RunAvarageGain from './Team/RunAvarageGain'
 import TotalYards from './Team/TotalYards'
 import Penalties from './Team/Penalties'
+import FirstDowns from './Team/FirstDowns'
 
 export default function Team(props) {
     const {game, team} = props
@@ -37,6 +38,9 @@ export default function Team(props) {
                     </Grid> 
                     <Grid item xs={12} md={6}>
                         <Penalties game={game} team={team}/>  
+                    </Grid> 
+                    <Grid item xs={12} md={6}>
+                        <FirstDowns game={game} team={team}/>  
                     </Grid> 
                 </>
             )}
