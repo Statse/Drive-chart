@@ -493,16 +493,6 @@ export default function GameForm(props) {
                 {playType === "Run" && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="rungap-label">Run gap</InputLabel>
-                        {/* <RadioGroup row aria-label="rungap-label" name="rungap" value={runGap} onChange={(e)=>setRunGap(e.target.value)}>
-                            <FormControlLabel labelPlacement="top" value="LD" control={<Radio />} label="Left D" />
-                            <FormControlLabel labelPlacement="top" value="LC" control={<Radio />} label="Left C" />
-                            <FormControlLabel labelPlacement="top" value="LB" control={<Radio />} label="Left B" />
-                            <FormControlLabel labelPlacement="top" value="LA" control={<Radio />} label="Left A" />
-                            <FormControlLabel labelPlacement="top" value="RA" control={<Radio />} label="Right A" />
-                            <FormControlLabel labelPlacement="top" value="RB" control={<Radio />} label="Right B" />
-                            <FormControlLabel labelPlacement="top" value="RC" control={<Radio />} label="Right C" />
-                            <FormControlLabel labelPlacement="top" value="RD" control={<Radio />} label="Right D" />
-                        </RadioGroup> */}
                         <Select
                             labelId="rungap-label"
                             className={classes.fullWidth}
