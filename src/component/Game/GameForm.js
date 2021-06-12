@@ -88,7 +88,7 @@ export default function GameForm(props) {
                 result: result,
                 qb: Qb,
                 carrier: carrier,
-                catchYardLine: catchYardLine,
+                catchYardLine: result ===  "Incomplete" ? null : catchYardLine,
                 tackler: tackler,
                 tackleAssist: tackleAssist,
                 runGap: runGap,
@@ -226,7 +226,10 @@ export default function GameForm(props) {
         setTackler(0)
         setTackleAssist(0)
         setCarrier(0)
-        setCatchYardLine(downData.endYardline)
+        setCatchYardLine(0)    
+        setRunGap("")
+        setPassLenght(0)    
+        setPassField(0)    
 
         if (downData.playType ==="PAT"){
             setStartYardline(35) 
@@ -521,7 +524,11 @@ export default function GameForm(props) {
                         id="standard-basic" 
                         type="number" 
                         value={passLenght}
-                        onChange={(e)=>setPassLenght(e.target.value)}
+                        onChange={(e)=>{
+                            setPassLenght(e.target.value)
+                            setCatchYardLine(parseInt(e.target.value)+ parseInt(startYardline))
+                        }
+                        }
                         />
                     </Grid>
                     <Grid item xs={12} md={2}>
@@ -610,7 +617,7 @@ export default function GameForm(props) {
                         )}
 
                         {/* pass */}
-                        {playType==="Pass" && (<MenuItem value={"Complete"}>Complete</MenuItem>)}
+                        {/* {playType==="Pass" && (<MenuItem value={"Complete"}>Complete</MenuItem>)} */}
                         {playType==="Pass" && (<MenuItem value={"Incomplete"}>Incomplete</MenuItem>)}
                         {playType==="Pass" && (<MenuItem value={"Interception"}>Interception</MenuItem>)}
 
@@ -706,7 +713,7 @@ export default function GameForm(props) {
                         required  />
                     </Grid>
                 )}
-                {playType === "Pass" && (
+                {playType === "Pass" && result !== "Incomplete" && (
                      <Grid item xs={12} md={2}>
                      <InputLabel className={classes.bottomMargin} id="catch-yard-label">Catch yard line</InputLabel>
                      <TextField 
