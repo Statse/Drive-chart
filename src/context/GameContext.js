@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react'
-import downNavigation from '../component/Game/downNavigation'
 import firebase from '../firebase'
 
 const GameContext = React.createContext()
@@ -54,17 +53,17 @@ export function GameProvider({children}) {
         return newDowns
     }
 
-    async function submitDown(gameId){
-        await firebase.firestore()
-            .collection('games')
-            .doc(gameId)
-            .set(
-                { 
-                    downs: downs
-                },
-                { merge: true }
-            )
-    }
+    // async function submitDown(gameId){
+    //     await firebase.firestore()
+    //         .collection('games')
+    //         .doc(gameId)
+    //         .set(
+    //             { 
+    //                 downs: downs
+    //             },
+    //             { merge: true }
+    //         )
+    // }
 
     const value = {
         _setDowns,

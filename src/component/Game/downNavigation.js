@@ -1,6 +1,7 @@
 import React from 'react'
+import DownNavTable from './DownNavTable'
 
-export default function downNavigation(props) {
+export default function DownNavigation(props) {
     const {
         resetDown, 
         downs, 
@@ -52,37 +53,10 @@ export default function downNavigation(props) {
     <>
         <div>
             {down ? (
-                <>
+                <div>
                     <h3>Previous down</h3>
-                    <table style={{width:"100%", marginBottom:"3rem"}}>
-                        <tbody>
-                            <tr style={{display:"flex",
-                                        width: '100%',
-                                        justifyContent: "space-between"}
-                                        }>
-                                <th>Down</th>
-                                <th>Distance</th>
-                                <th>Possession</th>
-                                <th>Start line</th>
-                                <th>End line</th>
-                                <th>Play type</th>
-                                <th>Result</th>
-                            </tr>
-                            <tr style={{display:"flex",
-                                        width: '100%',
-                                        justifyContent: "space-between"}
-                                        }>
-                                <td>{downs[prevDown].down || null}</td>
-                                <td>{downs[prevDown].distance}</td>
-                                <td>{downs[prevDown].possession}</td>
-                                <td>{downs[prevDown].startYardline}</td>
-                                <td>{downs[prevDown].endYardline}</td>
-                                <td>{downs[prevDown].playType}</td>
-                                <td>{downs[prevDown].result}</td>
-                            </tr>
-                        </tbody>
-                    </table> 
-                </>
+                    <DownNavTable previousDown={downs[prevDown]}/>
+                </div>
             ) : (<h3>No previous down</h3>)}
             <div style={{display:"flex",width: '100%',justifyContent: "space-between", marginBottom: "2rem"}}>
                 {0 < downIndex && (<button  onClick={prev}>Previous</button>)} 

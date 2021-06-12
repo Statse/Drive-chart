@@ -3,21 +3,12 @@ import {useGame} from '../context/GameContext'
 
 //ui
 import { makeStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
-import Select from '@material-ui/core/Select';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 //custom components
 import Score from '../component/Recap/Score'
-import Stats from '../component/Recap/Stats/Stats'
 import Game from '../component/Recap/Game'
 import Team from '../component/Recap/Team'
-import Pass from '../component/Recap/Stats/Pass'
-import Run from '../component/Recap/Stats/Run'
-
 
 
 

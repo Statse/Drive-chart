@@ -17,7 +17,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import InputLabel from '@material-ui/core/InputLabel';
 import Grid from '@material-ui/core/Grid';
 
-import DownNavigation from './downNavigation'
+import DownNavigation from './DownNavigation'
 
 const useStyles = makeStyles((theme) => ({
     wrapper: {

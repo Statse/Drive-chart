@@ -10,39 +10,36 @@ import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles({
   table: {
-    minWidth: 650,
+    minWidth: 650 || "",
   },
 });
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+function createData(down) {
+  return { 
+      down: down.down || "", 
+      distance: down.distance || "", 
+      possession: down.possession || "", 
+      startYardline: down.startYardline || "", 
+      endYardline: down.endYardline || "", 
+      playType: down.playType || "", 
+      result: down.result || ""
+    };
 }
-
-
 
 export default function DownNavTable(props) {
   const classes = useStyles();
   const {previousDown} = props
 
-  const rows = [
-    createData(
-        previousDown.down || null,
-        previousDown.distance || null,
-        previousDown.possession || null,
-        previousDown.startYardline || null,
-        previousDown.endYardline || null,
-        previousDown.playType || null,
-        previousDown.result || null,
-        ),
-  ];
+  const rows = [createData(previousDown)];
 
+  console.log(rows)
 
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Down</TableCell>
+            <TableCell align="right">Down</TableCell>
             <TableCell align="right">Distance</TableCell>
             <TableCell align="right">Possession</TableCell>
             <TableCell align="right">Start line</TableCell>
@@ -54,12 +51,13 @@ export default function DownNavTable(props) {
         <TableBody>
           {rows.map((row) => (
             <TableRow key={row.name}>
-                <TableCell align="right">Distance</TableCell>
-                <TableCell align="right">Possession</TableCell>
-                <TableCell align="right">Start line</TableCell>
-                <TableCell align="right">End line</TableCell>
-                <TableCell align="right">Play type</TableCell>
-                <TableCell align="right">Result</TableCell>
+                <TableCell align="right">{row.down}</TableCell>
+                <TableCell align="right">{row.distance}</TableCell>
+                <TableCell align="right">{row.possession}</TableCell>
+                <TableCell align="right">{row.startYardline}</TableCell>
+                <TableCell align="right">{row.endYardline}</TableCell>
+                <TableCell align="right">{row.playType}</TableCell>
+                <TableCell align="right">{row.result}</TableCell>
             </TableRow>
           ))}
         </TableBody>
