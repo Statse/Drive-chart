@@ -45,6 +45,7 @@ export default function GameForm(props) {
     const [init, setInit] = useState(false)
     const [homeScore, setHomeScore] = useState(0)
     const [awayScore, setAwayScore] = useState(0)
+    const [gameEnded, setGameEnded] = useState(false)
     const [possession, setPossession] = useState("")
     const [quarter, setQuarter] = useState(1)
     const [down, setDown] = useState(1)
@@ -161,7 +162,6 @@ export default function GameForm(props) {
         setPersonel("")
         setResult("")
     }
-
 
     const mapDownToCurrentState = (down) => {
         if (!down){
@@ -373,7 +373,7 @@ export default function GameForm(props) {
 
     return (
     <div className={useStyles.wrapper}>
-            <DownNavigation resetDown={()=>resetDown} downs={downs} prevDown={downIndex-1} down={downs[downIndex]} setEditMode={(bool)=>{setEditMode(bool)}} setInit={(bool)=>{setInit(bool)}}  maxDowns={downs.length} downIndex={downIndex} setDownIndex={(index)=>{setDownIndex(index)}}/>
+        <DownNavigation resetDown={()=>resetDown} downs={downs} prevDown={downIndex-1} down={downs[downIndex]} setEditMode={(bool)=>{setEditMode(bool)}} setInit={(bool)=>{setInit(bool)}}  maxDowns={downs.length} downIndex={downIndex} setDownIndex={(index)=>{setDownIndex(index)}}/>
         <form id="game-form" onSubmit={handleSubmit}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={2}>

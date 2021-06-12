@@ -6,6 +6,7 @@ import { Link, useHistory } from "react-router-dom"
 
 import BottomNav from '../containers/BottomNavigation'
 //material
+import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -16,10 +17,6 @@ import Typography from '@material-ui/core/Typography';
 
 
 const useStyles = makeStyles({
-    root: {
-      minWidth: 275,
-      maxWidth: 500,
-    },
     bullet: {
       display: 'inline-block',
       margin: '0 2px',
@@ -42,6 +39,23 @@ const useStyles = makeStyles({
     },
     input: {
         marginBottom: 12
+    },
+    fullWidth: {
+        width: "100%",
+    },
+    minWidth: {
+        minWidth:"275px",
+    },
+    center: {
+        marginTop: "1rem",
+        justifyContent: "center"
+    },
+    flexCenter: {
+        display: "Flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100%",
+        width: "100%"
     }
   });
 
@@ -88,24 +102,26 @@ export default function UpdateProfile() {
     }
 
     return (
-    <>
-        <Card className={classes.root}>
-            <CardContent>
-                <Typography className={classes.title} gutterBottom>Update profile</Typography> 
-                    {error && <Alert variant="danger">{error}</Alert>}
-                <form onSubmit={handleSubmit} className={classes.form}>
-                    
-                <TextField className={classes.input} id="standard-basic" defaultValue={currentUser.email} type="email" required inputRef={emailRef} label="Email" />
-                <TextField className={classes.input} id="standard-basic" type="password" required inputRef={passwordRef} label="Password" />
-                <TextField className={classes.input} id="standard-basic" type="password" required inputRef={passwordConfirmRef} label="Password confirmation" />
-                <Button disabled={loading} type="submit">Update profile</Button>
-            </form>
-            </CardContent>
-            <CardActions className={classes.column}>
-                <Link to="/">Cancel</Link> 
-            </CardActions>
-        </Card>
-        <BottomNav/>
-    </>
+    <Grid container spacing={3} className={classes.flexCenter}>
+        <Grid item xs={12} md={6}>
+            <Card>
+                <CardContent>
+                    <Typography className={classes.title} gutterBottom>Update profile</Typography> 
+                        {error && <Alert variant="danger">{error}</Alert>}
+                    <form onSubmit={handleSubmit} className={classes.form}>
+                        
+                    <TextField className={classes.input} id="standard-basic" defaultValue={currentUser.email} type="email" required inputRef={emailRef} label="Email" />
+                    <TextField className={classes.input} id="standard-basic" type="password" required inputRef={passwordRef} label="Password" />
+                    <TextField className={classes.input} id="standard-basic" type="password" required inputRef={passwordConfirmRef} label="Password confirmation" />
+                    <Button disabled={loading} type="submit">Update profile</Button>
+                </form>
+                </CardContent>
+                <CardActions className={classes.column}>
+                    <Link to="/">Cancel</Link> 
+                </CardActions>
+            </Card>
+            <BottomNav/>
+        </Grid>
+    </Grid>
     )
 }

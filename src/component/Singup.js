@@ -11,6 +11,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 
 const useStyles = makeStyles({
     root: {
@@ -39,6 +40,23 @@ const useStyles = makeStyles({
     },
     input: {
         marginBottom: 12
+    },
+    fullWidth: {
+        width: "100%",
+    },
+    minWidth: {
+        minWidth:"275px",
+    },
+    center: {
+        marginTop: "1rem",
+        justifyContent: "center"
+    },
+    flexCenter: {
+        display: "Flex",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100%",
+        width: "100%"
     }
   });
 
@@ -74,21 +92,26 @@ export default function Singup() {
     }
 
     return (
-        <Card className={classes.root}>
-            <CardContent>
-                <Typography className={classes.title} gutterBottom>sign up</Typography> 
-                {error && <Alert variant="danger">{error}</Alert>}
+    <Grid container spacing={3} className={classes.flexCenter}>
+        <Grid item xs={12} md={2}>
+            <Card className={classes.root}>
+                <CardContent>
+                    <Typography className={classes.title} gutterBottom>sign up</Typography> 
+                    {error && <Alert variant="danger">{error}</Alert>}
 
-                <form onSubmit={handleSubmit} className={classes.form}>
-                    <TextField className={classes.input} id="standard-basic" type="email" required inputRef={emailRef} label="Email" />
-                    <TextField className={classes.input} id="standard-basic" type="password" required inputRef={passwordRef} label="Password" />
-                    <TextField className={classes.input} id="standard-basic" type="password" required inputRef={passwordConfirmRef} label="Password confirmation" />
-                    <Button disabled={loading} variant="contained" type="submit">Sign in</Button>
-                </form>
-            </CardContent>
-            <CardActions className={classes.column}>
-                    <p>Alread have an account? <Link to="/login">Log in!</Link> </p>
-            </CardActions>
-        </Card>
+                    <form onSubmit={handleSubmit} className={classes.form}>
+                        <TextField className={classes.input} id="standard-basic" type="email" required inputRef={emailRef} label="Email" />
+                        <TextField className={classes.input} id="standard-basic" type="password" required inputRef={passwordRef} label="Password" />
+                        <TextField className={classes.input} id="standard-basic" type="password" required inputRef={passwordConfirmRef} label="Password confirmation" />
+                        <Button disabled={loading} variant="contained" type="submit">Sign in</Button>
+                    </form>
+                </CardContent>
+                <CardActions className={classes.column}>
+                        <p>Alread have an account? <Link to="/login">Log in!</Link> </p>
+                </CardActions>
+            </Card>
+        </Grid>
+    </Grid>
     )
 }
+
