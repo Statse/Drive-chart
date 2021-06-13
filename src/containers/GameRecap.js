@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from 'react'
-import {useGame} from '../context/GameContext'
 
 //ui
 import { makeStyles } from '@material-ui/core/styles';
@@ -27,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 }));
   
 export default function GameRecap(props) {
-    const {getGame, game} = useGame()
+    const {getGame, game} = props.useGame()
 
     const [error, setError] = useState("")
     const [init, setInit] = useState(false)

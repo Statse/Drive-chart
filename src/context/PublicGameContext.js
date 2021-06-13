@@ -1,25 +1,24 @@
 import React, { useContext, useState } from 'react'
-import firebase from '../firebase'
+const axios = require('axios').default;
 
 const PublicGameContext = React.createContext()
 
-export function useGame(){
+export function usePublicGame(){
     return useContext(PublicGameContext)
 }
 
-export function GameProvider({children}) {
+export function PublicGameProvider({children}) {
     const [error, setError] = useState(false)
-    const [downs, setDowns] = useState([])
     const [_loading, setLoading] = useState(false)
     const [game, setGame] = useState(false)
 
     async function getGame(id){
         try {
-            const res = await firebase.firestore().collection('games').doc(id).get();
-            const data =  res.data() 
-            setGame(data)
+            const res = await axios("https://us-central1-drive-chart-df487.cloudfunctions.net/app/recap/"+id)
+            console.log("res", res.data)
+            setGame(res.data)
             setLoading(false)
-            return data
+            return res.data
         } catch(e) {
             console.error(e)
             setError(e)
@@ -27,7 +26,8 @@ export function GameProvider({children}) {
             alert(e)
         }
     }
-    
+
+
     const value = {
         _loading,
         getGame,
