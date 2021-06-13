@@ -33,6 +33,7 @@ export function GameProvider({children}) {
             console.error(e)
             setError(e)
             setLoading(false)
+            alert(e)
         }
     }
 

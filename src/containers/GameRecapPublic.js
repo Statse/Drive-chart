@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
   
-export default function GameRecap(props) {
+export default function GameRecapPublic(props) {
     const {getGame, game} = useGame()
 
     const [error, setError] = useState("")
