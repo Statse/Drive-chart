@@ -30,7 +30,7 @@ export default function PassAvarageGain(props) {
             <Typography variant="h4" component="p">{totalYards}</Typography>
             <Typography variant="h5" component="h2">Total plays</Typography>
             <Typography variant="h4" component="p">{plays.length}</Typography>
-            <Typography variant="h5" component="h2">Pass yards per play</Typography>
+            <Typography variant="h5" component="h2">Yards per play</Typography>
             <Typography variant="h4" component="p">{avarageYards}</Typography>
             <Typography variant="h5" component="h2">Turnovers</Typography>
             <Typography variant="h4" component="p">{turnovers}</Typography>

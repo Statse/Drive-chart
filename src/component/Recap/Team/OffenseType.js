@@ -18,8 +18,8 @@ export default function OffenseType(props) {
             }
         }) 
 
-    const runPrecentage = Math.round(passingDowns.length / (passingDowns.length + runningDowns.length) * 100)
-    const passPrecentage = Math.round(runningDowns.length / (passingDowns.length + runningDowns.length) * 100)
+    const runPrecentage = Math.round(runningDowns.length / (passingDowns.length + runningDowns.length) * 100)
+    const passPrecentage = Math.round(passingDowns.length / (passingDowns.length + runningDowns.length) * 100)
 
     const series = [runPrecentage, passPrecentage]
 
