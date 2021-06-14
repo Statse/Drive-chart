@@ -1,10 +1,13 @@
 import React from 'react'
 import Chart  from 'react-apexcharts'
 import StatCard from '../Wrappers/StatCard'
+import SeriesMapper from '../../../helpers/Series'
 
 export default function FirstDownsComparison(props) {
     const {game} = props
     const {downs} = game
+
+    const playSeries = SeriesMapper(downs)
 
     const homeFirstDowns = downs.filter((down)=>{
         if (down.possession === "Home" && down.down === 1){
