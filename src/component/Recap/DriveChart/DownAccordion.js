@@ -35,7 +35,21 @@ export default function DownAccordion(props) {
   };
 
 
-  let result = series[series.length-1].playType
+  let result = series[series.length-1].result
+
+  if (series[series.length-1].playType === "KO"){
+    if (series[series.length-2] && series[series.length-2].playType === "PAT"){
+        if (series.length > 3){
+            result = series[series.length-3].result
+        }
+    }
+  } else if (series[series.length-1].playType.toLowerCase() === "punt") {
+    result = "Punt"
+  } else if (series[series.length-1].result.toLowerCase() === "interception"){
+    result = "Interception"
+  } else if (series[series.length-1].distance > series[series.length-1].endYardline - series[series.length-1].startYardline){
+    result = "Turnover in downs"
+  }
 
   return (
     <div className={classes.root}>

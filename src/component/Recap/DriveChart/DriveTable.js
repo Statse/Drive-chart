@@ -26,9 +26,7 @@ function createData(down, distance, direction, playType, result) {
 export default function DriveTable(props) {
   const classes = useStyles();
   const {downs} = props
-
-  console.log(downs)
-
+  
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
