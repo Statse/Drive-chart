@@ -6,7 +6,7 @@ import AccordionDetails from '@material-ui/core/AccordionDetails';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
-import DownTable from './DownTable'
+import DriveTable from './DriveTable'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -49,7 +49,7 @@ export default function DownAccordion(props) {
           <Typography className={classes.secondaryHeading}>Drive result: {result}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <DownTable downs={series} />
+          <DriveTable downs={series} />
         </AccordionDetails>
       </Accordion>
     </div>
