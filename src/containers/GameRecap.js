@@ -78,14 +78,20 @@ export default function GameRecap(props) {
             <Button className={classes.btn} variant="contained" onClick={()=>setTeam("both")} color={team ==="both" ? "primary" : "default"}>Compare</Button>
             <Button className={classes.btn} variant="contained" onClick={()=>setTeam("home")} color={team ==="home" ? "primary" : "default"}>Home</Button>
             <Button className={classes.btn} variant="contained" onClick={()=>setTeam("away")} color={team ==="away" ? "primary" : "default"}>Away</Button>
+            <Button className={classes.btn} variant="contained" onClick={()=>setTeam("live")} color={team ==="live" ? "primary" : "default"}>Drive chart</Button>
         </div>
         {team === "both"  && (<Game game={game} team={team}/>)}
 
         {/* {type === "pass"  && (<Pass game={game} team={team}/>)}
         {type === "run"  &&  (<Run game={game} team={team}/>)} */}
 
-        {team !== "both" && (
+        {team === "away" || team === "home" && (
             <Team game={game} team={team} />
+        )}
+        
+        {team === "live" && (
+            <div></div>
+            // <Team game={game} team={team} />
         )}
     </div>
         
