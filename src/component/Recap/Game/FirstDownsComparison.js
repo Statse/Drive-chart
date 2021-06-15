@@ -9,20 +9,29 @@ export default function FirstDownsComparison(props) {
 
     const playSeries = SeriesMapper(downs)
 
-    const homeFirstDowns = downs.filter((down)=>{
-        if (down.possession === "Home" && down.down === 1){
-            return down
-        }
-    }) 
+    let homeFirst = 0
+    let awayFirsts = 0
 
-    const awayFirstDowns = downs.filter((down)=>{
-        if (down.possession === "Away" && down.down === 1){
-            return down
+    playSeries.map((series)=>{
+      let possession = ""
+      let firsts = series.filter((down)=>{
+        possession = down.possession
+        if (down.down === 1 && down.playType !== "KO" && down.playType !== "PAT"){
+          return down
         }
-    }) 
+      })
+
+      if (firsts.length > 0){
+        if (possession.toLowerCase() === "home"){
+          homeFirst += firsts.length - 1
+        } else if (possession.toLowerCase() === "away"){
+          awayFirsts += firsts.length - 1
+        }
+      }
+    })
 
     const  series = [{
-      data: [homeFirstDowns.length, awayFirstDowns.length]
+      data: [homeFirst, awayFirsts]
     }]
 
     const options = {
