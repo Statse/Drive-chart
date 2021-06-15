@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import Score from '../component/Recap/Score'
 import Game from '../component/Recap/Game'
 import Team from '../component/Recap/Team'
+import DriveChart from '../component/Recap/DriveChart'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -85,13 +86,16 @@ export default function GameRecap(props) {
         {/* {type === "pass"  && (<Pass game={game} team={team}/>)}
         {type === "run"  &&  (<Run game={game} team={team}/>)} */}
 
-        {team === "away" || team === "home" && (
+        {team === "away" && (
+            <Team game={game} team={team} />
+        )}
+
+        {team === "home" && (
             <Team game={game} team={team} />
         )}
         
         {team === "live" && (
-            <div></div>
-            // <Team game={game} team={team} />
+            <DriveChart game={game} />
         )}
     </div>
         
