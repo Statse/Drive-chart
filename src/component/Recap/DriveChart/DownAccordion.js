@@ -49,9 +49,7 @@ export default function DownAccordion(props) {
           <Typography className={classes.secondaryHeading}>Drive result: {result}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <DownTable downs={series}>
-
-          </DownTable>
+          <DownTable downs={series} />
         </AccordionDetails>
       </Accordion>
     </div>
