@@ -35,14 +35,12 @@ export default function DownAccordion(props) {
   };
 
 
-  let result = series[series.length-1].result
+  let result = "series[series.length-1].result"
 
-  if (series[series.length-1].playType === "KO"){
-    if (series[series.length-2] && series[series.length-2].playType === "PAT"){
-        if (series.length > 3){
-            result = series[series.length-3].result
+  if (series[series.length-1].playType === "PAT"){
+        if (series.length > 2){
+            result = series[series.length-2].result
         }
-    }
   } else if (series[series.length-1].playType.toLowerCase() === "punt") {
     result = "Punt"
   } else if (series[series.length-1].result.toLowerCase() === "interception"){
@@ -59,7 +57,7 @@ export default function DownAccordion(props) {
           aria-controls="panel1bh-content"
           id="panel1bh-header"
         >
-          <Typography className={classes.heading}>{seriesIndex + 1}. Series Possession: {series[0].possession}</Typography>
+          <Typography className={classes.heading}>Possession: {series[series.length-1].possession}</Typography>
           <Typography className={classes.secondaryHeading}>Drive result: {result}</Typography>
         </AccordionSummary>
         <AccordionDetails>
