@@ -3,12 +3,14 @@ import React, {useState, useEffect} from 'react'
 //ui
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 //custom components
 import Score from '../component/Recap/Score'
 import Game from '../component/Recap/Game'
 import Team from '../component/Recap/Team'
 import DriveChart from '../component/Recap/DriveChart'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -47,10 +49,12 @@ export default function GameRecap(props) {
         setError("") 
         //This is because I don't know any onther way to make async work inside useEffect
         async function loadGame(id) {
+            setLoading(true)
             await getGame(id).catch(e=>{
                 setError(e)
                 console.log(error)
             })
+            setLoading(false)
         }
         if (!init){
             setLoading(true)
@@ -62,6 +66,13 @@ export default function GameRecap(props) {
         }
     }, [error, props.match.params.id, getGame])
     
+    if (loading){
+        return (
+        <div style={{padding: "15px", display: "flex", flexFlow: "row", justifyContent: "center"}}>
+            <CircularProgress />
+        </div>
+        )
+    }
 
     if (!init && !loading){
         return null
@@ -70,11 +81,6 @@ export default function GameRecap(props) {
     return (
     <div style={{padding: "15px"}}>
         <Score game={game}/>
-        {/* <div style={{display: "flex", flexFlow: "row", justifyContent: "center", marginBottom: "1rem"}}>
-            <Button className={classes.btn} variant="contained" onClick={()=>setType("game")} color={type ==="game" ? "primary" : ""}>Game</Button>
-            <Button className={classes.btn} variant="contained" onClick={()=>setType("pass")} color={type ==="pass" ? "primary" : ""}>Pass</Button>
-            <Button className={classes.btn} variant="contained" onClick={()=>setType("run")} color={type ==="run" ? "primary" : ""}>Run</Button>
-        </div> */}
         <div style={{display: "flex", flexFlow: "row", justifyContent: "center", marginBottom: "1rem", marginTop: "1rem"}}>
             <Button className={classes.btn} variant="contained" onClick={()=>setTeam("both")} color={team ==="both" ? "primary" : "default"}>Compare</Button>
             <Button className={classes.btn} variant="contained" onClick={()=>setTeam("home")} color={team ==="home" ? "primary" : "default"}>Home</Button>
@@ -82,9 +88,6 @@ export default function GameRecap(props) {
             <Button className={classes.btn} variant="contained" onClick={()=>setTeam("live")} color={team ==="live" ? "primary" : "default"}>Drive chart</Button>
         </div>
         {team === "both"  && (<Game game={game} team={team}/>)}
-
-        {/* {type === "pass"  && (<Pass game={game} team={team}/>)}
-        {type === "run"  &&  (<Run game={game} team={team}/>)} */}
 
         {team === "away" && (
             <Team game={game} team={team} />
