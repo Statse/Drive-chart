@@ -41,7 +41,9 @@ export default function NewGame() {
     const [loading, setLoading] = useState(false)
     const history = useHistory()
     const homeRef = useRef()
+    const homeAbbreviationRef = useRef()
     const awayRef = useRef()
+    const awayAbbreviationRef = useRef()
     const divisionRef = useRef()
     const yearRef = useRef()
     const userId = firebase.auth().currentUser.uid;
@@ -107,7 +109,9 @@ export default function NewGame() {
                             <MenuItem value={2019}>2019</MenuItem>
                         </Select>
                         <TextField className={classes.fullWidth} id="standard-basic" type="text" required inputRef={homeRef} label="Home" />
-                        <TextField className={classes.fullWidth} id="standard-basic" type="text" required inputRef={awayRef} label="Away" />   
+                        <TextField className={classes.fullWidth} id="standard-basic" type="text" required inputRef={homeAbbreviationRef} label="Home Abbreviation" />
+                        <TextField className={classes.fullWidth} id="standard-basic" type="text" required inputRef={awayRef} label="Away" /> 
+                        <TextField className={classes.fullWidth} id="standard-basic" type="text" required inputRef={awayAbbreviationRef} label="Away Abbreviation" />    
                         <CardActions className={classes.center}>
                             <Button disabled={loading} onClick={newGame} variant="contained" color="secondary">
                                 New game

@@ -67,7 +67,6 @@ export default function GameForm(props) {
     const [catchYardLine, setCatchYardLine] = useState(0)
     const [tackleAssist, setTackleAssist] = useState(0)
     const [runGap, setRunGap] = useState("")
-    const [passLength, setPassLength] = useState(0)
     const [passField, setPassField] = useState("")
     const [blitzing, setBlitzing] = useState(false)
 
@@ -96,7 +95,6 @@ export default function GameForm(props) {
                 tackler: tackler,
                 tackleAssist: tackleAssist,
                 runGap: runGap,
-                passLength: passLength,
                 passField: passField,
                 blitzing: blitzing
             }
@@ -235,7 +233,6 @@ export default function GameForm(props) {
         setCarrier(0)
         setCatchYardLine(0)    
         setRunGap("")
-        setPassLength(0)    
         setPassField(0) 
         setBlitzing(false)   
 
@@ -491,53 +488,23 @@ export default function GameForm(props) {
                             value={runGap} 
                             onChange={(e)=>setRunGap(e.target.value)}
                             >
-                            <MenuItem value={"LD"}>Left D</MenuItem>
+                            <MenuItem value={"OL"}>Outside Left</MenuItem>
+                            <MenuItem value={"IL"}>Inside Left</MenuItem>
+                            <MenuItem value={"IR"}>Inside Right</MenuItem>
+                            <MenuItem value={"OR"}>Outside Right</MenuItem>
+                            {/* <MenuItem value={"LD"}>Left D</MenuItem>
                             <MenuItem value={"LC"}>Left C</MenuItem>
                             <MenuItem value={"LB"}>Left B</MenuItem>
                             <MenuItem value={"LA"}>Left A</MenuItem>
                             <MenuItem value={"RA"}>Right A</MenuItem>
                             <MenuItem value={"RB"}>Right B</MenuItem>
                             <MenuItem value={"RC"}>Right C</MenuItem>
-                            <MenuItem value={"RD"}>Right D</MenuItem>
+                            <MenuItem value={"RD"}>Right D</MenuItem> */}
                         </Select>
                     </Grid>
                 )}
 
-                {playType === "Pass" && !live &&(
-                <>
-                    <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="personel-label">Pass length</InputLabel>
-                        <TextField 
-                        labelId="personel-label" 
-                        className={classes.fullWidth} 
-                        id="standard-basic" 
-                        type="number" 
-                        value={passLength}
-                        onChange={(e)=>{
-                            setPassLength(e.target.value)
-                            setCatchYardLine(parseInt(e.target.value)+ parseInt(startYardline))
-                        }
-                        }
-                        />
-                    </Grid>
-                    <Grid item xs={12} md={2} >
-                        <InputLabel className={classes.bottomMargin} id="hash-label">Pass field position</InputLabel>
-                        <Select
-                            labelId="hash-label"
-                            id="demo-simple-select"
-                            className={classes.fullWidth}
-                            value={passField}
-                            onChange={(e)=>setPassField(e.target.value)}
-                            required
-                            >
-                            <MenuItem value={"L"}>L</MenuItem>
-                            <MenuItem value={"M"}>M</MenuItem>
-                            <MenuItem value={"R"}>R</MenuItem>
-                        </Select>
-                    </Grid>
-                </>
-                )}
-
+        
                 {/*not in Kickoff, PAT */}
                 {playType !=="KO" && playType !=="FG" && playType !== "Game end" && !live &&(
                     <Grid item xs={12} md={2}>
@@ -643,7 +610,7 @@ export default function GameForm(props) {
                     </Grid>
                 )}
 
-                {playType !== "Game end" && !live && (
+                {playType !== "Game end" && result !== "TD" &&  !live && (
                 <>
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="tackler-label">Tackler</InputLabel>
@@ -740,9 +707,29 @@ export default function GameForm(props) {
                         required  />
                     </Grid>
                 )}
-                {playType === "Pass" && result !== "Incomplete" &&  !live && (
+
+                {playType === "Pass" && !live &&(
+                <>
+                    <Grid item xs={12} md={2} >
+                        <InputLabel className={classes.bottomMargin} id="hash-label">Pass direction</InputLabel>
+                        <Select
+                            labelId="hash-label"
+                            id="demo-simple-select"
+                            className={classes.fullWidth}
+                            value={passField}
+                            onChange={(e)=>setPassField(e.target.value)}
+                            required
+                            >
+                            <MenuItem value={"L"}>L</MenuItem>
+                            <MenuItem value={"M"}>M</MenuItem>
+                            <MenuItem value={"R"}>R</MenuItem>
+                        </Select>
+                    </Grid>
+                </>
+                )}
+                {playType === "Pass" &&  !live && (
                     <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="catch-yard-label">Catch yard line</InputLabel>
+                    <InputLabel className={classes.bottomMargin} id="catch-yard-label">{result !== "Incomplete" ? "Catch yard line" : "Pass length"} </InputLabel>
                     <TextField 
                     labelId="catch-yard-label"
                     className={classes.fullWidth} 
@@ -781,7 +768,7 @@ export default function GameForm(props) {
                     required  />
                 </Grid>
                 )}
-                {playType !== "Game end" && (
+                {playType !== "Game end" && result !=="xp good" &&(
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="yard-label">End yard Line</InputLabel>
                     <TextField 
