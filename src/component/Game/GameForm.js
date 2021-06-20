@@ -61,7 +61,7 @@ export default function GameForm(props) {
     const [playType, setPlaytype] = useState("")
     const [result, setResult] = useState("")
     const [editMode,  setEditMode]  = useState(false)
-    const [Qb, setQb] = useState(0)
+    const [qb, setQb] = useState(0)
     const [carrier, setCarrier] = useState(0)
     const [tackler, setTackler] = useState(0)
     const [catchYardLine, setCatchYardLine] = useState(0)
@@ -89,9 +89,9 @@ export default function GameForm(props) {
                 personel: parseInt(personel),
                 playType: playType,
                 result: result,
-                qb: Qb,
+                qb: qb,
                 carrier: carrier,
-                catchYardLine: result ===  "Incomplete" ? null : catchYardLine,
+                catchYardLine: catchYardLine,
                 tackler: tackler,
                 tackleAssist: tackleAssist,
                 runGap: runGap,
@@ -186,6 +186,15 @@ export default function GameForm(props) {
             setPlaydirection(down.playDirection)
             setPersonel(down.personel)
             setResult(down.result)
+            setDistance(down.distance)
+            setQb(down.qb)
+            setTackler(down.tackler)
+            setTackleAssist(down.tackleAssist)
+            setCarrier(down.carrier)
+            setCatchYardLine(down.catchYardLine)    
+            setRunGap(down.runGap)
+            setPassField(down.passField) 
+            setBlitzing(down.blitzing)   
         }
         setPlaytype(down.playType)
     }
@@ -228,7 +237,7 @@ export default function GameForm(props) {
         setEndYardline("")
         setDown(parseInt(downData.down)+1)
         setDistance(downData.distance - (downData.endYardline-downData.startYardline))
-        setQb(downData.Qb || 0)
+        setQb(downData.qb || 0)
         setTackler(0)
         setTackleAssist(0)
         setCarrier(0)
@@ -241,7 +250,7 @@ export default function GameForm(props) {
             setStartYardline(35) 
         }
 
-        if ((downData.playType ==="KO" || downData.playType ==="Punt") && downData.result !== "Turnover" && downData.result !== "Fumble turnover"){
+        if ((downData.playType ==="KO" || downData.playType ==="Punt") && downData.result !== "Turnover" && downData.result !== "Fumble turnover" && result !== "Penalty"){
             setStartYardline(100-downData.endYardline)
             changePossession(downData.possession)
         }
@@ -323,7 +332,9 @@ export default function GameForm(props) {
                 }
             break;
             case "Penalty":
-                // code block
+                //Lets just assume that penalties in general do not mean mean a loss of down
+                setDown(parseInt(downData.down))
+                
                 if (downData.playType === "PAT"){
                     setPlaytype("PAT")
                     setStartYardline(downData.endYardline)
@@ -333,6 +344,18 @@ export default function GameForm(props) {
             break;
         }
 
+        if ((downData.endYardline-downData.startYardline)>=downData.distance){
+            firstDowns()
+            console.log("startYardline + distance", startYardline + distance)
+            //endyardline or distance might be string sometimes so lets make sure its integer
+            if (parseInt(downData.endYardline) + parseInt(distance) > 100){
+            //if close to goal line
+                setDistance(100-downData.endYardline)
+            }
+        } else if (downData.down >= 4 && (downData.endYardline-downData.startYardline)<downData.distance && result !== "Penalty") {
+            // turnover(downData) 
+            // firstDowns()
+        }
     }
 
     //init based on previous downs
@@ -355,19 +378,6 @@ export default function GameForm(props) {
             }
 
             playResultHandler(downs[downs.length-1])
-
-            if ((downs[downs.length-1].endYardline-downs[downs.length-1].startYardline)>=downs[downs.length-1].distance ){
-                firstDowns()
-                console.log("startYardline + distance", startYardline + distance)
-                //endyardline or distance might be string sometimes so lets make sure its integer
-                if (parseInt(downs[downs.length-1].endYardline) + parseInt(distance) > 100){
-                //if close to goal line
-                    setDistance(100-downs[downs.length-1].endYardline)
-                }
-            } else if (downs[downs.length-1].down >= 4) {
-                turnover(downs[downs.length-1]) 
-                firstDowns()
-            }
             setInit(true)
         } 
         // else {
@@ -487,7 +497,18 @@ export default function GameForm(props) {
                             labelId="rungap-label"
                             className={classes.fullWidth}
                             value={runGap} 
-                            onChange={(e)=>setRunGap(e.target.value)}
+                            onChange={(e)=>{
+
+                                const val = e.target.value
+                                setRunGap(val)
+
+                                if (val === "OL" || val === "IL"){
+                                    setPlaydirection("L")
+                                } else {
+                                    setPlaydirection("R")
+                                }
+    
+                            }}
                             >
                             <MenuItem value={"OL"}>Outside Left</MenuItem>
                             <MenuItem value={"IL"}>Inside Left</MenuItem>
@@ -569,9 +590,8 @@ export default function GameForm(props) {
                         {(playType==="FG" || playType ==="PAT") && (<MenuItem value={"No good"}>No Good</MenuItem>)}
 
                         
-                        {(playType  ==="KO" || playType === "Punt") && (
-                        <MenuItem value={"Touchback"}>Touchback</MenuItem>
-                        )}
+                        {(playType  ==="KO" || playType === "Punt") && (<MenuItem value={"Touchback"}>Touchback</MenuItem>)}
+                        {(playType  ==="KO" || playType === "Punt") && (<MenuItem value={"No return"}>No return</MenuItem>)}
 
                         {/* pass */}
                         {/* {playType==="Pass" && (<MenuItem value={"Complete"}>Complete</MenuItem>)} */}
@@ -611,7 +631,107 @@ export default function GameForm(props) {
                     </Grid>
                 )}
 
-                {playType !== "Game end" && result !== "TD"  && result !== "Incomplete" &&  !live && (
+                {/* Receiver can be from defence if it is interception. */}
+                {playType === "Pass" && !live && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="qb-label">QB</InputLabel>
+                        <TextField 
+                        labelId="qb-label"
+                        className={classes.fullWidth} 
+                        id="standard-basic" 
+                        type="number" 
+                        value={qb}
+                        onChange={(e)=>setQb(e.target.value)}
+                        onBlur={(e) => {
+                            if (e.target.value > 99){
+                                setQb(99)
+                            } 
+                        }}
+                        required  />
+                    </Grid>
+                )}
+                {playType === "Pass" && result !== "Incomplete" &&  !live && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="carrier-label">Receiver</InputLabel>
+                        <TextField 
+                        labelId="carrier-label"
+                        className={classes.fullWidth} 
+                        id="standard-basic" 
+                        type="number" 
+                        value={carrier}
+                        onChange={(e)=>setCarrier(e.target.value)}
+                        onBlur={(e) => {
+                            if (e.target.value > 99){
+                                setCarrier(99)
+                            } 
+                        }}
+                        required  />
+                    </Grid>
+                )}
+                {(playType === "Run" || playType === "KO") &&  !live && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="carrier-label">Rusher</InputLabel>
+                        <TextField 
+                        labelId="carrier-label"
+                        className={classes.fullWidth} 
+                        id="standard-basic" 
+                        type="number" 
+                        value={carrier}
+                        onChange={(e)=>setCarrier(e.target.value)}
+                        onBlur={(e) => {
+                            if (e.target.value > 99){
+                                setCarrier(99)
+                            } 
+                        }}
+                        required  />
+                    </Grid>
+                )}
+
+                {playType === "Pass" && !live &&(
+                <>
+                    <Grid item xs={12} md={2} >
+                        <InputLabel className={classes.bottomMargin} id="hash-label">Pass direction</InputLabel>
+                        <Select
+                            labelId="hash-label"
+                            id="demo-simple-select"
+                            className={classes.fullWidth}
+                            value={passField}
+                            onChange={(e)=>setPassField(e.target.value)}
+                            required
+                            >
+                            <MenuItem value={"L"}>L</MenuItem>
+                            <MenuItem value={"M"}>M</MenuItem>
+                            <MenuItem value={"R"}>R</MenuItem>
+                        </Select>
+                    </Grid>
+                </>
+                )}
+                {(playType === "Pass" || playType === "KO" )&& !live && (
+                    <Grid item xs={12} md={2}>
+                    <InputLabel className={classes.bottomMargin} id="catch-yard-label">
+                        {playType === "Pass" && result !== "Incomplete" && "Catch yard line"} 
+                        {playType === "Pass" && result === "Incomplete" &&  "Pass drop yard line"} 
+                        {playType === "KO" && ("Kick drop yard line")}
+                    </InputLabel>
+                    <TextField 
+                    labelId="catch-yard-label"
+                    className={classes.fullWidth} 
+                    id="standard-basic" 
+                    type="number" 
+                    value={catchYardLine}
+                    onChange={(e)=>setCatchYardLine(e.target.value)}
+                    onBlur={(e) => {
+                        if (e.target.value > 100){
+                            setCatchYardLine(100)
+                        } else if (e.target.value < 0){
+                            setCatchYardLine(0)
+                        }
+                    }}
+                    required  />
+                </Grid>
+                )}
+                
+                {playType !== "Game end" && result !== "TD"  && result !== "Incomplete" && result !== "No return" && !live && (
                 <>
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="tackler-label">Tackler</InputLabel>
@@ -652,101 +772,6 @@ export default function GameForm(props) {
                     </Grid>
                     )}
                 </>
-                )}
-                {/* Receiver can be from defence if it is interception. */}
-                {playType === "Pass" && !live && (
-                    <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="qb-label">QB</InputLabel>
-                        <TextField 
-                        labelId="qb-label"
-                        className={classes.fullWidth} 
-                        id="standard-basic" 
-                        type="number" 
-                        value={Qb}
-                        onChange={(e)=>setQb(e.target.value)}
-                        onBlur={(e) => {
-                            if (e.target.value > 99){
-                                setQb(99)
-                            } 
-                        }}
-                        required  />
-                    </Grid>
-                )}
-                {playType === "Pass" && result !== "Incomplete" &&  !live && (
-                    <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="carrier-label">Receiver</InputLabel>
-                        <TextField 
-                        labelId="carrier-label"
-                        className={classes.fullWidth} 
-                        id="standard-basic" 
-                        type="number" 
-                        value={carrier}
-                        onChange={(e)=>setCarrier(e.target.value)}
-                        onBlur={(e) => {
-                            if (e.target.value > 99){
-                                setCarrier(99)
-                            } 
-                        }}
-                        required  />
-                    </Grid>
-                )}
-                {playType === "Run" &&  !live && (
-                    <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="carrier-label">Rusher</InputLabel>
-                        <TextField 
-                        labelId="carrier-label"
-                        className={classes.fullWidth} 
-                        id="standard-basic" 
-                        type="number" 
-                        value={carrier}
-                        onChange={(e)=>setCarrier(e.target.value)}
-                        onBlur={(e) => {
-                            if (e.target.value > 99){
-                                setCarrier(99)
-                            } 
-                        }}
-                        required  />
-                    </Grid>
-                )}
-
-                {playType === "Pass" && !live &&(
-                <>
-                    <Grid item xs={12} md={2} >
-                        <InputLabel className={classes.bottomMargin} id="hash-label">Pass direction</InputLabel>
-                        <Select
-                            labelId="hash-label"
-                            id="demo-simple-select"
-                            className={classes.fullWidth}
-                            value={passField}
-                            onChange={(e)=>setPassField(e.target.value)}
-                            required
-                            >
-                            <MenuItem value={"L"}>L</MenuItem>
-                            <MenuItem value={"M"}>M</MenuItem>
-                            <MenuItem value={"R"}>R</MenuItem>
-                        </Select>
-                    </Grid>
-                </>
-                )}
-                {playType === "Pass" && !live && (
-                    <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="catch-yard-label">{result !== "Incomplete" ? "Catch yard line" : "Pass drop yard line"} </InputLabel>
-                    <TextField 
-                    labelId="catch-yard-label"
-                    className={classes.fullWidth} 
-                    id="standard-basic" 
-                    type="number" 
-                    value={catchYardLine}
-                    onChange={(e)=>setCatchYardLine(e.target.value)}
-                    onBlur={(e) => {
-                        if (e.target.value > 100){
-                            setCatchYardLine(100)
-                        } else if (e.target.value < 0){
-                            setCatchYardLine(0)
-                        }
-                    }}
-                    required  />
-                </Grid>
                 )}
                 {playType !== "Game end" && (
                 <Grid item xs={12} md={2}>
