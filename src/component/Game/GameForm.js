@@ -99,7 +99,7 @@ export default function GameForm(props) {
                 blitzing: blitzing
             }
 
-            console.log("thisDown", thisDown)
+            console.log("Saving down... ", thisDown)
 
             
             if (editMode){
@@ -364,7 +364,7 @@ export default function GameForm(props) {
                 //if close to goal line
                     setDistance(100-downs[downs.length-1].endYardline)
                 }
-            } else if (downs > 4) {
+            } else if (downs[downs.length-1].down >= 4) {
                 turnover(downs[downs.length-1]) 
                 firstDowns()
             }
@@ -611,7 +611,7 @@ export default function GameForm(props) {
                     </Grid>
                 )}
 
-                {playType !== "Game end" && result !== "TD" &&  !live && (
+                {playType !== "Game end" && result !== "TD"  && result !== "Incomplete" &&  !live && (
                 <>
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="tackler-label">Tackler</InputLabel>
@@ -672,7 +672,7 @@ export default function GameForm(props) {
                         required  />
                     </Grid>
                 )}
-                {playType === "Pass" &&  !live && (
+                {playType === "Pass" && result !== "Incomplete" &&  !live && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="carrier-label">Receiver</InputLabel>
                         <TextField 
@@ -728,9 +728,9 @@ export default function GameForm(props) {
                     </Grid>
                 </>
                 )}
-                {playType === "Pass" &&  !live && (
+                {playType === "Pass" && !live && (
                     <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="catch-yard-label">{result !== "Incomplete" ? "Catch yard line" : "Pass length"} </InputLabel>
+                    <InputLabel className={classes.bottomMargin} id="catch-yard-label">{result !== "Incomplete" ? "Catch yard line" : "Pass drop yard line"} </InputLabel>
                     <TextField 
                     labelId="catch-yard-label"
                     className={classes.fullWidth} 
