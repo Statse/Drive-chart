@@ -203,6 +203,7 @@ export default function GameForm(props) {
         } else if (possession ==="Away"){
             setPossession("Home")
         }
+        firstDowns()
     }
 
     const firstDowns  = () =>  {
