@@ -65,6 +65,7 @@ export default function GameForm(props) {
     const [recover, setRecover] = useState(0)
     const [carrier, setCarrier] = useState(0)
     const [tackler, setTackler] = useState(0)
+    const [kicker, setKicker] = useState(0)
     const [catchYardLine, setCatchYardLine] = useState(0)
     const [tackleAssist, setTackleAssist] = useState(0)
     const [runGap, setRunGap] = useState("")
@@ -99,6 +100,7 @@ export default function GameForm(props) {
                 passField: passField,
                 blitzing: blitzing,
                 recover: recover,
+                kicker: kicker,
             }
 
             console.log("Saving down... ", thisDown)
@@ -177,6 +179,8 @@ export default function GameForm(props) {
         }
 
         if (down.result !== "Game end"){
+            setHomeScore(down.homeScore)
+            setAwayScore(down.awayScore)
             setPossession(down.possession)
             setQuarter(down.quarter)
             setDown(down.down)
@@ -198,6 +202,7 @@ export default function GameForm(props) {
             setPassField(down.passField) 
             setBlitzing(down.blitzing)   
             setRecover(down.recover)
+            setKicker(down.kicker)
         }
         setPlaytype(down.playType)
     }
@@ -249,6 +254,7 @@ export default function GameForm(props) {
         setPassField(0) 
         setBlitzing(false)   
         setRecover(0)
+        setKicker(0)
 
         if (downData.playType ==="PAT"){
             setStartYardline(35) 
@@ -684,7 +690,7 @@ export default function GameForm(props) {
                         required  />
                     </Grid>
                 )}
-                {(playType === "Run" || playType === "KO" || playType === "FG" || playType === "PAT") && result !== "Penalty" &&  !live && (
+                {(playType === "Run" || playType === "KO") && result !== "Penalty" && result !== "Touchback" &&  !live && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="carrier-label">Rusher</InputLabel>
                         <TextField 
@@ -703,11 +709,30 @@ export default function GameForm(props) {
                     </Grid>
                 )}
 
+                {playType === "KO" || playType === "FG" || playType === "PAT" && result !== "Penalty" &&  result !== "2pt good" &&  !live && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="carrier-label">Kicker</InputLabel>
+                        <TextField 
+                        labelId="carrier-label"
+                        className={classes.fullWidth} 
+                        id="standard-basic" 
+                        type="number" 
+                        value={kicker}
+                        onChange={(e)=>setKicker(e.target.value)}
+                        onBlur={(e) => {
+                            if (e.target.value > 99){
+                                setKicker(99)
+                            } 
+                        }}
+                        required  />
+                    </Grid>
+                )}
+
                 {(result === "Fumble recover" ||result === "Fumble turnover") && (
                     <Grid item xs={12} md={2}>
-                    <InputLabel className={classes.bottomMargin} id="carrier-label">Fumble recover</InputLabel>
+                    <InputLabel className={classes.bottomMargin} id="kicker-label">Fumble recover</InputLabel>
                     <TextField 
-                    labelId="carrier-label"
+                    labelId="kicker-label"
                     className={classes.fullWidth} 
                     id="standard-basic" 
                     type="number" 
@@ -766,7 +791,7 @@ export default function GameForm(props) {
                 </Grid>
                 )}
                 
-                {result !== "Penalty" && playType !== "Game end" && result !== "TD"  && result !== "Incomplete" && result !== "Good" && result !== "xp good" && result !== "No return" && !live && (
+                {result !== "Penalty" && result !== "Touchback" && playType !== "Game end" && result !== "TD"  && result !== "Incomplete" && result !== "Good" && result !== "xp good" && result !== "No return" && !live && (
                 <>
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="tackler-label">Tackler</InputLabel>
