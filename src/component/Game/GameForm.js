@@ -62,6 +62,7 @@ export default function GameForm(props) {
     const [result, setResult] = useState("")
     const [editMode,  setEditMode]  = useState(false)
     const [qb, setQb] = useState(0)
+    const [recover, setRecover] = useState(0)
     const [carrier, setCarrier] = useState(0)
     const [tackler, setTackler] = useState(0)
     const [catchYardLine, setCatchYardLine] = useState(0)
@@ -96,7 +97,8 @@ export default function GameForm(props) {
                 tackleAssist: parseInt(tackleAssist),
                 runGap: runGap,
                 passField: passField,
-                blitzing: blitzing
+                blitzing: blitzing,
+                recover: recover,
             }
 
             console.log("Saving down... ", thisDown)
@@ -195,6 +197,7 @@ export default function GameForm(props) {
             setRunGap(down.runGap)
             setPassField(down.passField) 
             setBlitzing(down.blitzing)   
+            setRecover(down.recover)
         }
         setPlaytype(down.playType)
     }
@@ -245,6 +248,7 @@ export default function GameForm(props) {
         setRunGap("")
         setPassField(0) 
         setBlitzing(false)   
+        setRecover(0)
 
         if (downData.playType ==="PAT"){
             setStartYardline(35) 
@@ -255,19 +259,44 @@ export default function GameForm(props) {
             changePossession(downData.possession)
         }
 
+        
+
+        if ((downData.endYardline-downData.startYardline)>=downData.distance){
+            firstDowns()
+            console.log("startYardline + distance", startYardline + distance)
+            //endyardline or distance might be string sometimes so lets make sure its integer
+            if (parseInt(downData.endYardline) + parseInt(distance) > 100){
+            //if close to goal line
+                setDistance(100-downData.endYardline)
+            }
+        } else if (downData.down >= 4 
+            && (downData.endYardline-downData.startYardline)<downData.distance 
+            && downData.result !== "Penalty"
+            && downData.result !== "TD"
+            && downData.playType !== "FG"
+            ) {
+            alert("turnover in downs")
+            turnover(downData) 
+            firstDowns()
+        }
+
         //figure out stuff based on previous down result
         switch(downData.result) {
             case "xp good":
                 setPlaytype("KO")
+                setStartYardline(35)
             break;
             case "2pt good":
                 setPlaytype("KO")
+                setStartYardline(35)
             break;
             case "Good":
                 setPlaytype("KO")
+                setStartYardline(35)
             break;
             case "No good":
                 setPlaytype("KO")
+                setStartYardline(35)
             break;
             case "Touchback":
                 changePossession(downData.possession)
@@ -342,19 +371,6 @@ export default function GameForm(props) {
             break;
             default:
             break;
-        }
-
-        if ((downData.endYardline-downData.startYardline)>=downData.distance){
-            firstDowns()
-            console.log("startYardline + distance", startYardline + distance)
-            //endyardline or distance might be string sometimes so lets make sure its integer
-            if (parseInt(downData.endYardline) + parseInt(distance) > 100){
-            //if close to goal line
-                setDistance(100-downData.endYardline)
-            }
-        } else if (downData.down >= 4 && (downData.endYardline-downData.startYardline)<downData.distance && result !== "Penalty") {
-            // turnover(downData) 
-            // firstDowns()
         }
     }
 
@@ -632,7 +648,7 @@ export default function GameForm(props) {
                 )}
 
                 {/* Receiver can be from defence if it is interception. */}
-                {playType === "Pass" && !live && (
+                {playType === "Pass" && result !== "Penalty" && !live && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="qb-label">QB</InputLabel>
                         <TextField 
@@ -650,7 +666,7 @@ export default function GameForm(props) {
                         required  />
                     </Grid>
                 )}
-                {playType === "Pass" && result !== "Incomplete" &&  !live && (
+                {playType === "Pass" && result !== "Incomplete" && result !== "Penalty" && !live && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="carrier-label">Receiver</InputLabel>
                         <TextField 
@@ -668,7 +684,7 @@ export default function GameForm(props) {
                         required  />
                     </Grid>
                 )}
-                {(playType === "Run" || playType === "KO") &&  !live && (
+                {(playType === "Run" || playType === "KO" || playType === "FG" || playType === "PAT") && result !== "Penalty" &&  !live && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="carrier-label">Rusher</InputLabel>
                         <TextField 
@@ -687,7 +703,26 @@ export default function GameForm(props) {
                     </Grid>
                 )}
 
-                {playType === "Pass" && !live &&(
+                {(result === "Fumble recover" ||result === "Fumble turnover") && (
+                    <Grid item xs={12} md={2}>
+                    <InputLabel className={classes.bottomMargin} id="carrier-label">Fumble recover</InputLabel>
+                    <TextField 
+                    labelId="carrier-label"
+                    className={classes.fullWidth} 
+                    id="standard-basic" 
+                    type="number" 
+                    value={recover}
+                    onChange={(e)=>setRecover(e.target.value)}
+                    onBlur={(e) => {
+                        if (e.target.value > 99){
+                            setRecover(99)
+                        } 
+                    }}
+                    required  />
+                </Grid>
+                )}
+
+                {playType === "Pass" && result !== "Penalty" && !live &&(
                 <>
                     <Grid item xs={12} md={2} >
                         <InputLabel className={classes.bottomMargin} id="hash-label">Pass direction</InputLabel>
@@ -706,7 +741,7 @@ export default function GameForm(props) {
                     </Grid>
                 </>
                 )}
-                {(playType === "Pass" || playType === "KO" )&& !live && (
+                {(playType === "Pass" || playType === "KO" )&& result !== "Penalty" && !live && (
                     <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="catch-yard-label">
                         {playType === "Pass" && result !== "Incomplete" && "Catch yard line"} 
@@ -731,7 +766,7 @@ export default function GameForm(props) {
                 </Grid>
                 )}
                 
-                {playType !== "Game end" && result !== "TD"  && result !== "Incomplete" && result !== "No return" && !live && (
+                {result !== "Penalty" && playType !== "Game end" && result !== "TD"  && result !== "Incomplete" && result !== "Good" && result !== "xp good" && result !== "No return" && !live && (
                 <>
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="tackler-label">Tackler</InputLabel>
@@ -794,7 +829,7 @@ export default function GameForm(props) {
                     required  />
                 </Grid>
                 )}
-                {playType !== "Game end" && result !=="xp good" &&(
+                {playType !== "Game end" && result !=="xp good" && result !=="Good" && (
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="yard-label">End yard Line</InputLabel>
                     <TextField 
