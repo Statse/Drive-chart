@@ -292,7 +292,11 @@ export default function GameForm(props) {
                 setPlaytype("KO")
                 setStartYardline(35)
             break;
-            case "2pt good":
+            case "2pt good rush":
+                setPlaytype("KO")
+                setStartYardline(35)
+            break;
+            case "2pt good pass":
                 setPlaytype("KO")
                 setStartYardline(35)
             break;
@@ -606,7 +610,8 @@ export default function GameForm(props) {
                         
                         {/* FG, XP */}
                         {(playType ==="PAT") && (<MenuItem value={"xp good"}>XP good</MenuItem>)}
-                        {(playType ==="PAT") && (<MenuItem value={"2pt good"}>2pt good</MenuItem>)}
+                        {(playType ==="PAT") && (<MenuItem value={"2pt good rush"}>2pt good (running)</MenuItem>)}
+                        {(playType ==="PAT") && (<MenuItem value={"2pt good pass"}>2pt good (passing)</MenuItem>)}
 
                         {(playType==="FG") && (<MenuItem value={"Good"}>Good</MenuItem>)}
                         {(playType==="FG" || playType ==="PAT") && (<MenuItem value={"No good"}>No Good</MenuItem>)}
@@ -654,7 +659,7 @@ export default function GameForm(props) {
                 )}
 
                 {/* Receiver can be from defence if it is interception. */}
-                {playType === "Pass" && result !== "Penalty" && !live && (
+                {(playType === "Pass"  || result === "2pt good pass") && result !== "Penalty" && !live && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="qb-label">QB</InputLabel>
                         <TextField 
@@ -672,7 +677,7 @@ export default function GameForm(props) {
                         required  />
                     </Grid>
                 )}
-                {playType === "Pass" && result !== "Incomplete" && result !== "Penalty" && !live && (
+                {(playType === "Pass" || result === "2pt good pass") && result !== "Incomplete" && result !== "Penalty" && !live && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="carrier-label">Receiver</InputLabel>
                         <TextField 
@@ -690,9 +695,11 @@ export default function GameForm(props) {
                         required  />
                     </Grid>
                 )}
-                {(playType === "Run" || playType === "KO") && result !== "Penalty" && result !== "Touchback" &&  !live && (
+                {(playType === "Run" || playType === "KO" || result === "2pt good rush") && result !== "Penalty" && result !== "Touchback" && !live && (
                     <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="carrier-label">Rusher</InputLabel>
+                        <InputLabel className={classes.bottomMargin} id="carrier-label">
+                            Rusher
+                        </InputLabel>
                         <TextField 
                         labelId="carrier-label"
                         className={classes.fullWidth} 
@@ -709,7 +716,7 @@ export default function GameForm(props) {
                     </Grid>
                 )}
 
-                {playType === "KO" || playType === "FG" || playType === "PAT" && result !== "Penalty" &&  result !== "2pt good" &&  !live && (
+                {(playType === "KO" || playType === "FG" || playType === "PAT") && result !== "Penalty"  &&  !live && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="carrier-label">Kicker</InputLabel>
                         <TextField 
