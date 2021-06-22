@@ -51,6 +51,11 @@ const useStyles = makeStyles({
     fontSmall: {
         fontSize: "0.75rem",
     },
+    title: {
+        fontSize: 14,
+        fontWeight: "bold",
+        marginBottom: "1rem"
+    },
     value: {
         width: "100%",
         background: "Purple"
@@ -68,6 +73,7 @@ export default function RunMap(props) {
 
     return (
             <div className={classes.wrapper}>
+                <Typography className={classes.title}>Run gap distribution</Typography>
                 <div className={classes.gapsContainer}>
                     <Card className={classes.barContainer}>
                         <div className={classes.bar}>
