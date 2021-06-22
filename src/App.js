@@ -2,6 +2,7 @@ import React from 'react'
 import { useAuth } from './context/AuthContext';
 import {BrowserRouter as Router, Switch, Route } from "react-router-dom"
 
+
 import NewGame from './component/NewGame'
 import Signup from './component/Singup'
 import Login from './component/Login'
@@ -16,8 +17,6 @@ import UpdateProfile from './component/UpdateProfile'
 
 import Navbar from './component/Navbar'
 // import BottomNav from './containers/BottomNavigation'
-//ui
-import Grid from '@material-ui/core/Grid';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
@@ -32,8 +31,6 @@ function App() {
   const {currentUser} = useAuth()
 
   return (
-    <>
-      {/* <AuthProvider> */}
         <Router> 
           <Navbar></Navbar>
             <div  className={classes.appContainer}>
@@ -53,8 +50,6 @@ function App() {
               ) : null}
             </div>
         </Router>
-        {/* </AuthProvider> */}
-      </>
   );
 }
 

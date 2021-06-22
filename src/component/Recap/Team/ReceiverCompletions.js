@@ -37,10 +37,11 @@ export default function ReceiverSeparation(props) {
     }) 
 
 
-    const series = [{
-        name: 'Yards',
-        data: receivers.map((receiver)=>{return receiver.yards}),
-      }]
+    const series = [
+        {
+            name: 'Targets',
+            data: receivers.map((receiver)=>{return receiver.targets}),
+        }]
       
       const options = {
         chart: {
@@ -48,7 +49,7 @@ export default function ReceiverSeparation(props) {
           type: 'radar',
         },
         title: {
-          text: 'Receiver yards'
+          text: 'Receiver completions'
         },
         xaxis: {
           categories: receivers.map((receiver)=>{return "#"+receiver.number})
