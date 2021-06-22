@@ -13,18 +13,7 @@ export default function QbThrowMap(props) {
 
     const passes = downs.filter((down)=>{
         if (down.possession.toLowerCase() === team){
-            if (down.playType === "Pass"  && down.result !== "Penalty"){
-                if (down.result ===  "Interception"){
-                    interceptions += 1
-                } else if (down.result === "Turnover" && down.result === "Fumble turnover"){
-                    fumbles += 1
-                } else if (down.result ===  "Incomplete"){
-                    incompletions += 1
-                }else {
-                    passingYards += down.endYardline - down.startYardline
-                }
-                return down
-            }
+          
         }
     }) 
 
