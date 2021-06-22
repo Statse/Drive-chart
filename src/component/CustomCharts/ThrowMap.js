@@ -15,6 +15,7 @@ const useStyles = makeStyles({
   });
 
 export default function ThrowMap() {
+    const classes = useStyles();
     return (
         <div>
             <div className="axisContainer">

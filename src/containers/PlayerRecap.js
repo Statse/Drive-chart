@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react'
+import { useParams } from "react-router-dom"
 
 //ui
 import { makeStyles } from '@material-ui/core/styles';
@@ -6,10 +7,7 @@ import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 //custom components
-import Score from '../component/Recap/Score'
-import Game from '../component/Recap/Game'
-import Team from '../component/Recap/Team'
-import DriveChart from '../component/Recap/DriveChart'
+import Player from '../component/Recap/Player'
 
 
 
@@ -30,17 +28,11 @@ const useStyles = makeStyles((theme) => ({
   
 export default function GameRecap(props) {
     const {getGame, game} = props.useGame()
+    const { team, player } = useParams();
 
     const [error, setError] = useState("")
     const [init, setInit] = useState(false)
     const [loading, setLoading] = useState(false)
-    const [type, setType] =  useState("game")//game, run, pass
-    const [team, setTeam] =  useState("both")//both, home, away
-    const typeOptions = [
-        "pass",
-        "run",
-        "game"
-    ]
 
     const classes = useStyles()
 
@@ -80,8 +72,7 @@ export default function GameRecap(props) {
 
     return (
     <div style={{padding: "15px"}}>
-        
+        <Player game={game} team={team} player={player}></Player>
     </div>
-        
     )
 }

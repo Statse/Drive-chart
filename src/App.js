@@ -43,9 +43,9 @@ function App() {
                   <PrivateRoute exact path="/new-game" component={NewGame}/>
                   <PrivateRoute exact path="/game/:id" component={GameWrapper}/>
                   <PrivateRoute exact path="/recap/:id" component={GameRecapWrapper}/>
-                  <PrivateRoute exact path="/recap/:id/player/:number" component={PlayerRecapWrapper}/>
+                  <PrivateRoute exact path="/recap/:id/player/:team/:player" component={PlayerRecapWrapper}/>
                   <Route exact path="/public/recap/:id" component={GameRecapPublicWrapper}/>
-                  <Route exact path="/public/recap/:id/player/:number" component={PlayerRecapPublicWrapper}/>
+                  <Route exact path="/public/recap/:id/player/:team/:player" component={PlayerRecapPublicWrapper}/>
                   <Route path="/login" component={Login}/>
                   <Route path="/signup" component={Signup}/>
                   <Route path="/forgot" component={ForgotPassword}/>

@@ -68,9 +68,7 @@ export default function RunMap(props) {
     const {totalRuns, totalYards, gaps} = props
 
     const multiplier = 1.4
-
-    console.log(gaps)
-
+    
     return (
             <div className={classes.wrapper}>
                 <Typography className={classes.title}>Yards by Rush Direction</Typography>
