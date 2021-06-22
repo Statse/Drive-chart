@@ -23,7 +23,6 @@ export default function ReceiverSeparation(props) {
                     }
                 })
                 } else {
-                    console.log("new carrier", down.carrier)
                     tempReceivers.push(parseInt(down.carrier))
                     receivers.push({
                         number: parseInt(down.carrier),
@@ -31,7 +30,6 @@ export default function ReceiverSeparation(props) {
                         targets: 1,
                     })
                 }
-                console.log(receivers)
             }
         }
     }) 

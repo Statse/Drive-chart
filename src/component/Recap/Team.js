@@ -10,7 +10,7 @@ import RunAvarageGain from './Team/RunAvarageGain'
 import TotalYards from './Team/TotalYards'
 import Penalties from './Team/Penalties'
 import FirstDowns from './Team/FirstDowns'
-import ThrowMap from './Team/QbThrowMap'
+import RunGaps from './Team/RunGaps'
 import ReceiverSeparation from './Team/ReceiverSeparation'
 import ReceiverCompletions from './Team/ReceiverCompletions'
 
@@ -50,6 +50,9 @@ export default function Team(props) {
                     </Grid> 
                     <Grid item xs={12} md={6}>
                         <ReceiverCompletions game={game} team={team}/>  
+                    </Grid> 
+                    <Grid item xs={12} md={6}>
+                        <RunGaps game={game} team={team}/>  
                     </Grid> 
                          {/* <Grid item xs={12} md={6}>
                         <ThrowMap game={game} team={team}/>  
