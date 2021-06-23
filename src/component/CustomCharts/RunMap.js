@@ -73,20 +73,13 @@ export default function RunMap(props) {
             <div className={classes.wrapper}>
                 <Typography className={classes.title}>Yards by Rush Direction</Typography>
                 <div className={classes.gapsContainer}>
+                    
                     <Card className={classes.barContainer}>
                         <div className={classes.bar}>
-                            <Typography className={classes.fontSmall}>{gaps["OR"].attempts} ATT</Typography>
-                            <Typography className={classes.fontSmall}>{gaps["OR"].yards} yards</Typography>
-                            <Typography className={classes.fontSmall}>{gaps["OR"].td} TD</Typography>
-                            <div className={classes.value} style={{height: (gaps["OR"].yards*multiplier)+"px" }}></div>
-                        </div>
-                    </Card>
-                    <Card className={classes.barContainer}>
-                        <div className={classes.bar}>
-                            <Typography className={classes.fontSmall}>{gaps["IR"].attempts} ATT</Typography>
-                            <Typography className={classes.fontSmall}>{gaps["IR"].yards} yards</Typography>
-                            <Typography className={classes.fontSmall}>{gaps["IR"].td} TD</Typography>
-                            <div className={classes.value} style={{height: (gaps["IR"].yards*multiplier)+"px" }}></div>
+                            <Typography className={classes.fontSmall}>{gaps["OL"].attempts} ATT</Typography>
+                            <Typography className={classes.fontSmall}>{gaps["OL"].yards} yards</Typography>
+                            <Typography className={classes.fontSmall}>{gaps["OL"].td} TD</Typography>
+                            <div className={classes.value} style={{height: (gaps["OL"].yards*multiplier)+"px" }}></div>
                         </div>
                     </Card>
                     <Card className={classes.barContainer}>
@@ -99,10 +92,18 @@ export default function RunMap(props) {
                     </Card>
                     <Card className={classes.barContainer}>
                         <div className={classes.bar}>
-                            <Typography className={classes.fontSmall}>{gaps["OL"].attempts} ATT</Typography>
-                            <Typography className={classes.fontSmall}>{gaps["OL"].yards} yards</Typography>
-                            <Typography className={classes.fontSmall}>{gaps["OL"].td} TD</Typography>
-                            <div className={classes.value} style={{height: (gaps["OL"].yards*multiplier)+"px" }}></div>
+                            <Typography className={classes.fontSmall}>{gaps["IR"].attempts} ATT</Typography>
+                            <Typography className={classes.fontSmall}>{gaps["IR"].yards} yards</Typography>
+                            <Typography className={classes.fontSmall}>{gaps["IR"].td} TD</Typography>
+                            <div className={classes.value} style={{height: (gaps["IR"].yards*multiplier)+"px" }}></div>
+                        </div>
+                    </Card>
+                    <Card className={classes.barContainer}>
+                        <div className={classes.bar}>
+                            <Typography className={classes.fontSmall}>{gaps["OR"].attempts} ATT</Typography>
+                            <Typography className={classes.fontSmall}>{gaps["OR"].yards} yards</Typography>
+                            <Typography className={classes.fontSmall}>{gaps["OR"].td} TD</Typography>
+                            <div className={classes.value} style={{height: (gaps["OR"].yards*multiplier)+"px" }}></div>
                         </div>
                     </Card>
                 </div>
