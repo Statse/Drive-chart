@@ -73,7 +73,6 @@ export default function RunMap(props) {
             <div className={classes.wrapper}>
                 <Typography className={classes.title}>Yards by Rush Direction</Typography>
                 <div className={classes.gapsContainer}>
-                    
                     <Card className={classes.barContainer}>
                         <div className={classes.bar}>
                             <Typography className={classes.fontSmall}>{gaps["OL"].attempts} ATT</Typography>

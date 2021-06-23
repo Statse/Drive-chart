@@ -32,12 +32,14 @@ export default function DriveTable(props) {
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Possession</TableCell>
             <TableCell>Quarter</TableCell>
+            <TableCell>Possession</TableCell>
             <TableCell>Down</TableCell>
             <TableCell>Distance</TableCell>
             <TableCell>Gain</TableCell>
+            <TableCell>Rusher/Rec</TableCell>
             <TableCell>Direction</TableCell>
+            <TableCell>Gap</TableCell>
             <TableCell>Play type</TableCell>
             <TableCell>Result</TableCell>
           </TableRow>
@@ -45,12 +47,14 @@ export default function DriveTable(props) {
         <TableBody>
           {downs.map((down, index) => (
             <TableRow key={index}>
+            <TableCell>{down.quarter}</TableCell>
               <TableCell>{down.possession}</TableCell>
-              <TableCell>{down.quarter}</TableCell>
               <TableCell>{down.down}</TableCell>
               <TableCell>{down.distance}</TableCell>
               <TableCell>{down.endYardline - down.startYardline}</TableCell>
+              <TableCell>{down.carrier}</TableCell>
               <TableCell>{down.playDirection}</TableCell>
+              <TableCell>{down.runGap}</TableCell>
               <TableCell>{down.playType}</TableCell>
               <TableCell>{down.result}</TableCell>
             </TableRow>
