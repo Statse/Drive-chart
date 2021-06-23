@@ -75,6 +75,7 @@ export default function GameForm(props) {
     async function handleSubmit(e){
         e.preventDefault()
         setLoading(true)
+        console.log("Editmode", editMode)
         try {
             const thisDown = {
                 homeScore: parseInt(homeScore),
@@ -108,7 +109,6 @@ export default function GameForm(props) {
             
             if (editMode){
                 console.log("updating...")
-                const _downs = _updateDown(thisDown, downIndex)
                 await firebase.firestore()
                 .collection('games')
                 .doc(props.match.params.id)
@@ -118,6 +118,7 @@ export default function GameForm(props) {
                     },
                     { merge: true }
                 )
+                const _downs = _updateDown(thisDown, downIndex)
 
                 //go to next down after save
                 setDownIndex(downIndex+1)
@@ -129,7 +130,6 @@ export default function GameForm(props) {
                     setEditMode(false)
                 }
             } else {
-                const _downs = _setDowns(thisDown)       
                 await firebase.firestore()
                 .collection('games')
                 .doc(props.match.params.id)
@@ -139,6 +139,7 @@ export default function GameForm(props) {
                     },
                     { merge: true }
                 )
+                const _downs = _setDowns(thisDown)       
                 console.log("Saved to db.")
             }
             
@@ -201,7 +202,7 @@ export default function GameForm(props) {
             setRunGap(down.runGap)
             setPassField(down.passField) 
             setBlitzing(down.blitzing)   
-            setRecover(down.recover)
+            setRecover(down.recover || 0)
             setKicker(down.kicker)
         }
         setPlaytype(down.playType)

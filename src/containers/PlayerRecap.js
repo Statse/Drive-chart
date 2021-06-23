@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom"
 
 //ui
 import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 //custom components
