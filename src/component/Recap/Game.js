@@ -1,8 +1,5 @@
 import React from 'react'
 
-//
-import Button from '@material-ui/core/Button';
-
 //Charts
 import Grid from '@material-ui/core/Grid';
 import Possession from './Game/Possession'

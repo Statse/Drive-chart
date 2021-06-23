@@ -34,6 +34,7 @@ export default function RunGaps(props) {
     let totalYards = 0
 
     const runs = downs.filter((down)=>{
+      if (down.carrier>0 && down.playType === "Run" && down.result==="TD"){console.log(down)}
         if (down.possession.toLowerCase() === team){
             const rusher = parseInt(down.carrier)
             if (down.playType === "Run" && down.result !== "Penalty" && rusher === parseInt(player)) {
