@@ -24,36 +24,16 @@ export default function Game(props) {
         <Grid container spacing={3}>
             {game.downs && (
                 <>
-                    <Grid item xs={12} md={6}>
-                        <ScoringPerQuarter game={game}/>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <Possession game={game}/>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <FirstDownsComparison game={game}/>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <OffenseYards game={game} team={team}/>  
-                    </Grid> 
-                    <Grid item xs={12} md={6}>
-                        <AvarageGain game={game}/>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <PassingYardsComparison game={game}/>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <AvaragePassingGain game={game}/>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <RunningYardsComparison game={game}/>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <AvarageRunningGain game={game}/>
-                    </Grid>
-                    <Grid item xs={12} md={6}>
-                        <PenaltyYards game={game}/>
-                    </Grid>
+                    <ScoringPerQuarter game={game}/>
+                    <Possession game={game}/>
+                    <FirstDownsComparison game={game}/>
+                    <OffenseYards game={game} team={team}/>  
+                    <AvarageGain game={game}/>
+                    <PassingYardsComparison game={game}/>
+                    <AvaragePassingGain game={game}/>
+                    <RunningYardsComparison game={game}/>
+                    <AvarageRunningGain game={game}/>
+                    <PenaltyYards game={game}/>
                 </>
             )}
         </Grid>
