@@ -11,21 +11,24 @@ export default function ReceiverSeparation(props) {
     let receivers = []
 
     const passes = downs.filter((down)=>{
-        if (down.possession.toLowerCase() === team){
-            if (down.result !== "Incomplete" && down.result !== "Interception" && down.playType === "Pass"  && down.result !== "Penalty" && parseInt(down.receiver) !== 0){
-       
-
-                if (tempReceivers.includes(parseInt(down.carrier))){
+        if (down.possession.toLowerCase() === team){ 
+          const receiver = parseInt(down.carrier)
+            if (down.result !== "Incomplete" 
+            && down.result !== "Interception" 
+            && down.playType === "Pass"  
+            && down.result !== "Penalty" 
+            && receiver !== 0){
+                if (tempReceivers.includes(receiver)){
                   receivers.forEach((rec, index) => {
-                    if(rec.number ===  down.carrier) {
+                    if(rec.number ===  receiver) {
                         receivers[index].yards = receivers[index].yards + (parseInt(down.endYardline) - parseInt(down.startYardline));
                         receivers[index].targets = receivers[index].targets + 1
                     }
                 })
                 } else {
-                    tempReceivers.push(parseInt(down.carrier))
+                    tempReceivers.push(receiver)
                     receivers.push({
-                        number: parseInt(down.carrier),
+                        number: receiver,
                         yards: parseInt(down.endYardline) - parseInt(down.startYardline),
                         targets: 1,
                     })
