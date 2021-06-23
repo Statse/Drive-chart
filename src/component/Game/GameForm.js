@@ -99,16 +99,18 @@ export default function GameForm(props) {
                 tackleAssist: parseInt(tackleAssist),
                 runGap: runGap,
                 passField: passField,
-                blitzing: blitzing,
-                recover: recover,
-                kicker: kicker,
+                blitzing: blitzing || false,
+                recover: recover || 0,
+                kicker: kicker || 0,
             }
 
             console.log("Saving down... ", thisDown)
 
             
             if (editMode){
-                console.log("updating...")
+                console.log("updating...", thisDown)
+                const _downs = _updateDown(thisDown, downIndex)
+                console.log(_downs)
                 await firebase.firestore()
                 .collection('games')
                 .doc(props.match.params.id)
@@ -118,7 +120,6 @@ export default function GameForm(props) {
                     },
                     { merge: true }
                 )
-                const _downs = _updateDown(thisDown, downIndex)
 
                 //go to next down after save
                 setDownIndex(downIndex+1)
@@ -130,6 +131,7 @@ export default function GameForm(props) {
                     setEditMode(false)
                 }
             } else {
+                const _downs = _setDowns(thisDown)       
                 await firebase.firestore()
                 .collection('games')
                 .doc(props.match.params.id)
@@ -139,7 +141,6 @@ export default function GameForm(props) {
                     },
                     { merge: true }
                 )
-                const _downs = _setDowns(thisDown)       
                 console.log("Saved to db.")
             }
             
