@@ -37,9 +37,8 @@ export default function DriveTable(props) {
             <TableCell>Down</TableCell>
             <TableCell>Distance</TableCell>
             <TableCell>Gain</TableCell>
-            <TableCell>Rusher/Rec</TableCell>
+            <TableCell>Carrier</TableCell>
             <TableCell>Direction</TableCell>
-            <TableCell>Gap</TableCell>
             <TableCell>Play type</TableCell>
             <TableCell>Result</TableCell>
           </TableRow>
@@ -54,7 +53,6 @@ export default function DriveTable(props) {
               <TableCell>{down.endYardline - down.startYardline}</TableCell>
               <TableCell>{down.carrier}</TableCell>
               <TableCell>{down.playDirection}</TableCell>
-              <TableCell>{down.runGap}</TableCell>
               <TableCell>{down.playType}</TableCell>
               <TableCell>{down.result}</TableCell>
             </TableRow>
