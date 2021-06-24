@@ -582,8 +582,11 @@ export default function GameForm(props) {
                             onChange={(e)=>setPlaydirection(e.target.value)}
                             value={playDirection}
                             >
+                            <MenuItem value={"OOL"}>OOL</MenuItem>
                             <MenuItem value={"L"}>L</MenuItem>
+                            <MenuItem value={"M"}>M</MenuItem>
                             <MenuItem value={"R"}>R</MenuItem>
+                            <MenuItem value={"OOR"}>OOR</MenuItem>
                         </Select>
                     </Grid>
                 )}
