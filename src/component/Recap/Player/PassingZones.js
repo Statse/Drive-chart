@@ -6,24 +6,32 @@ export default function RunGaps(props) {
     const {game, team, player} = props
     const {downs} = game
 
+    const LEFT = 0
+    const MIDDLE  = 1 
+    const RIGHT = 2 
+
     let totalYards = 0
 
     const zone = {
-
+        yards: 0,
+        attempts: 0,
+        int: 0,
+        td: 0,
+        comp: 0,
     }
 
-    let zones = [
-      [{},{},{}],
-      [{},{},{}],
-      [{},{},{}],
-      [{},{},{}],
+    const zones = [
+      [Object.assign({},zone),Object.assign({},zone),Object.assign({},zone)],
+      [Object.assign({},zone),Object.assign({},zone),Object.assign({},zone)],
+      [Object.assign({},zone),Object.assign({},zone),Object.assign({},zone)],
+      [Object.assign({},zone),Object.assign({},zone),Object.assign({},zone)],
     ]
 
     const passes = downs.filter((down)=>{
         if (down.possession.toLowerCase() === team){
             const qb = parseInt(down.carrier)
+            console.log(down)
             if (down.playType === "Pass" && down.result !== "Penalty" && qb === parseInt(player)) {
-              
             }
         }
     }) 
