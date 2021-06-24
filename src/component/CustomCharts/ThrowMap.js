@@ -14,7 +14,7 @@ const useStyles = makeStyles({
         width: "100%",
     },
     fieldContainer: {
-        height: "50px",
+        height: "52px",
         display: "flex",
         flexFlow: "row",
         justifyContent: "space-between",
@@ -53,26 +53,35 @@ const useStyles = makeStyles({
     gridAxis: {
         position: "absolute",
         left: "-25px",
-        width: "15px",
-        height: "260px",
-        background: "yellow",
+        width: "20px",
         display: "flex",
         flexFlow: "column",
         alignItems: "flex-end",
         justifyContent: "flex-end"
     },
     yardLine: {
-        width: "5px",
+        width: "6px",
         background: "grey",
-        height: "4px",
+        height: "2px",
         marginTop: "4px"
     },
     fiveYd: {
         background: "darkgrey",
         width: "10px",
+        position: "relative",
+        display: ""
+    },
+    yardNumberWrapper: {
+        position: "absolute",
+        left:" -25px",
+        top: "-4px",
+        width: "20px",
+        display: "flex",
+        flexFlow: "row",
+        justifyContent: "flex-end"
     },
     yardNumber: {
-
+        fontSize: "0.5rem",
     }
   });
 
@@ -81,19 +90,27 @@ export default function ThrowMap(props) {
 
 
 
+    // const markers = ['','','LOS','',10,'',20]
+    const markers = [30,'',20,'',10,'','LOS','','']
 
     return (
         <div className={classes.wrapper}>
             <div className={classes.gridAxis}>
-
-                <div className={`${classes.yardLine} ${classes.fiveYd}`}>
-                    {/* <Typography className={classes.yardNumber}>10</Typography> */}
-                </div>
-                <div className={classes.yardLine}></div>
-                <div className={classes.yardLine}></div>
-                <div className={classes.yardLine}></div>
-                <div className={classes.yardLine}></div>
-
+                {markers.map((marker)=>{
+                    return(
+                        <>
+                            <div className={classes.yardLine}></div>
+                            <div className={classes.yardLine}></div>
+                            <div className={classes.yardLine}></div>
+                            <div className={classes.yardLine}></div>
+                            <div className={`${classes.yardLine} ${classes.fiveYd}`}>
+                                <span className={classes.yardNumberWrapper}>
+                                    <Typography className={classes.yardNumber}>{marker}</Typography>
+                                </span>
+                            </div>
+                        </>
+                        )
+                })}
             </div>
             {/* 20+ yards*/}
             <div className={`${classes.fieldContainer} ${classes.long}`}>
