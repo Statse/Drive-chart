@@ -28,13 +28,60 @@ export default function RunGaps(props) {
     ]
 
     const passes = downs.filter((down)=>{
-        if (down.possession.toLowerCase() === team){
-            const qb = parseInt(down.carrier)
-            console.log(down)
-            if (down.playType === "Pass" && down.result !== "Penalty" && qb === parseInt(player)) {
-            }
+      const qb = parseInt(down.qb)
+        if (down.playType === "Pass" && down.possession.toLowerCase() === team && down.result !== "Penalty" && qb === parseInt(player)){
+              const gain  = parseInt(down.endYardline) -  parseInt(down.startYardline)
+              const throwLength = parseInt(down.catchYardLine) - parseInt(down.startYardline)
+              const {result, passField} = down
+
+              // console.log("gain", gain)
+              // console.log("throwLength", throwLength)
+              // console.log("passField", passField)
+              // console.log("result", result)
+
+              let zone = [0, 0]
+
+              if (passField === "L"){
+                zone[1] = 0
+              } else if (passField === "M"){
+                zone[1] = 1
+              } else if (passField === "R"){
+                zone[1] = 2
+              }
+
+              if (throwLength < 0) {
+                  zone[0] = 0
+              } else if (throwLength >= 0 && throwLength < 10){
+                  zone[0] = 1
+              } else if (throwLength >= 10 && throwLength < 20){
+                  zone[0] = 2
+              } else if (throwLength >= 20 && throwLength < 30){
+                  zone[0] = 3
+              }
+
+              
+              zones[zone[0]][zone[1]].yards += gain
+              zones[zone[0]][zone[1]].attempts += 1
+
+              if (down.result === "Interception"){
+                zones[zone[0]][zone[1]].int += 1
+              } else {
+                totalYards += gain
+              }
+
+              if (down.result === "TD"){
+                zones[zone[0]][zone[1]].td += 1
+              }
+
+              if (down.result !== "Incomplete" && down.result !== "Interception"){
+                zones[zone[0]][zone[1]].comp += 1
+              }
+
+              return true
         }
     }) 
+
+    console.log(zones)
    
     // if (passes.length < 1){
     //   return null

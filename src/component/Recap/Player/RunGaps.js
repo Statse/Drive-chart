@@ -31,19 +31,17 @@ export default function RunGaps(props) {
     let totalYards = 0
 
     const runs = downs.filter((down)=>{
-        if (down.possession.toLowerCase() === team){
-            const rusher = parseInt(down.carrier)
-            if (down.playType === "Run" && down.result !== "Penalty" && rusher === parseInt(player)) {
-              if (down.runGap){
-                gaps[down.runGap].attempts = gaps[down.runGap].attempts + 1
-                gaps[down.runGap].yards = parseInt(gaps[down.runGap].yards) + (parseInt(down.endYardline) - parseInt(down.startYardline))
-                totalYards = parseInt(totalYards) + (parseInt(down.endYardline) - parseInt(down.startYardline))
-              if (down.result === "TD"){
-                gaps[down.runGap].td = gaps[down.runGap].td + 1
-              }
-              return true
-              }
-            }
+        const rusher = parseInt(down.carrier)
+        if (down.possession.toLowerCase() === team &&  down.playType === "Run" && down.result !== "Penalty" && rusher === parseInt(player)) {
+          if (down.runGap){
+            gaps[down.runGap].attempts = gaps[down.runGap].attempts + 1
+            gaps[down.runGap].yards = parseInt(gaps[down.runGap].yards) + (parseInt(down.endYardline) - parseInt(down.startYardline))
+            totalYards = parseInt(totalYards) + (parseInt(down.endYardline) - parseInt(down.startYardline))
+          if (down.result === "TD"){
+            gaps[down.runGap].td = gaps[down.runGap].td + 1
+          }
+          return true
+          }
         }
     }) 
    

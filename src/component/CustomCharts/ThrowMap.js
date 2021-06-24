@@ -88,7 +88,7 @@ const useStyles = makeStyles({
 export default function ThrowMap(props) {
     const classes = useStyles();
 
-
+    const {zones} = props
 
     // const markers = ['','','LOS','',10,'',20]
     const markers = [30,'',20,'',10,'','LOS','','']
@@ -112,7 +112,8 @@ export default function ThrowMap(props) {
                         )
                 })}
             </div>
-            {/* 20+ yards*/}
+
+
             <div className={`${classes.fieldContainer} ${classes.long}`}>
                     <Card className={classes.gridironContainer}>
                         <div className={classes.grid}>
@@ -128,8 +129,8 @@ export default function ThrowMap(props) {
                     </Card>
             </div>
 
-            {/* 10-20 yards*/}
-            <div className={classes.fieldContainer}>
+         
+            {/* <div className={classes.fieldContainer}>
                     <Card className={classes.gridironContainer}>
                         <div className={classes.grid}>
                         </div>
@@ -144,7 +145,6 @@ export default function ThrowMap(props) {
                     </Card>
             </div>
             
-            {/* 0-10 yards*/}
             <div className={classes.fieldContainer}>
                     <Card className={classes.gridironContainer}>
                         <div className={classes.grid}>
@@ -160,7 +160,6 @@ export default function ThrowMap(props) {
                     </Card>
             </div>
 
-            {/* Screens */}
             <div className={classes.fieldContainer}>
                     <Card className={classes.gridironContainer}>
                         <div className={classes.grid}>
@@ -174,7 +173,7 @@ export default function ThrowMap(props) {
                         <div className={classes.grid}>
                         </div>
                     </Card>
-            </div> 
+            </div>  */}
         </div>
     )
 }
