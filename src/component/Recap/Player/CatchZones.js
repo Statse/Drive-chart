@@ -40,16 +40,18 @@ export default function RunGaps(props) {
               }
 
               if (catchLength < 0) {
-                  zone[0] = 0
-              } else if (catchLength >= 0 && catchLength < 10){
-                  zone[0] = 1
-              } else if (catchLength >= 10 && catchLength < 20){
-                  zone[0] = 2
-              } else if (catchLength >= 20 && catchLength < 30){
                   zone[0] = 3
+              } else if (catchLength >= 0 && catchLength < 10){
+                  zone[0] = 2
+              } else if (catchLength >= 10 && catchLength < 20){
+                  zone[0] = 1
+              } else if (catchLength >= 20 && catchLength < 30){
+                  zone[0] = 0
               }
               
               totalYards += gain
+              
+              console.log(zone)
               zones[zone[0]][zone[1]].yards += gain
               zones[zone[0]][zone[1]].catchLength += catchLength
               zones[zone[0]][zone[1]].catch += 1

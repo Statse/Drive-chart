@@ -44,13 +44,13 @@ export default function RunGaps(props) {
               }
 
               if (throwLength < 0) {
-                  zone[0] = 0
-              } else if (throwLength >= 0 && throwLength < 10){
-                  zone[0] = 1
-              } else if (throwLength >= 10 && throwLength < 20){
-                  zone[0] = 2
-              } else if (throwLength >= 20 && throwLength < 30){
                   zone[0] = 3
+              } else if (throwLength >= 0 && throwLength < 10){
+                  zone[0] = 2
+              } else if (throwLength >= 10 && throwLength < 20){
+                  zone[0] = 1
+              } else if (throwLength >= 20 && throwLength < 30){
+                  zone[0] = 0
               }
 
               
@@ -81,7 +81,7 @@ export default function RunGaps(props) {
 
     return (
         <StatCard>
-            <ThrowMap zones={zones.reverse()} totalPasses={passes.length} totalYards={totalYards}/>
+            <ThrowMap zones={zones} totalPasses={passes.length} totalYards={totalYards}/>
         </StatCard>
     )
 }

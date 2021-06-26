@@ -12,9 +12,6 @@ export default function CatchStats(props) {
 
     const catches = downs.filter((down)=>{
         const receiver = parseInt(down.carrier)
-
-        console.log(receiver === parseInt(player))
-      
         if (down.possession.toLowerCase() === team && receiver === parseInt(player) && down.playType === "Pass"   && down.result !== "Penalty") {
                 catchingYards += down.endYardline - down.startYardline
                 return down
