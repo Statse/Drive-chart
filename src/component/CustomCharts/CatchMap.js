@@ -97,7 +97,7 @@ const useStyles = makeStyles({
 export default function ThrowMap(props) {
     const classes = useStyles();
 
-    const {zones} = props
+    const {zones, totalCatches} = props
 
     const markers = [30,'',20,'',10,'','LOS','','']
 
@@ -105,14 +105,14 @@ export default function ThrowMap(props) {
     const zoneHtml  = zones.map((zone, index)=>{
         let hashes = zone.map((hash)=>{
 
-                const ratio = hash.comp / hash.attempts
+                const ratio = hash.catch / totalCatches
                 const opacity = ratio ? ratio : 0
 
                 return (  
                     <Card className={classes.gridironContainer}>
                         <div className={classes.grid} style={{backgroundColor: `rgba(154, 18, 179, ${opacity})`}}>
                             <Typography className={classes.fontSmall}>{hash.yards} Yards</Typography>
-                            <Typography className={classes.fontSmall}>{hash.catch}Catches</Typography>
+                            <Typography className={classes.fontSmall}>{hash.catch} Catches</Typography>
                             {hash.td > 0 && <Typography className={classes.fontSmall}>{hash.td} TD</Typography>}
                             {hash.int > 0 && <Typography className={classes.fontSmall}>{hash.int} Int</Typography>}
                         </div>
@@ -131,7 +131,7 @@ export default function ThrowMap(props) {
 
     return (
         <div>  
-            <Typography className={classes.title}>Passing efficiency</Typography>
+            <Typography className={classes.title}>Catch zones</Typography>
             <div className={classes.wrapper}>
                 <div className={classes.gridAxis}>
                     {markers.map((marker)=>{

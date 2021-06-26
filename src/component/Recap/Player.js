@@ -6,6 +6,7 @@ import RunGaps from './Player/RunGaps';
 import PassingZones from './Player/PassingZones';
 import RunningStats from './Player/RunningStats';
 import CatchStats from './Player/CatchStats';
+import CatchZones from './Player/CatchZones';
 
 
 
@@ -24,6 +25,7 @@ export default function Player(props) {
                     <PassingZones game={game} team={team} player={player}/>
                     <RunningStats game={game} team={team} player={player}/>
                     <CatchStats game={game} team={team} player={player}/>
+                    <CatchZones game={game} team={team} player={player}/>
                 </>
             )}
         </Grid>

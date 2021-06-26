@@ -10,10 +10,9 @@ export default function RunGaps(props) {
 
     const zone = {
         yards: 0,
-        attempts: 0,
-        int: 0,
         td: 0,
-        comp: 0,
+        catch: 0,
+        attempts: 0,
     }
 
     const zones = [
@@ -23,12 +22,16 @@ export default function RunGaps(props) {
       [Object.assign({},zone),Object.assign({},zone),Object.assign({},zone)],
     ]
 
-    const passes = downs.filter((down)=>{
+    const catches = downs.filter((down)=>{
       const receiver = parseInt(down.carrier)
         if (down.playType === "Pass" && down.possession.toLowerCase() === team && down.result !== "Penalty" && receiver === parseInt(player)){
               const gain  = parseInt(down.endYardline) -  parseInt(down.startYardline)
-              const throwLength = parseInt(down.catchYardLine) - parseInt(down.startYardline)
+              const catchLength = parseInt(down.catchYardLine) - parseInt(down.startYardline)
               const {passField} = down
+
+              console.log("catchLength", catchLength)
+              console.log("passField", passField)
+              console.log("gain", gain)
 
               let zone = [0, 0]
 
@@ -40,25 +43,20 @@ export default function RunGaps(props) {
                 zone[1] = 2
               }
 
-              if (throwLength < 0) {
+              if (catchLength < 0) {
                   zone[0] = 0
-              } else if (throwLength >= 0 && throwLength < 10){
+              } else if (catchLength >= 0 && catchLength < 10){
                   zone[0] = 1
-              } else if (throwLength >= 10 && throwLength < 20){
+              } else if (catchLength >= 10 && catchLength < 20){
                   zone[0] = 2
-              } else if (throwLength >= 20 && throwLength < 30){
+              } else if (catchLength >= 20 && catchLength < 30){
                   zone[0] = 3
               }
-
               
-              zones[zone[0]][zone[1]].attempts += 1
-
-              if (down.result === "Interception"){
-                zones[zone[0]][zone[1]].int += 1
-              } else {
-                totalYards += gain
-                zones[zone[0]][zone[1]].yards += gain
-              }
+              totalYards += gain
+              zones[zone[0]][zone[1]].yards += gain
+              zones[zone[0]][zone[1]].catchLength += catchLength
+              zones[zone[0]][zone[1]].catch += 1
 
               if (down.result === "TD"){
                 zones[zone[0]][zone[1]].td += 1
@@ -68,13 +66,17 @@ export default function RunGaps(props) {
         }
     }) 
    
-    if (passes.length < 1){
+    if (catches.length < 1){
       return null
     }
 
+
+    console.log(zones)
+    console.log(zones.reverse())
+
     return (
         <StatCard>
-            <CatchMap zones={zones.reverse()} totalPasses={passes.length} totalYards={totalYards}/>
+            <CatchMap zones={zones.reverse()} totalCatches={catches.length} totalYards={totalYards}/>
         </StatCard>
     )
 }
