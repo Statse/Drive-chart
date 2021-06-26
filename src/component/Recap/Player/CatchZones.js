@@ -1,6 +1,6 @@
 import React from 'react'
 import StatCard from '../Wrappers/StatCard'
-import ThrowMap  from '../../CustomCharts/ThrowMap'
+import CatchMap  from '../../CustomCharts/CatchMap'
 
 export default function RunGaps(props) {
     const {game, team, player} = props
@@ -24,8 +24,8 @@ export default function RunGaps(props) {
     ]
 
     const passes = downs.filter((down)=>{
-      const qb = parseInt(down.qb)
-        if (down.playType === "Pass" && down.possession.toLowerCase() === team && down.result !== "Penalty" && qb === parseInt(player)){
+      const receiver = parseInt(down.carrier)
+        if (down.playType === "Pass" && down.possession.toLowerCase() === team && down.result !== "Penalty" && receiver === parseInt(player)){
               const gain  = parseInt(down.endYardline) -  parseInt(down.startYardline)
               const throwLength = parseInt(down.catchYardLine) - parseInt(down.startYardline)
               const {passField} = down
@@ -64,10 +64,6 @@ export default function RunGaps(props) {
                 zones[zone[0]][zone[1]].td += 1
               }
 
-              if (down.result !== "Incomplete" && down.result !== "Interception"){
-                zones[zone[0]][zone[1]].comp += 1
-              }
-
               return true
         }
     }) 
@@ -78,7 +74,7 @@ export default function RunGaps(props) {
 
     return (
         <StatCard>
-            <ThrowMap zones={zones.reverse()} totalPasses={passes.length} totalYards={totalYards}/>
+            <CatchMap zones={zones.reverse()} totalPasses={passes.length} totalYards={totalYards}/>
         </StatCard>
     )
 }

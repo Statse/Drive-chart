@@ -112,7 +112,7 @@ export default function ThrowMap(props) {
                     <Card className={classes.gridironContainer}>
                         <div className={classes.grid} style={{backgroundColor: `rgba(154, 18, 179, ${opacity})`}}>
                             <Typography className={classes.fontSmall}>{hash.yards} Yards</Typography>
-                            <Typography className={classes.fontSmall}>{hash.comp}/{hash.attempts} Comp</Typography>
+                            <Typography className={classes.fontSmall}>{hash.catch}Catches</Typography>
                             {hash.td > 0 && <Typography className={classes.fontSmall}>{hash.td} TD</Typography>}
                             {hash.int > 0 && <Typography className={classes.fontSmall}>{hash.int} Int</Typography>}
                         </div>
