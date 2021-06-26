@@ -28,16 +28,10 @@ export default function RunGaps(props) {
     ]
 
     const passes = downs.filter((down)=>{
-      const qb = parseInt(down.qb)
-        if (down.playType === "Pass" && down.possession.toLowerCase() === team && down.result !== "Penalty" && qb === parseInt(player)){
+        if (down.playType === "Pass" && down.possession.toLowerCase() === team && down.result !== "Penalty"){
               const gain  = parseInt(down.endYardline) -  parseInt(down.startYardline)
               const throwLength = parseInt(down.catchYardLine) - parseInt(down.startYardline)
-              const {result, passField} = down
-
-              // console.log("gain", gain)
-              // console.log("throwLength", throwLength)
-              // console.log("passField", passField)
-              // console.log("result", result)
+              const {passField} = down
 
               let zone = [0, 0]
 
@@ -60,13 +54,13 @@ export default function RunGaps(props) {
               }
 
               
+              zones[zone[0]][zone[1]].yards += gain
               zones[zone[0]][zone[1]].attempts += 1
 
               if (down.result === "Interception"){
                 zones[zone[0]][zone[1]].int += 1
               } else {
                 totalYards += gain
-                zones[zone[0]][zone[1]].yards += gain
               }
 
               if (down.result === "TD"){
@@ -81,15 +75,13 @@ export default function RunGaps(props) {
         }
     }) 
 
-    console.log(zones)
-   
-    // if (passes.length < 1){
-    //   return null
-    // }
+    if (passes.length < 1){
+      return null
+    }
 
     return (
         <StatCard>
-            <ThrowMap zones={zones.reverse()} totalPasses={passes.length} totalYards={totalYards}/>
+            <ThrowMap zones={zones} totalPasses={passes.length} totalYards={totalYards}/>
         </StatCard>
     )
 }

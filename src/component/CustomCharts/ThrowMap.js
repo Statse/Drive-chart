@@ -3,6 +3,7 @@ import Card from '@material-ui/core/Card';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
+
 const useStyles = makeStyles({
     wrapper: {
         position: "relative",
@@ -44,11 +45,11 @@ const useStyles = makeStyles({
     grid: {
         width: "100%",
         height: "100%",
-        background: "red",
+        background: "purple",
         display: "flex",
-        justifyContent: "flex-end",
+        justifyContent: "center",
         alignItems: "center",
-        flexFlow: "column"
+        flexFlow: "column",
     },
     gridAxis: {
         position: "absolute",
@@ -82,7 +83,10 @@ const useStyles = makeStyles({
     },
     yardNumber: {
         fontSize: "0.5rem",
-    }
+    },
+    fontSmall: {
+        fontSize: "0.7rem",
+    },
   });
 
 export default function ThrowMap(props) {
@@ -90,8 +94,38 @@ export default function ThrowMap(props) {
 
     const {zones} = props
 
-    // const markers = ['','','LOS','',10,'',20]
     const markers = [30,'',20,'',10,'','LOS','','']
+
+
+    const zoneHtml  = zones.map((zone, index)=>{
+        let hashes = zone.map((hash, index)=>{
+                console.log("Hash", index, hash)
+
+                const ratio = hash.comp / hash.attempts
+                const opacity = ratio ? ratio : 0
+                console.log(ratio)
+
+                return (  
+                    <Card className={classes.gridironContainer}>
+
+                        <div className={classes.grid} style={{backgroundColor: `rgba(154, 18, 179, ${opacity})`}}>
+                            <Typography className={classes.fontSmall}>{hash.yards} Yards</Typography>
+                            <Typography className={classes.fontSmall}>{hash.comp}/{hash.attempts} Comp</Typography>
+                            {hash.td > 0 && <Typography className={classes.fontSmall}>{hash.td} TD</Typography>}
+                            {hash.int > 0 && <Typography className={classes.fontSmall}>{hash.int} Int</Typography>}
+                        </div>
+                    </Card>
+                )
+        })
+
+        const cssClasses = index < 1 ? `${classes.fieldContainer} ${classes.long}` : classes.fieldContainer
+
+        return (
+            <div className={cssClasses}>
+               {hashes}
+            </div>
+        )
+    })
 
     return (
         <div className={classes.wrapper}>
@@ -113,67 +147,7 @@ export default function ThrowMap(props) {
                 })}
             </div>
 
-
-            <div className={`${classes.fieldContainer} ${classes.long}`}>
-                    <Card className={classes.gridironContainer}>
-                        <div className={classes.grid}>
-                        </div>
-                    </Card>
-                    <Card className={classes.gridironContainer}>
-                        <div className={classes.grid}>
-                        </div>
-                    </Card>
-                    <Card className={classes.gridironContainer}>
-                        <div className={classes.grid}>
-                        </div>
-                    </Card>
-            </div>
-
-         
-            {/* <div className={classes.fieldContainer}>
-                    <Card className={classes.gridironContainer}>
-                        <div className={classes.grid}>
-                        </div>
-                    </Card>
-                    <Card className={classes.gridironContainer}>
-                        <div className={classes.grid}>
-                        </div>
-                    </Card>
-                    <Card className={classes.gridironContainer}>
-                        <div className={classes.grid}>
-                        </div>
-                    </Card>
-            </div>
-            
-            <div className={classes.fieldContainer}>
-                    <Card className={classes.gridironContainer}>
-                        <div className={classes.grid}>
-                        </div>
-                    </Card>
-                    <Card className={classes.gridironContainer}>
-                        <div className={classes.grid}>
-                        </div>
-                    </Card>
-                    <Card className={classes.gridironContainer}>
-                        <div className={classes.grid}>
-                        </div>
-                    </Card>
-            </div>
-
-            <div className={classes.fieldContainer}>
-                    <Card className={classes.gridironContainer}>
-                        <div className={classes.grid}>
-                        </div>
-                    </Card>
-                    <Card className={classes.gridironContainer}>
-                        <div className={classes.grid}>
-                        </div>
-                    </Card>
-                    <Card className={classes.gridironContainer}>
-                        <div className={classes.grid}>
-                        </div>
-                    </Card>
-            </div>  */}
+            {zoneHtml}
         </div>
     )
 }
