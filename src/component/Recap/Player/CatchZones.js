@@ -29,10 +29,6 @@ export default function RunGaps(props) {
               const catchLength = parseInt(down.catchYardLine) - parseInt(down.startYardline)
               const {passField} = down
 
-              console.log("catchLength", catchLength)
-              console.log("passField", passField)
-              console.log("gain", gain)
-
               let zone = [0, 0]
 
               if (passField === "L"){
@@ -69,10 +65,6 @@ export default function RunGaps(props) {
     if (catches.length < 1){
       return null
     }
-
-
-    console.log(zones)
-    console.log(zones.reverse())
 
     return (
         <StatCard>
