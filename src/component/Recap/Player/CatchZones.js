@@ -51,7 +51,6 @@ export default function RunGaps(props) {
               
               totalYards += gain
               
-              console.log(zone)
               zones[zone[0]][zone[1]].yards += gain
               zones[zone[0]][zone[1]].catchLength += catchLength
               zones[zone[0]][zone[1]].catch += 1
