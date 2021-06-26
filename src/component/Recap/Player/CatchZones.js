@@ -76,7 +76,7 @@ export default function RunGaps(props) {
 
     return (
         <StatCard>
-            <CatchMap zones={zones.reverse()} totalCatches={catches.length} totalYards={totalYards}/>
+            <CatchMap zones={zones} totalCatches={catches.length} totalYards={totalYards}/>
         </StatCard>
     )
 }
