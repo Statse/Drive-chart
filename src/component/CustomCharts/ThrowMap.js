@@ -87,6 +87,11 @@ const useStyles = makeStyles({
     fontSmall: {
         fontSize: "0.7rem",
     },
+    title: {
+        fontSize: 14,
+        fontWeight: "bold",
+        marginBottom: "1rem"
+    },
   });
 
 export default function ThrowMap(props) {
@@ -99,15 +104,12 @@ export default function ThrowMap(props) {
 
     const zoneHtml  = zones.map((zone, index)=>{
         let hashes = zone.map((hash, index)=>{
-                console.log("Hash", index, hash)
 
                 const ratio = hash.comp / hash.attempts
                 const opacity = ratio ? ratio : 0
-                console.log(ratio)
 
                 return (  
                     <Card className={classes.gridironContainer}>
-
                         <div className={classes.grid} style={{backgroundColor: `rgba(154, 18, 179, ${opacity})`}}>
                             <Typography className={classes.fontSmall}>{hash.yards} Yards</Typography>
                             <Typography className={classes.fontSmall}>{hash.comp}/{hash.attempts} Comp</Typography>
@@ -128,33 +130,29 @@ export default function ThrowMap(props) {
     })
 
     return (
-        <div className={classes.wrapper}>
-            <div className={classes.gridAxis}>
-                {markers.map((marker)=>{
-                    return(
-                        <>
-                            <div className={classes.yardLine}></div>
-                            <div className={classes.yardLine}></div>
-                            <div className={classes.yardLine}></div>
-                            <div className={classes.yardLine}></div>
-                            <div className={`${classes.yardLine} ${classes.fiveYd}`}>
-                                <span className={classes.yardNumberWrapper}>
-                                    <Typography className={classes.yardNumber}>{marker}</Typography>
-                                </span>
-                            </div>
-                        </>
-                        )
-                })}
-            </div>
+        <div>  
+            <Typography className={classes.title}>Passing efficiency</Typography>
+            <div className={classes.wrapper}>
+                <div className={classes.gridAxis}>
+                    {markers.map((marker)=>{
+                        return(
+                            <>
+                                <div className={classes.yardLine}></div>
+                                <div className={classes.yardLine}></div>
+                                <div className={classes.yardLine}></div>
+                                <div className={classes.yardLine}></div>
+                                <div className={`${classes.yardLine} ${classes.fiveYd}`}>
+                                    <span className={classes.yardNumberWrapper}>
+                                        <Typography className={classes.yardNumber}>{marker}</Typography>
+                                    </span>
+                                </div>
+                            </>
+                            )
+                    })}
+                </div>
 
-            {zoneHtml}
+                {zoneHtml}
+            </div>
         </div>
     )
-}
-
-
-function gridiron(){
-    const yardline = <>
-    
-    </>
 }
