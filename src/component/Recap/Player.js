@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import RunGaps from './Player/RunGaps';
 import PassingZones from './Player/PassingZones';
 import RunningStats from './Player/RunningStats';
+import CatchStats from './Player/CatchStats';
 
 
 
@@ -22,6 +23,7 @@ export default function Player(props) {
                     <RunGaps game={game} team={team} player={player}/>
                     <PassingZones game={game} team={team} player={player}/>
                     <RunningStats game={game} team={team} player={player}/>
+                    <CatchStats game={game} team={team} player={player}/>
                 </>
             )}
         </Grid>

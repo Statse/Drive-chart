@@ -32,12 +32,7 @@ export default function RunGaps(props) {
         if (down.playType === "Pass" && down.possession.toLowerCase() === team && down.result !== "Penalty" && qb === parseInt(player)){
               const gain  = parseInt(down.endYardline) -  parseInt(down.startYardline)
               const throwLength = parseInt(down.catchYardLine) - parseInt(down.startYardline)
-              const {result, passField} = down
-
-              // console.log("gain", gain)
-              // console.log("throwLength", throwLength)
-              // console.log("passField", passField)
-              // console.log("result", result)
+              const {passField} = down
 
               let zone = [0, 0]
 
@@ -80,8 +75,6 @@ export default function RunGaps(props) {
               return true
         }
     }) 
-
-    console.log(zones)
    
     if (passes.length < 1){
       return null
