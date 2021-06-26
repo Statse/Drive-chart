@@ -20,7 +20,6 @@ export default function RunningStats(props) {
                 if (down.result === "Fumble" || down.result === "Fumble turnover"){
                     fumbles += 1
                 }
-
                 if (down.result !== "Turnover" && down.result !== "Fumble turnover"){
                     runningYards += down.endYardline - down.startYardline
                 } else {
@@ -31,6 +30,11 @@ export default function RunningStats(props) {
         }
     }) 
     
+   
+    if (runningPlays.length < 1){
+        return null
+    }
+
     const avarageRunYards =  Math.round((runningYards / runningPlays.length) * 10) / 10
 
     return (
@@ -41,8 +45,8 @@ export default function RunningStats(props) {
             <Typography variant="h4" component="p">{runningPlays.length}</Typography>
             <Typography variant="h5" component="h2">Run yards per attempt</Typography>
             <Typography variant="h4" component="p">{avarageRunYards}</Typography>
-            <Typography variant="h5" component="h2">Running play turnovers</Typography>
-            <Typography variant="h4" component="p">{turnovers}</Typography>
+            <Typography variant="h5" component="h2">Fumbles</Typography>
+            <Typography variant="h4" component="p">{fumbles}</Typography>
         </StatCard>
     )
 }

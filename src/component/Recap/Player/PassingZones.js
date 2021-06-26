@@ -83,9 +83,9 @@ export default function RunGaps(props) {
 
     console.log(zones)
    
-    // if (passes.length < 1){
-    //   return null
-    // }
+    if (passes.length < 1){
+      return null
+    }
 
     return (
         <StatCard>
