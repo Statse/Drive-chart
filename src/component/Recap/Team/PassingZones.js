@@ -81,7 +81,7 @@ export default function RunGaps(props) {
 
     return (
         <StatCard>
-            <ThrowMap zones={zones} totalPasses={passes.length} totalYards={totalYards}/>
+            <ThrowMap zones={zones.reverse()} totalPasses={passes.length} totalYards={totalYards}/>
         </StatCard>
     )
 }
