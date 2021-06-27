@@ -25,7 +25,7 @@ export default function DownNavigation(props) {
 
     const prev = (amount) => {
         if (downIndex - amount >= 0){
-            handleDownIndex(downIndex-amount)
+            handleDownIndex(parseInt(downIndex)-parseInt(amount))
             setEditMode(true)
             setInit(false)
         } else {
@@ -35,7 +35,7 @@ export default function DownNavigation(props) {
 
     const next = (amount) => {
         if (downIndex + amount <= maxDowns){
-            handleDownIndex(downIndex+amount)
+            handleDownIndex(parseInt(downIndex)+amount)
             if (downIndex < maxDowns){
                 setEditMode(true)
                 setInit(false)
@@ -50,7 +50,7 @@ export default function DownNavigation(props) {
                 setEditMode(false)
             }
         } else {
-            handleDownIndex(maxDowns)
+            handleDownIndex(parseInt(maxDowns))
         }
     }
     
@@ -58,7 +58,7 @@ export default function DownNavigation(props) {
         <>
             <div style={{display:"flex",width: '100%',justifyContent: "space-between", marginBottom: "2rem"}}>
                 {0 < downIndex && ( <Typography variant="h5" component="h1">Previous down: {prevDown + 1}</Typography>)}
-                {maxDowns > downIndex && (<Typography style={{marginLeft:"auto"}} variant="h5" component="h1">Current down: {downIndex + 1}</Typography>)}
+                {maxDowns > downIndex && (<Typography style={{marginLeft:"auto"}} variant="h5" component="h1">Current down: {parseInt(downIndex) + 1}</Typography>)}
             </div>
             {downs[prevDown] ? (
                 <div>
