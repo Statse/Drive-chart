@@ -1,7 +1,8 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-//downlist components
-import DownListHeader from './DownListHeader'
+
+import DriveChartNav from './DriveChart/DownAccordion'
+import SeriesMappers from '../../helpers/Series';
 
 
 const useStyles = makeStyles({
@@ -16,10 +17,16 @@ const useStyles = makeStyles({
 export default function DownList(props) {
   const {downs} = props
   const classes = useStyles();
-
+  console.log(downs)
+  const series = SeriesMappers(downs)
+  console.log(series)
   return (
       <div className={classes.relative}>
-        <DownListHeader downs={downs}></DownListHeader>
+            {
+                (series.map((singleSeries, index)=>{
+                    return <DriveChartNav key={index} series={singleSeries} seriesIndex={index}/>
+                }))
+            }
       </div>
   );
 }
