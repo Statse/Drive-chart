@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {useGame} from '../context/GameContext'
-
+import { useHistory } from "react-router-dom"
 import GameForm from '../component/Game/GameForm'
 import DownsList from '../component/Game/DownList'
 import GameBottomNav from './GameBottomNav'
@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Game(props) {
     const classes = useStyles();
+    const history = useHistory()
+
+    const index = props.match.params.index
 
     const {getGame} = useGame()
     const {downs} = useGame()
@@ -31,11 +34,15 @@ export default function Game(props) {
 
 
 
-    const editDown = (downIndex) => {
-        setDownIndex(downIndex)
+    const editDown =  (downIndex) => {
         setView("game")
+        setDownIndex(downIndex)
+        
     }
 
+    useEffect(() => {
+        history.push(`/game/${props.match.params.id}/${downIndex}`)
+    },[downIndex, props.match.params.index]);
 
     //TODO: investigate what causes multiple render cycles and fix it
     useEffect(()=>{
@@ -69,7 +76,7 @@ export default function Game(props) {
             <div className={classes.container}>
                 {/* <div style={{marginBottom: "15px"}}>{home} {homeScore} vs {awayScore} {away}</div> */}
                 {view === "game" ? (
-                    <GameForm downIndex={downIndex} handleDownIndex={setDownIndex} {...props}></GameForm>
+                    <GameForm downIndex={downIndex} handleDownIndex={editDown} {...props}></GameForm>
                 ) : (
                     <DownsList downIndex={downIndex} editDown={editDown} downs={downs}/>
                 )}
