@@ -28,9 +28,7 @@ export default function DownNavigation(props) {
             setEditMode(true)
             setInit(false)
         } else {
-            setDownIndex(1)
-            // console.error("Invalid index: " + downIndex - amount)
-            // alert("Invalid index: " + downIndex - amount)
+            setDownIndex(0)
         }
     }
 
@@ -51,8 +49,7 @@ export default function DownNavigation(props) {
                 setEditMode(false)
             }
         } else {
-            console.error("Invalid index: " + downIndex + amount)
-            alert("Invalid index: " + downIndex + amount)
+            setDownIndex(maxDowns)
         }
     }
 
@@ -74,7 +71,7 @@ export default function DownNavigation(props) {
                 </div>
             ) : (<Typography variant="h5" component="h1">No previous down</Typography>)}
             <div style={{display:"flex",width: '100%',justifyContent: "space-between", marginBottom: "2rem", marginTop: "1rem"}}>
-                {1 < downIndex && (
+                {0 < downIndex && (
                 <div>
                     <Tooltip title="prev" aria-label="previous play">
                         <button onClick={()=>prev(10)} style={{background: "none", border: "none", marginRight:"auto"}}>
