@@ -39,7 +39,7 @@ export default function GameCard(props) {
   let index = downs.length
 
   if (downs[downs.length - 1].playType === "Game end"){
-    index = downs.length - 1
+    index = downs.length - 2
   }
 
   return (
