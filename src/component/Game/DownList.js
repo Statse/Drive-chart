@@ -15,7 +15,7 @@ const useStyles = makeStyles({
 });
 
 export default function DownList(props) {
-  const {downs, handleDownIndex} = props
+  const {downs, editDown} = props
   const classes = useStyles();
   console.log(downs)
   const series = SeriesMappers(downs)
@@ -24,7 +24,7 @@ export default function DownList(props) {
       <div className={classes.relative}>
             {
                 (series.map((singleSeries, index)=>{
-                    return <DriveChartNav key={index} handleDownIndex={handleDownIndex} series={singleSeries} seriesIndex={index}/>
+                    return <DriveChartNav key={index} editDown={editDown} series={singleSeries} seriesIndex={index}/>
                 }))
             }
       </div>

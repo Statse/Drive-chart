@@ -30,6 +30,13 @@ export default function Game(props) {
     const [downIndex, setDownIndex] = useState(props.match.params.index)
 
 
+
+    const editDown = (downIndex) => {
+        setDownIndex(downIndex)
+        setView("game")
+    }
+
+
     //TODO: investigate what causes multiple render cycles and fix it
     useEffect(()=>{
         setError("") 
@@ -64,7 +71,7 @@ export default function Game(props) {
                 {view === "game" ? (
                     <GameForm downIndex={downIndex} handleDownIndex={setDownIndex} {...props}></GameForm>
                 ) : (
-                    <DownsList downIndex={downIndex} handleDownIndex={setDownIndex} downs={downs}/>
+                    <DownsList downIndex={downIndex} editDown={editDown} downs={downs}/>
                 )}
             </div>
             <GameBottomNav 

@@ -6,6 +6,8 @@ export default function SeriesMappers(downs) {
     let currentQuater = downs[0].quarter
 
     downs.map((down, index)=>{
+        
+        down.index = index
 
         if (down.playType === "KO" || currentTeam !== down.possession || (currentQuater === 3 && down.quarter === 4)){
 
