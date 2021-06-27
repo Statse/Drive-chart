@@ -54,7 +54,7 @@ export default function Navbar() {
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
+          <Typography variant="h6" className={classes.title} onClick={()=>history.push(`/`)}>
             Drive chart
           </Typography>
           {currentUser ? (
