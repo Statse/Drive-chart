@@ -19,8 +19,7 @@ export default function DefenceStats(props) {
     if (down.possession.toLowerCase() !== team && down.result !== "Penalty"  && down.result !== "Incomplete"){
                 const gain = down.endYardline - down.startYardline
 
-
-                if (parseInt(player) === parseInt(down.carrier)){
+                if (parseInt(player) === parseInt(down.carrier) && down.result === "Interception"){
                     console.log(down)
                     returnYards += down.catchYardLine - down.endYardline
                     interceptions += 1
@@ -28,6 +27,7 @@ export default function DefenceStats(props) {
                 }
 
                 if (parseInt(player) === parseInt(down.tackleAssist)){
+                    console.log(down)
                     tackles += 0.5
 
                     if (gain < 0){

@@ -22,20 +22,21 @@ export default function DownNavigation(props) {
 
     
 
-    const prev = () => {
-        if (downIndex - 1 >= 0){
-            setDownIndex(downIndex-1)
+    const prev = (amount) => {
+        if (downIndex - amount >= 0){
+            setDownIndex(downIndex-amount)
             setEditMode(true)
             setInit(false)
         } else {
-            console.error("Invalid index: " + downIndex - 1)
-            alert("Invalid index: " + downIndex - 1)
+            setDownIndex(1)
+            // console.error("Invalid index: " + downIndex - amount)
+            // alert("Invalid index: " + downIndex - amount)
         }
     }
 
-    const next = () => {
-        if (downIndex + 1 <= maxDowns){
-            setDownIndex(downIndex+1)
+    const next = (amount) => {
+        if (downIndex + amount <= maxDowns){
+            setDownIndex(downIndex+amount)
             if (downIndex < maxDowns){
                 setEditMode(true)
                 setInit(false)
@@ -44,14 +45,14 @@ export default function DownNavigation(props) {
                 setInit(false)
             }
             //this isnt updated before
-            if (downIndex + 1 === maxDowns){
+            if (downIndex + amount === maxDowns){
                 resetDown()
                 setInit(false)
                 setEditMode(false)
             }
         } else {
-            console.error("Invalid index: " + downIndex + 1)
-            alert("Invalid index: " + downIndex + 1)
+            console.error("Invalid index: " + downIndex + amount)
+            alert("Invalid index: " + downIndex + amount)
         }
     }
 
@@ -59,7 +60,6 @@ export default function DownNavigation(props) {
     
     return (
         <>
-        
             <div style={{display:"flex",width: '100%',justifyContent: "space-between", marginBottom: "2rem"}}>
                 {0 < downIndex && ( <Typography variant="h5" component="h1">Previous down: {prevDown + 1}</Typography>)}
                 {maxDowns > downIndex && (<Typography style={{marginLeft:"auto"}} variant="h5" component="h1">Current down: {downIndex + 1}</Typography>)}
@@ -73,26 +73,46 @@ export default function DownNavigation(props) {
                     )}
                 </div>
             ) : (<Typography variant="h5" component="h1">No previous down</Typography>)}
-            <div style={{display:"flex",width: '100%',justifyContent: "space-between", marginBottom: "2rem"}}>
-                {0 < downIndex && (
+            <div style={{display:"flex",width: '100%',justifyContent: "space-between", marginBottom: "2rem", marginTop: "1rem"}}>
+                {1 < downIndex && (
+                <div>
                     <Tooltip title="prev" aria-label="previous play">
-                        <button onClick={prev} style={{background: "none", border: "none", marginRight:"auto"}}>
+                        <button onClick={()=>prev(10)} style={{background: "none", border: "none", marginRight:"auto"}}>
+                        <Fab color="primary">
+                            <ArrowForwardIosIcon  style={{transform: "rotate(180deg)"}}/>
+                            <ArrowForwardIosIcon  style={{transform: "rotate(180deg)"}}/>
+                        </Fab>
+                        </button>
+                    </Tooltip>
+                    <Tooltip title="prev" aria-label="previous play">
+                        <button onClick={()=>prev(1)} style={{background: "none", border: "none", marginRight:"auto"}}>
                         <Fab color="primary">
                             <ArrowForwardIosIcon  style={{transform: "rotate(180deg)"}}/>
                         </Fab>
                         </button>
                     </Tooltip>
+                </div>
                 )}
 
                 
                 {maxDowns > downIndex && ( 
-                    <Tooltip title="prev" aria-label="previous play">
-                        <button onClick={next} style={{background: "none", border: "none", marginLeft:"auto"}}>
+                    <div style={{marginLeft: "auto"}}>
+                        <Tooltip title="prev" aria-label="previous play">
+                            <button onClick={()=>next(1)} style={{background: "none", border: "none", marginLeft:"auto"}}>
+                                <Fab color="primary">
+                                    <ArrowForwardIosIcon />
+                                </Fab>
+                            </button>
+                        </Tooltip>
+                        <Tooltip title="prev" aria-label="previous play">
+                        <button onClick={()=>next(10)} style={{background: "none", border: "none", marginLeft:"auto"}}>
                             <Fab color="primary">
+                                <ArrowForwardIosIcon />
                                 <ArrowForwardIosIcon />
                             </Fab>
                         </button>
                     </Tooltip>
+                   </div>
                 )}
             </div>
         </>
