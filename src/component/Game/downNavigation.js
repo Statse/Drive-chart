@@ -52,8 +52,6 @@ export default function DownNavigation(props) {
             setDownIndex(maxDowns)
         }
     }
-
-    console.log("downs[prevDown]", downs[prevDown])
     
     return (
         <>
