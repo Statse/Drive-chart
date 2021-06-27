@@ -7,6 +7,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import { useHistory } from "react-router-dom"
+import Button from '@material-ui/core/Button';
 
 const useStyles = makeStyles({
   table: {
@@ -25,6 +27,7 @@ function createData(down, distance, direction, playType, result) {
 }
 export default function DriveTable(props) {
   const classes = useStyles();
+  const history = useHistory()
   const {downs} = props
   
   return (
@@ -41,6 +44,7 @@ export default function DriveTable(props) {
             <TableCell>Direction</TableCell>
             <TableCell>Play type</TableCell>
             <TableCell>Result</TableCell>
+            <TableCell>Edit</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -55,6 +59,9 @@ export default function DriveTable(props) {
               <TableCell>{down.playDirection}</TableCell>
               <TableCell>{down.playType}</TableCell>
               <TableCell>{down.result}</TableCell>
+              <TableCell>
+                <Button onClick={()=>history.push(`/game/${props.id}/?i=${index}`)} variant="contained" color="secondary" size="small">Edit</Button>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
