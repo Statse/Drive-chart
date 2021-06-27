@@ -47,13 +47,7 @@ export default function GamesList() {
                 <Grid>
                     <h3>Pelit</h3>
                     {games.map(game=>{
-                        return <GameCard 
-                            home={game.home}
-                            homeScore={game.homeScore}
-                            away={game.away}
-                            awayScore={game.awayScore}
-                            id={game.id}
-                        />
+                        return <GameCard  game={game}/>
                     })}
                 </Grid>
             )}

@@ -34,16 +34,28 @@ export default function GameCard(props) {
   const classes = useStyles();
   const history = useHistory()
 
+  const {downs} = props.game
+
+  console.log(props.game.downs)
+
+
+
+  let index = downs.length
+
+  if (downs[downs.length - 1].playType === "Game end"){
+    index = downs.length - 1
+  }
+
   return (
     <Card className={classes.root} variant="outlined">
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
-        {props.homeScore} {props.home} - {props.away} {props.awayScore}
+        {props.game.home} - {props.game.away}
         </Typography>
       </CardContent>
       <CardActions className={classes.flexCenter}>
-        <Button onClick={()=>history.push(`/game/${props.id}`)} variant="contained" color="primary" size="small">Log game</Button>
-        <Button onClick={()=>history.push(`/recap/${props.id}`)} variant="contained" color="secondary" size="small">Recap</Button>
+        <Button onClick={()=>history.push(`/game/${props.game.id}/${index}`)} variant="contained" color="primary" size="small">Log game</Button>
+        <Button onClick={()=>history.push(`/recap/${props.game.id}`)} variant="contained" color="secondary" size="small">Recap</Button>
       </CardActions>
     </Card>
   );
