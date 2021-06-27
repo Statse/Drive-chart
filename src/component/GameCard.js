@@ -36,10 +36,6 @@ export default function GameCard(props) {
 
   const {downs} = props.game
 
-  console.log(props.game.downs)
-
-
-
   let index = downs.length
 
   if (downs[downs.length - 1].playType === "Game end"){
@@ -54,7 +50,7 @@ export default function GameCard(props) {
         </Typography>
       </CardContent>
       <CardActions className={classes.flexCenter}>
-        <Button onClick={()=>history.push(`/game/${props.game.id}/${index}`)} variant="contained" color="primary" size="small">Log game</Button>
+        <Button onClick={()=>history.push(`/game/${props.game.id}/${index + 1}`)} variant="contained" color="primary" size="small">Log game</Button>
         <Button onClick={()=>history.push(`/recap/${props.game.id}`)} variant="contained" color="secondary" size="small">Recap</Button>
       </CardActions>
     </Card>
