@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
 export default function DownAccordion(props) {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
-  const {series} = props
+  const {series, handleDownIndex} = props
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -63,7 +63,7 @@ export default function DownAccordion(props) {
           <Typography className={classes.secondaryHeading}>Drive result: {result}</Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <DriveTable downs={series} />
+          <DriveTable downs={series} handleDownIndex={handleDownIndex} />
         </AccordionDetails>
       </Accordion>
     </div>

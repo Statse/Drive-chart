@@ -67,7 +67,7 @@ export default function NewGame() {
         }
         try {
             const res = await firebase.firestore().collection('games').add(data);
-            history.push(`/game/${res.id}`)
+            history.push(`/game/${res.id}/0`)
         } catch(e) {
             setError(e)
             console.log(error)

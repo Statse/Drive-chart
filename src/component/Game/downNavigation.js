@@ -15,7 +15,7 @@ export default function DownNavigation(props) {
         down, 
         maxDowns, 
         downIndex, 
-        setDownIndex, 
+        handleDownIndex, 
         setEditMode, 
         setInit
     } = props
@@ -24,17 +24,17 @@ export default function DownNavigation(props) {
 
     const prev = (amount) => {
         if (downIndex - amount >= 0){
-            setDownIndex(downIndex-amount)
+            handleDownIndex(downIndex-amount)
             setEditMode(true)
             setInit(false)
         } else {
-            setDownIndex(0)
+            handleDownIndex(0)
         }
     }
 
     const next = (amount) => {
         if (downIndex + amount <= maxDowns){
-            setDownIndex(downIndex+amount)
+            handleDownIndex(downIndex+amount)
             if (downIndex < maxDowns){
                 setEditMode(true)
                 setInit(false)
@@ -49,7 +49,7 @@ export default function DownNavigation(props) {
                 setEditMode(false)
             }
         } else {
-            setDownIndex(maxDowns)
+            handleDownIndex(maxDowns)
         }
     }
     

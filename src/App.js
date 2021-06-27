@@ -41,7 +41,7 @@ function App() {
                 <Switch>
                   <PrivateRoute exact path="/" component={Dashboard}/>
                   <PrivateRoute exact path="/new-game" component={NewGame}/>
-                  <PrivateRoute exact path="/game/:id" component={GameWrapper}/>
+                  <PrivateRoute exact path="/game/:id/:index" component={GameWrapper}/>
                   <PrivateRoute exact path="/recap/:id" component={GameRecapWrapper}/>
                   <PrivateRoute exact path="/recap/:id/player/:team/:player" component={PlayerRecapWrapper}/>
                   <Route exact path="/public/recap/:id" component={GameRecapPublicWrapper}/>

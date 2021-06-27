@@ -28,7 +28,7 @@ function createData(down, distance, direction, playType, result) {
 export default function DriveTable(props) {
   const classes = useStyles();
   const history = useHistory()
-  const {downs} = props
+  const {downs, handleDownIndex} = props
   
   return (
     <TableContainer component={Paper}>
@@ -60,7 +60,7 @@ export default function DriveTable(props) {
               <TableCell>{down.playType}</TableCell>
               <TableCell>{down.result}</TableCell>
               <TableCell>
-                <Button onClick={()=>history.push(`/game/${props.id}/?i=${index}`)} variant="contained" color="secondary" size="small">Edit</Button>
+                <Button onClick={()=>handleDownIndex()} variant="contained" color="secondary" size="small">Edit</Button>
               </TableCell>
             </TableRow>
           ))}

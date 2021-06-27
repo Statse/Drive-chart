@@ -39,7 +39,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function GameForm(props) {
     const {_setDowns, _updateDown, _loading, downs} = useGame()
-    const [downIndex, setDownIndex] = useState(0)
+    
+    // const [downIndex, handleDownIndex] = useState(props.match.params.index || 0)
     const classes = useStyles();
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
@@ -71,6 +72,8 @@ export default function GameForm(props) {
     const [runGap, setRunGap] = useState("")
     const [passField, setPassField] = useState("")
     const [blitzing, setBlitzing] = useState(false)
+
+    const {downIndex, handleDownIndex} = props
 
     async function handleSubmit(e){
         e.preventDefault()
@@ -122,7 +125,7 @@ export default function GameForm(props) {
                 )
 
                 //go to next down after save
-                setDownIndex(downIndex+1)
+                handleDownIndex(downIndex+1)
 
                 //downIndex hasnt updated yet se we need to +1 it...
                 if (downIndex + 1 === downs.length){
@@ -392,8 +395,8 @@ export default function GameForm(props) {
             mapDownToCurrentState(downs[downIndex])
             setInit(true)
         } else if (!editMode && downs.length > 0){
-            //Initialize form first time
-            setDownIndex(downs.length)
+            // Initialize form first time
+            // handleDownIndex(downs.length)
             // KICKING PLAYS
             if (downs[downs.length-1].playType ==="KO" || downs[downs.length-1].playType ==="Punt"){
                 if (downs[downs.length-1].possession ==="Home"){
@@ -422,7 +425,7 @@ export default function GameForm(props) {
             <Button className={classes.button} variant="contained" onClick={()=>setLive(false)} color={live ? "default" : "primary"}>Video</Button>
             <Button className={classes.button} variant="contained" onClick={()=>setLive(true)} color={live ? "primary" : "default"}>Live</Button>
         </div>
-        <DownNavigation resetDown={()=>resetDown} downs={downs} prevDown={downIndex-1} down={downs[downIndex]} setEditMode={(bool)=>{setEditMode(bool)}} setInit={(bool)=>{setInit(bool)}}  maxDowns={downs.length} downIndex={downIndex} setDownIndex={(index)=>{setDownIndex(index)}}/>
+        <DownNavigation resetDown={()=>resetDown} downs={downs} prevDown={downIndex-1} down={downs[downIndex]} setEditMode={(bool)=>{setEditMode(bool)}} setInit={(bool)=>{setInit(bool)}}  maxDowns={downs.length} downIndex={downIndex} handleDownIndex={(index)=>{handleDownIndex(index)}}/>
         <form id="game-form" onSubmit={handleSubmit}>
             <Grid container spacing={3}>
                 <Grid item xs={12} md={2}>
