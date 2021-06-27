@@ -21,7 +21,7 @@ export default function DownNavigation(props) {
         setInit
     } = props
 
-    
+    console.log(down)
 
     const prev = (amount) => {
         if (downIndex - amount >= 0){
@@ -90,7 +90,7 @@ export default function DownNavigation(props) {
                 )}
 
                 
-                {maxDowns > downIndex && ( 
+                {maxDowns > downIndex && down.playType !== "Game end" && ( 
                     <div style={{marginLeft: "auto"}}>
                         <Tooltip title="prev" aria-label="previous play">
                             <button onClick={()=>next(1)} style={{background: "none", border: "none", marginLeft:"auto"}}>
