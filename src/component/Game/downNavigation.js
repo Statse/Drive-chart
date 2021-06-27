@@ -3,6 +3,7 @@ import DownNavTable from './DownNavTable'
 
 import Typography from '@material-ui/core/Typography';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 
@@ -74,8 +75,7 @@ export default function DownNavigation(props) {
                     <Tooltip title="prev" aria-label="previous play">
                         <button onClick={()=>prev(10)} style={{background: "none", border: "none", marginRight:"auto"}}>
                         <Fab color="primary">
-                            <ArrowForwardIosIcon  style={{transform: "rotate(180deg)"}}/>
-                            <ArrowForwardIosIcon  style={{transform: "rotate(180deg)"}}/>
+                            <DoubleArrowIcon  style={{transform: "rotate(180deg)"}}/>
                         </Fab>
                         </button>
                     </Tooltip>
@@ -102,8 +102,7 @@ export default function DownNavigation(props) {
                         <Tooltip title="prev" aria-label="previous play">
                         <button onClick={()=>next(10)} style={{background: "none", border: "none", marginLeft:"auto"}}>
                             <Fab color="primary">
-                                <ArrowForwardIosIcon />
-                                <ArrowForwardIosIcon />
+                                <DoubleArrowIcon />
                             </Fab>
                         </button>
                     </Tooltip>
