@@ -32,8 +32,6 @@ export default function DownNavTable(props) {
 
   const rows = [createData(previousDown)];
 
-  console.log(rows)
-
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">

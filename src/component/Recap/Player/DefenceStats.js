@@ -20,14 +20,12 @@ export default function DefenceStats(props) {
                 const gain = down.endYardline - down.startYardline
 
                 if (parseInt(player) === parseInt(down.carrier) && down.result === "Interception"){
-                    console.log(down)
                     returnYards += down.catchYardLine - down.endYardline
                     interceptions += 1
                     return down
                 }
 
                 if (parseInt(player) === parseInt(down.tackleAssist)){
-                    console.log(down)
                     tackles += 0.5
 
                     if (gain < 0){

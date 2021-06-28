@@ -15,7 +15,6 @@ export function PublicGameProvider({children}) {
     async function getGame(id){
         try {
             const res = await axios("https://us-central1-drive-chart-df487.cloudfunctions.net/app/recap/"+id)
-            console.log("res", res.data)
             setGame(res.data)
             setLoading(false)
             return res.data

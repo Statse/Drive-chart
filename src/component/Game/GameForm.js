@@ -274,7 +274,6 @@ export default function GameForm(props) {
 
         if ((downData.endYardline-downData.startYardline)>=downData.distance){
             firstDowns()
-            console.log("startYardline + distance", startYardline + distance)
             //endyardline or distance might be string sometimes so lets make sure its integer
             if (parseInt(downData.endYardline) + parseInt(distance) > 100){
             //if close to goal line
@@ -316,6 +315,7 @@ export default function GameForm(props) {
             case "Touchback":
                 changePossession(downData.possession)
                 setStartYardline(20) 
+                setEndYardline(100)
                 firstDowns()
             break;
             case "Complete":
@@ -391,7 +391,12 @@ export default function GameForm(props) {
 
     //init based on previous downs
     if (!init){
-        if (downIndex < downs.length && editMode){
+
+        console.log("downindex", downIndex)
+
+
+
+        if (downIndex < downs.length){
             mapDownToCurrentState(downs[downIndex])
             setInit(true)
         } else if (!editMode && downs.length > 0){
@@ -575,24 +580,7 @@ export default function GameForm(props) {
                         </Select>
                     </Grid>
                 )}
-                {result !=="Penalty" && playType !== "Game end" && (
-                    <Grid item xs={12} md={2}>
-                        <InputLabel className={classes.bottomMargin} id="playdirection-label">Play direction</InputLabel>
-                        <Select
-                            labelId="playdirection-label"
-                            id="demo-simple-select"
-                            className={classes.fullWidth}
-                            onChange={(e)=>setPlaydirection(e.target.value)}
-                            value={playDirection}
-                            >
-                            <MenuItem value={"OOL"}>OOL</MenuItem>
-                            <MenuItem value={"L"}>L</MenuItem>
-                            <MenuItem value={"M"}>M</MenuItem>
-                            <MenuItem value={"R"}>R</MenuItem>
-                            <MenuItem value={"OOR"}>OOR</MenuItem>
-                        </Select>
-                    </Grid>
-                )}
+               
                 {playType !== "Game end" && (
                 <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="result-label">Play result</InputLabel>
@@ -888,6 +876,24 @@ export default function GameForm(props) {
                     }}
                     required  />
                 </Grid>
+                )}
+                 {result !=="Penalty" && playType !== "Game end" && (
+                    <Grid item xs={12} md={2}>
+                        <InputLabel className={classes.bottomMargin} id="playdirection-label">Play end position</InputLabel>
+                        <Select
+                            labelId="playdirection-label"
+                            id="demo-simple-select"
+                            className={classes.fullWidth}
+                            onChange={(e)=>setPlaydirection(e.target.value)}
+                            value={playDirection}
+                            >
+                            <MenuItem value={"OOL"}>OOL</MenuItem>
+                            <MenuItem value={"L"}>L</MenuItem>
+                            <MenuItem value={"M"}>M</MenuItem>
+                            <MenuItem value={"R"}>R</MenuItem>
+                            <MenuItem value={"OOR"}>OOR</MenuItem>
+                        </Select>
+                    </Grid>
                 )}
                 {/*not in Kickoff, PAT */}
                 {playType !== "Game end" && playType !=="PAT" && playType !=="KO" && (

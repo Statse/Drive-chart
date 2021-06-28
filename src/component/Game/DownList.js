@@ -17,9 +17,7 @@ const useStyles = makeStyles({
 export default function DownList(props) {
   const {downs, editDown} = props
   const classes = useStyles();
-  console.log(downs)
   const series = SeriesMappers(downs)
-  console.log(series)
   return (
       <div className={classes.relative}>
             {

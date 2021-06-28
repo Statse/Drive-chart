@@ -21,8 +21,6 @@ export default function DownNavigation(props) {
         setInit
     } = props
 
-    console.log(down)
-
     const prev = (amount) => {
         if (downIndex - amount >= 0){
             handleDownIndex(parseInt(downIndex)-parseInt(amount))
