@@ -127,7 +127,7 @@ export default function GameForm(props) {
                 )
 
                 //go to next down after save
-                handleDownIndex(downIndex+1)
+                handleDownIndex(parseInt(downIndex) + 1)
 
                 //downIndex hasnt updated yet se we need to +1 it...
                 if (downIndex + 1 === downs.length){
@@ -148,6 +148,8 @@ export default function GameForm(props) {
                     { merge: true }
                 )
                 console.log("Saved to db.")
+                //go to next down after save
+                handleDownIndex(parseInt(downIndex) + 1)
             }
             
   
@@ -319,7 +321,6 @@ export default function GameForm(props) {
             case "Touchback":
                 changePossession(downData.possession)
                 setStartYardline(20) 
-                setEndYardline(100)
                 firstDowns()
             break;
             case "Complete":
@@ -401,25 +402,27 @@ export default function GameForm(props) {
             mapDownToCurrentState(downs[downIndex])
             setInit(true)
         } else {
+            if (downs[downs.length-1].playType ==="KO" || downs[downs.length-1].playType ==="Punt"){
+                if (downs[downs.length-1].possession ==="Home"){
+                    setPossession("Away") 
+                } else if (downs[downs.length-1].possession ==="Away"){
+                    setPossession("Home") 
+                }
+                if (downs[downs.length-1].result)
+                firstDowns()
+            }
             playResultHandler(downs[downIndex-1])
             setInit(true)
         }
+    } 
+
     //     if (downIndex < downs.length){
     //         mapDownToCurrentState(downs[downIndex])
     //         setInit(true)
     //     } else if (!editMode && downs.length > 0){
-    //         // Initialize form first time
     //         // handleDownIndex(downs.length)
     //         // KICKING PLAYS
-    //         if (downs[downs.length-1].playType ==="KO" || downs[downs.length-1].playType ==="Punt"){
-    //             if (downs[downs.length-1].possession ==="Home"){
-    //                 setPossession("Away") 
-    //             } else if (downs[downs.length-1].possession ==="Away"){
-    //                 setPossession("Home") 
-    //             }
-    //             if (downs[downs.length-1].result)
-    //             firstDowns()
-    //         }
+
 
     //         playResultHandler(downs[downs.length-1])
     //         setInit(true)
@@ -430,7 +433,6 @@ export default function GameForm(props) {
     //         // setStartYardline(35)
     //         // setInit(true)
     //     // }
-    } 
 
     return (
     <div className={useStyles.wrapper}>
