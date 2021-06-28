@@ -1,5 +1,6 @@
 import React, {useState} from 'react'
 import firebase from '../../firebase'
+import { useHistory } from "react-router-dom"
 
 import {useGame} from '../../context/GameContext'
 //ui
@@ -42,6 +43,7 @@ export default function GameForm(props) {
     
     // const [downIndex, handleDownIndex] = useState(props.match.params.index || 0)
     const classes = useStyles();
+    const history = useHistory()
     const [error, setError] = useState("")
     const [loading, setLoading] = useState(false)
     const [init, setInit] = useState(false)
@@ -133,6 +135,7 @@ export default function GameForm(props) {
                     setInit(false)
                     setEditMode(false)
                 }
+                
             } else {
                 const _downs = _setDowns(thisDown)       
                 await firebase.firestore()
@@ -194,7 +197,7 @@ export default function GameForm(props) {
             setEndYardline(down.endYardline)
             setHash(down.hash)
             setMotion(down.motion)
-            setPlaydirection(down.playDirection)
+            setPlaydirection(down.playDirection || "")
             setPersonel(down.personel)
             setResult(down.result)
             setDistance(down.distance)
@@ -235,6 +238,7 @@ export default function GameForm(props) {
 
 
     const playResultHandler = (downData) => {
+        console.log("downData", downData)
         //Init form
         setHash(downData.playDirection)
         setPossession(downData.possession)
@@ -389,39 +393,43 @@ export default function GameForm(props) {
         }
     }
 
+
     //init based on previous downs
-    if (!init){
-
-        console.log("downindex", downIndex)
-
-
-
-        if (downIndex < downs.length){
+    if (!init && downs.length){
+        
+        if (editMode){
             mapDownToCurrentState(downs[downIndex])
             setInit(true)
-        } else if (!editMode && downs.length > 0){
-            // Initialize form first time
-            // handleDownIndex(downs.length)
-            // KICKING PLAYS
-            if (downs[downs.length-1].playType ==="KO" || downs[downs.length-1].playType ==="Punt"){
-                if (downs[downs.length-1].possession ==="Home"){
-                    setPossession("Away") 
-                } else if (downs[downs.length-1].possession ==="Away"){
-                    setPossession("Home") 
-                }
-                if (downs[downs.length-1].result)
-                firstDowns()
-            }
-
-            playResultHandler(downs[downs.length-1])
+        } else {
+            playResultHandler(downs[downIndex-1])
             setInit(true)
-        } 
-        // else {
-            //if there is no downs the first down is kickoff
-            // setPlaytype("KO")
-            // setStartYardline(35)
-            // setInit(true)
-        // }
+        }
+    //     if (downIndex < downs.length){
+    //         mapDownToCurrentState(downs[downIndex])
+    //         setInit(true)
+    //     } else if (!editMode && downs.length > 0){
+    //         // Initialize form first time
+    //         // handleDownIndex(downs.length)
+    //         // KICKING PLAYS
+    //         if (downs[downs.length-1].playType ==="KO" || downs[downs.length-1].playType ==="Punt"){
+    //             if (downs[downs.length-1].possession ==="Home"){
+    //                 setPossession("Away") 
+    //             } else if (downs[downs.length-1].possession ==="Away"){
+    //                 setPossession("Home") 
+    //             }
+    //             if (downs[downs.length-1].result)
+    //             firstDowns()
+    //         }
+
+    //         playResultHandler(downs[downs.length-1])
+    //         setInit(true)
+    //     } 
+    //     // else {
+    //         //if there is no downs the first down is kickoff
+    //         // setPlaytype("KO")
+    //         // setStartYardline(35)
+    //         // setInit(true)
+    //     // }
     } 
 
     return (

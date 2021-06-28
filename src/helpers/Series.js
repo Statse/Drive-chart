@@ -6,12 +6,9 @@ export default function SeriesMappers(downs) {
     let currentQuater = downs[0].quarter
 
     downs.map((down, index)=>{
-        
         down.index = index
-
         if (down.playType === "KO" || currentTeam !== down.possession || (currentQuater === 3 && down.quarter === 4)){
-
-            if (down.playType === "KO"){
+            if (downs[index+1] && down.playType === "KO"){
                 currentTeam = downs[index+1].possession
             } else {
                 //change series possession

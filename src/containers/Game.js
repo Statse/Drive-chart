@@ -37,7 +37,7 @@ export default function Game(props) {
     const editDown =  (downIndex) => {
         setView("game")
         setDownIndex(downIndex)
-        
+        history.push(`/game/${props.match.params.id}/${downIndex}`)
     }
 
     useEffect(() => {
