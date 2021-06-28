@@ -23,6 +23,12 @@ import Navbar from './component/Navbar'
 // import BottomNav from './containers/BottomNavigation'
 import { makeStyles } from '@material-ui/core/styles';
 
+import ReactGA from 'react-ga';
+
+ReactGA.initialize('UA-108570709-1');
+ReactGA.pageview(window.location.pathname + window.location.search);
+
+
 const useStyles = makeStyles({
   appContainer: {
     paddingTop: "90px"

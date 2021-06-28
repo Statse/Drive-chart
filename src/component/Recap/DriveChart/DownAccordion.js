@@ -35,7 +35,7 @@ export default function DownAccordion(props) {
   };
 
 
-  let result = "series[series.length-1].result"
+  let result = ""
 
   const lastDownInSeries = series[series.length-1]
 
