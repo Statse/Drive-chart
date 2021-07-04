@@ -242,7 +242,16 @@ export default function GameForm(props) {
     const playResultHandler = (downData) => {
         console.log("downData", downData)
         //Init form
-        setHash(downData.playDirection)
+
+
+        let dir = downData.playDirection
+        if (downData.playDirection ===  "OOR"){
+            dir = "R"
+        } else if (downData.playDirection === "OOL"){
+            dir = "L"
+        }
+
+        setHash(dir)
         setPossession(downData.possession)
         setHomeScore(downData.homeScore)
         setAwayScore(downData.awayScore)
@@ -901,11 +910,11 @@ export default function GameForm(props) {
                             onChange={(e)=>setPlaydirection(e.target.value)}
                             value={playDirection}
                             >
-                            <MenuItem value={"OOL"}>OOL</MenuItem>
+                            <MenuItem value={"OOL"}>OORL</MenuItem>
                             <MenuItem value={"L"}>L</MenuItem>
                             <MenuItem value={"M"}>M</MenuItem>
                             <MenuItem value={"R"}>R</MenuItem>
-                            <MenuItem value={"OOR"}>OOR</MenuItem>
+                            <MenuItem value={"OOR"}>OOBR</MenuItem>
                         </Select>
                     </Grid>
                 )}
