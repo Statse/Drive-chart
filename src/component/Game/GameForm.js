@@ -609,6 +609,10 @@ export default function GameForm(props) {
                             if (e.target.value === "No good"){
                                 setEndYardline(startYardline)
                             }
+                            if (e.target.value === "Touchback"){
+                                setEndYardline(100)
+                                setPlaydirection("M")
+                            }
                         }}
                         value={result}
                         required
@@ -722,7 +726,7 @@ export default function GameForm(props) {
                     </Grid>
                 )}
 
-                {(playType === "KO" || playType === "FG" || playType === "PAT") && result !== "Penalty"  &&  !live && (
+                {(playType === "KO" || playType === "FG" || playType === "PAT" || playType === "Punt") && result !== "Penalty"  &&  !live && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="carrier-label">Kicker</InputLabel>
                         <TextField 
