@@ -1,6 +1,5 @@
 import React from 'react'
-import Typography from '@material-ui/core/Typography';
-import StatCard from '../Wrappers/StatCard'
+import StatTable from '../Wrappers/StatTable'
 
 export default function Penalties(props) {
     const {game, team} = props
@@ -27,16 +26,25 @@ export default function Penalties(props) {
     })
     
 
-    return (
-        <StatCard>
-            <Typography variant="h5" component="h2">Total penalty yards</Typography>
-            <Typography variant="h4" component="p">{defensePenaltyYards + offensePenaltyYards}</Typography>
-            <Typography variant="h5" component="h2">Total penalties</Typography>
-            <Typography variant="h4" component="p">{penalties.length}</Typography>
-            <Typography variant="h5" component="h2">Offense penalties</Typography>
-            <Typography variant="h4" component="p">{offensivePenalties}</Typography>
-            <Typography variant="h5" component="h2">Defense penalties</Typography>
-            <Typography variant="h4" component="p">{defensivePenalties}</Typography>
-        </StatCard>
-    )
+    const data = [
+        {
+            name: "Penalty yards",
+            data: defensePenaltyYards + offensePenaltyYards,
+        },
+        {
+            name: "Total penalties",
+            data: penalties.length
+        },
+        {
+            name: "Offense penalties",
+            data: offensivePenalties,
+        },
+        {
+            name: "Defense penalties",
+            data: defensivePenalties,
+        },
+    ]
+
+
+    return(<StatTable heading={"Run statistics"} description={team} data={data} />)
 }

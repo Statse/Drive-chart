@@ -11,7 +11,6 @@ export default function FirstDowns(props) {
     const playSeries = SeriesMapper(downs)
 
     let firstDowns = 0
-    let awayFirsts = 0
 
     playSeries.map((series)=>{
       let possession = ""

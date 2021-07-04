@@ -1,6 +1,5 @@
 import React from 'react'
-import Typography from '@material-ui/core/Typography';
-import StatCard from '../Wrappers/StatCard'
+import  StatTable from '../Wrappers/StatTable'
 
 
 
@@ -28,16 +27,26 @@ export default function PassAvarageGain(props) {
     
     const avarageRunYards =  Math.round((runningYards / runningPlays.length) * 10) / 10
 
-    return (
-        <StatCard>
-            <Typography variant="h5" component="h2">Total running yards</Typography>
-            <Typography variant="h4" component="p">{runningYards}</Typography>
-            <Typography variant="h5" component="h2">Run attempts</Typography>
-            <Typography variant="h4" component="p">{runningPlays.length}</Typography>
-            <Typography variant="h5" component="h2">Run yards per attempt</Typography>
-            <Typography variant="h4" component="p">{avarageRunYards}</Typography>
-            <Typography variant="h5" component="h2">Running play turnovers</Typography>
-            <Typography variant="h4" component="p">{turnovers}</Typography>
-        </StatCard>
-    )
+
+    const data = [
+        {
+            name: "Total yards",
+            data: runningYards,
+        },
+        {
+            name: "Total plays",
+            data: runningPlays.length
+        },
+        {
+            name: "Avg gain / run play",
+            data: avarageRunYards,
+        },
+    ]
+
+    
+    if (turnovers > 0){
+        data.push({name: "Running turnovers", data: turnovers})
+    }
+
+    return(<StatTable heading={"Run statistics"} description={team} data={data} />)
 }

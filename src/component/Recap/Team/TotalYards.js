@@ -1,8 +1,8 @@
 import React from 'react'
-import StatCard from '../Wrappers/StatCard'
-import Typography from '@material-ui/core/Typography';
+import  StatTable from '../Wrappers/StatTable'
+import SeriesMapper from  '../../../helpers/Series'
 
-export default function PassAvarageGain(props) {
+export default function OffenseStats(props) {
     const {game, team} = props
     const {downs} = game
 
@@ -22,18 +22,56 @@ export default function PassAvarageGain(props) {
         }
     }) 
     
+    const playSeries = SeriesMapper(downs)
+
+    let firstDowns = 0
+
+    playSeries.map((series)=>{
+      let possession = ""
+      let firsts = series.filter((down)=>{
+        possession = down.possession
+        if (down.down === 1 && down.playType !== "KO" && down.playType !== "PAT"){
+          return down
+        }
+      })
+
+      if (firsts.length > 0){
+        if (possession.toLowerCase() === team.toLowerCase()){
+          firstDowns += firsts.length - 1
+        } 
+      }
+    })
+    
+    
     const avarageYards =  Math.round((totalYards / plays.length) * 10) / 10
 
+
+
+    const data = [
+        {
+            name: "Total yards",
+            data: totalYards,
+        },
+        {
+            name: "First downs",
+            data: firstDowns,
+        },
+        {
+            name: "Total plays",
+            data: plays.length
+        },
+        {
+            name: "Avg gain / play",
+            data: avarageYards,
+        }
+    ]
+
+
+    if (turnovers > 0){
+        data.push({name: "Total turnovers", data: turnovers})
+    }
+
     return (
-        <StatCard>
-            <Typography variant="h5" component="h2">Total yards</Typography>
-            <Typography variant="h4" component="p">{totalYards}</Typography>
-            <Typography variant="h5" component="h2">Total plays</Typography>
-            <Typography variant="h4" component="p">{plays.length}</Typography>
-            <Typography variant="h5" component="h2">Yards per play</Typography>
-            <Typography variant="h4" component="p">{avarageYards}</Typography>
-            <Typography variant="h5" component="h2">Turnovers</Typography>
-            <Typography variant="h4" component="p">{turnovers}</Typography>
-        </StatCard>
+        <StatTable heading={"Offense statistics"} description={team} data={data} />
     )
 }
