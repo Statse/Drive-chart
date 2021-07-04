@@ -14,6 +14,7 @@ import RunGaps from './Team/RunGaps'
 import PassingZones from './Team/PassingZones'
 import ReceiverSeparation from './Team/ReceiverSeparation'
 import ReceiverCompletions from './Team/ReceiverCompletions'
+import OffenseStats from './Team/OffenseStats';
 
 export default function Team(props) {
     const {game, team} = props
@@ -22,6 +23,7 @@ export default function Team(props) {
         <Grid container spacing={3}>
             {game.downs && (
                 <>
+                        <OffenseStats  game={game} team={team}/>
                         <OffenseType game={game} team={team}/>
                         <TotalYards game={game} team={team}/>  
                         <CompletionPrecentage game={game} team={team}/>  
