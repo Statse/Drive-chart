@@ -146,7 +146,7 @@ export default function GameForm(props) {
                         downs: _downs
                     },
                     { merge: true }
-                )
+                ).catch((e))
                 console.log("Saved to db.")
                 //go to next down after save
                 handleDownIndex(parseInt(downIndex) + 1)
@@ -275,11 +275,7 @@ export default function GameForm(props) {
         setBlitzing(false)   
         setRecover(0)
         setKicker(0)
-
-        if (downData.playType ==="PAT"){
-            setStartYardline(35) 
-        }
-
+        
         if ((downData.playType ==="KO" || downData.playType ==="Punt") && downData.result !== "Turnover" && downData.result !== "Fumble turnover" && result !== "Penalty"){
             setStartYardline(100-downData.endYardline)
             changePossession(downData.possession)
@@ -299,8 +295,8 @@ export default function GameForm(props) {
             && downData.result !== "Penalty"
             && downData.result !== "TD"
             && downData.playType !== "FG"
+            && downData.playType !== "PAT"
             ) {
-            alert("turnover in downs")
             turnover(downData) 
             firstDowns()
         }
@@ -324,8 +320,14 @@ export default function GameForm(props) {
                 setStartYardline(35)
             break;
             case "No good":
-                setPlaytype("KO")
-                setStartYardline(35)
+                if (downData.playType === "PAT"){
+                    setPlaytype("KO")
+                    setStartYardline(35)
+                }
+                if (downData.playType === "FG"){
+                    turnover(downData) 
+                    firstDowns()
+                }
             break;
             case "Touchback":
                 changePossession(downData.possession)
@@ -532,20 +534,26 @@ export default function GameForm(props) {
                             if (e.target.value==="KO"){
                                 setStartYardline(35) 
                             }
+                            if (e.target.value==="BP" || e.target.value==="AP" || e.target.value==="DP"){
+                                setResult("Penalty")
+                            }
                         }}
                         value={playType}
                         >
-                        <MenuItem value={"KO"}>KO</MenuItem>
                         <MenuItem value={"Run"}>Run</MenuItem>
                         <MenuItem value={"Pass"}>Pass</MenuItem>
                         <MenuItem value={"Punt"}>Punt</MenuItem>
                         <MenuItem value={"FG"}>FG</MenuItem>
                         <MenuItem value={"PAT"}>PAT</MenuItem>
+                        <MenuItem value={"BP"}>Before play</MenuItem>
+                        <MenuItem value={"DP"}>During play</MenuItem>
+                        <MenuItem value={"AP"}>After play</MenuItem>
+                        <MenuItem value={"KO"}>KO</MenuItem>
                         <MenuItem value={"Game end"}>Game end</MenuItem>
                     </Select>
                 </Grid>
 
-                {playType === "Run" && !live && (
+                {(playType === "Run"   || (playType === "PAT" && result === "2pt good rush"))&& !live && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="rungap-label">Run gap</InputLabel>
                         <Select
@@ -611,6 +619,7 @@ export default function GameForm(props) {
                             setResult(e.target.value)
                             if (e.target.value === "Incomplete"){
                                 setEndYardline(startYardline)
+                                setPlaydirection(hash)
                             }
                             if (e.target.value === "TD"){
                                 setEndYardline(100)
@@ -654,8 +663,9 @@ export default function GameForm(props) {
                         <MenuItem value={"Fumble turnover"}>Fumble turnover</MenuItem>
                         <MenuItem value={"Sack"}>Sack</MenuItem>
                         <MenuItem value={"Safety"}>Safety</MenuItem>
-                        <MenuItem value={"Penalty"}>Penalty</MenuItem>
                         <MenuItem value={"Turnover"}>Turnover</MenuItem>
+                        <MenuItem value={"Penalty"}>Penalty</MenuItem>
+                        
                     </Select>
                 </Grid>
                 )}
@@ -696,7 +706,7 @@ export default function GameForm(props) {
                         required  />
                     </Grid>
                 )}
-                {(playType === "Pass" || result === "2pt good pass") && result !== "Incomplete" && result !== "Penalty" && !live && (
+                {(playType === "Pass" || result === "2pt good pass") && result !== "Incomplete" && result !== "Penalty" && result !== "Sack" && !live && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="carrier-label">Receiver</InputLabel>
                         <TextField 
@@ -714,7 +724,7 @@ export default function GameForm(props) {
                         required  />
                     </Grid>
                 )}
-                {(playType === "Run" || playType === "KO" || result === "2pt good rush") && result !== "Penalty" && result !== "Touchback" && !live && (
+                {(playType === "Run" || playType === "KO" || playType === "Punt" || result === "2pt good rush") && result !== "Sack" && result !== "Penalty" && result !== "Touchback" && !live && (
                     <Grid item xs={12} md={2}>
                         <InputLabel className={classes.bottomMargin} id="carrier-label">
                             Rusher
@@ -773,7 +783,7 @@ export default function GameForm(props) {
                 </Grid>
                 )}
 
-                {playType === "Pass" && result !== "Penalty" && !live &&(
+                {playType === "Pass" && result !== "Penalty" && !live && result !== "Sack" &&(
                 <>
                     <Grid item xs={12} md={2} >
                         <InputLabel className={classes.bottomMargin} id="hash-label">Pass direction</InputLabel>
@@ -792,12 +802,13 @@ export default function GameForm(props) {
                     </Grid>
                 </>
                 )}
-                {(playType === "Pass" || playType === "KO" )&& result !== "Penalty" && !live && (
+                {(playType === "Pass" || playType === "KO" || playType === "Punt")&& result !== "Penalty" && result !== "Sack" && !live && (
                     <Grid item xs={12} md={2}>
                     <InputLabel className={classes.bottomMargin} id="catch-yard-label">
                         {playType === "Pass" && result !== "Incomplete" && "Catch yard line"} 
                         {playType === "Pass" && result === "Incomplete" &&  "Pass drop yard line"} 
                         {playType === "KO" && ("Kick drop yard line")}
+                        {playType === "Punt" && ("Kick drop yard line")}
                     </InputLabel>
                     <TextField 
                     labelId="catch-yard-label"
@@ -910,7 +921,7 @@ export default function GameForm(props) {
                             onChange={(e)=>setPlaydirection(e.target.value)}
                             value={playDirection}
                             >
-                            <MenuItem value={"OOL"}>OORL</MenuItem>
+                            <MenuItem value={"OOL"}>OOBL</MenuItem>
                             <MenuItem value={"L"}>L</MenuItem>
                             <MenuItem value={"M"}>M</MenuItem>
                             <MenuItem value={"R"}>R</MenuItem>

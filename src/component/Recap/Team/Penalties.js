@@ -46,5 +46,5 @@ export default function Penalties(props) {
     ]
 
 
-    return(<StatTable heading={"Run statistics"} description={team} data={data} />)
+    return(<StatTable heading={"Penalty statistics"} description={team} data={data} />)
 }
